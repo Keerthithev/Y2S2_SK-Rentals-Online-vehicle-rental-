@@ -1,0 +1,142 @@
+[
+  { 
+    "_id": "60c72b2f9b1d8f3b9c8dbe0b",
+    "make": "Kawasaki",
+    "model": "Ninja 400",
+    "year": 2021,
+    "type": "Motor Bikes",
+    "rental_price_per_day": 40,
+    "discount": 0,
+    "availability_status": "available",
+    "location": "Miami",
+    "fuel_type": "Petrol",
+    "transmission": "Manual",
+    "seating_capacity": 2,
+    "mileage": 3000,
+    "last_service_date": "2023-04-15",
+    "insurance_expiry": "2024-04-15",
+    "added_by": "60d5ec49f1b2c8b1f8e4e1a1",
+    "updated_by": "60d5ec49f1b2c8b1f8e4e1a2",
+    "images": [
+      { "image": "http://example.com/image7.jpg" },
+      { "image": "http://example.com/image8.jpg" }
+    ],
+    "reviews": [
+      {
+        "user": "60d5ec49f1b2c8b1f8e4e1a3",
+        "rating": 5,
+        "comment": "Amazing bike! Great performance and very comfortable."
+      },
+      {
+        "user": "60d5ec49f1b2c8b1f8e4e1a4",
+        "rating": 4,
+        "comment": "Good bike, but could use a bit more power on the highway."
+      }
+    ]
+  },
+  { 
+    "_id": "60c72b2f9b1d8f3b9c8dbf0b",
+    "make": "Toyota",
+    "model": "Corolla",
+    "year": 2020,
+    "type": "Economy Cars",
+    "rental_price_per_day": 40,
+    "discount": 0,
+    "availability_status": "available",
+    "location": "Miami",
+    "fuel_type": "Petrol",
+    "transmission": "Manual",
+    "seating_capacity": 5,
+    "mileage": 15000,
+    "last_service_date": "2023-04-15",
+    "insurance_expiry": "2024-04-15",
+    "added_by": "60d5ec49f1b2c8b1f8e4e1a1",
+    "updated_by": "60d5ec49f1b2c8b1f8e4e1a2",
+    "images": [
+      { "image": "http://example.com/image9.jpg" },
+      { "image": "http://example.com/image10.jpg" }
+    ],
+    "reviews": [
+      {
+        "user": "60d5ec49f1b2c8b1f8e4e1a5",
+        "rating": 4,
+        "comment": "Great fuel efficiency and very reliable."
+      },
+      {
+        "user": "60d5ec49f1b2c8b1f8e4e1a6",
+        "rating": 3,
+        "comment": "Decent car, but lacks some modern features."
+      }
+    ]
+  },
+  { 
+    "_id": "60c72b2f9b1d8f3b9c8dbf0c",
+    "make": "Honda",
+    "model": "Civic",
+    "year": 2022,
+    "type": "Compact Cars",
+    "rental_price_per_day": 50,
+    "discount": 0,
+    "availability_status": "available",
+    "location": "Miami",
+    "fuel_type": "Petrol",
+    "transmission": "Automatic",
+    "seating_capacity": 5,
+    "mileage": 5000,
+    "last_service_date": "2023-04-15",
+    "insurance_expiry": "2024-04-15",
+    "added_by": "60d5ec49f1b2c8b1f8e4e1a1",
+    "updated_by": "60d5ec49f1b2c8b1f8e4e1a2",
+    "images": [
+      { "image": "http://example.com/image11.jpg" },
+      { "image": "http://example.com/image12.jpg" }
+    ],
+    "reviews": [
+      {
+        "user": "60d5ec49f1b2c8b1f8e4e1a7",
+        "rating": 5,
+        "comment": "Fantastic car! Smooth ride and excellent handling."
+      },
+      {
+        "user": "60d5ec49f1b2c8b1f8e4e1a8",
+        "rating": 4,
+        "comment": "Very comfortable and spacious, but a bit pricey."
+      }
+    ]
+  },
+  { 
+    "_id": "60c72b2f9b1d8f3b9c8dbf0d",
+    "make": "Ford",
+    "model": "F-150",
+    "year": 2021,
+    "type": "Luxury Cars",
+    "rental_price_per_day": 80,
+    "discount": 10,
+    "availability_status": "available",
+    "location": "Miami",
+    "fuel_type": "Diesel",
+    "transmission": "Automatic",
+    "seating_capacity": 5,
+    "mileage": 12000,
+    "last_service_date": "2023-04-15",
+    "insurance_expiry": "2024-04-15",
+    "added_by": "60d5ec49f1b2c8b1f8e4e1a1",
+    "updated_by": "60d5ec49f1b2c8b1f8e4e1a2",
+    "images": [
+      { "image": "http://example.com/image13.jpg" },
+      { "image": "http://example.com/image14.jpg" }
+    ],
+    "reviews": [
+      {
+        "user": "60d5ec49f1b2c8b1f8e4e1a9",
+        "rating": 5,
+        "comment": "Best truck I've ever driven! Powerful and spacious."
+      },
+      {
+        "user": "60d5ec49f1b2c8b1f8e4e1aa",
+        "rating": 4,
+        "comment": "Great for hauling, but fuel economy could be better."
+      }
+    ]
+  }
+]

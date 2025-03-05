@@ -1,0 +1,271 @@
+
+const sendEmail= require('../../utils/email')
+const catchAsyncError= require('../../middlewares/catchAsyncError')
+const User=require('../../models/userModels')
+const ErrorHandler=require('../../utils/errorHandler')
+const sendToken =require("../../utils/jwt")
+const bcrypt = require('bcryptjs');
+
+// Register user API endpoint
+exports.registerUser = catchAsyncError(async (req, res, next) => {
+    const { 
+      name, 
+      email, 
+      password, 
+      phone, 
+      address, 
+      dateOfBirth, 
+      driversLicense, 
+      isPhoneVerified 
+    } = req.body;
+  
+    // 1. Validate that all fields are provided
+    if (!name || !email || !password || !phone || !address || !dateOfBirth || !driversLicense) {
+      return next(new ErrorHandler('Please provide all required fields.', 400));
+    }
+  
+    // 2. Check if the user already exists by email or phone number
+    const userExistsByEmail = await User.findOne({ email });
+    const userExistsByPhone = await User.findOne({ phone });
+  
+    if (userExistsByEmail) {
+      return next(new ErrorHandler('User already exists with this email', 400));
+    }
+  
+    if (userExistsByPhone) {
+      return next(new ErrorHandler('User already exists with this phone number', 400));
+    }
+  
+    // 3. Check if phone number is verified
+    if (!isPhoneVerified) {
+      return next(new ErrorHandler('Phone number not verified, registration failed', 400));
+    }
+  
+    // 4. Hash the password before saving to database
+    const hashedPassword = await bcrypt.hash(password, 12);
+  
+    // 5. Create the new user in the database
+    const user = await User.create({
+      name,
+      email,
+      password: hashedPassword, // Store hashed password
+      phone,
+      address,
+      dateOfBirth,
+      driversLicense,
+      isPhoneVerified,
+    });
+  
+    // 6. Send token and response (JWT or session-based)
+    sendToken(user, 201, res); // Assuming sendToken handles sending JWT token and response
+  });
+
+//login user -/api/v1/login
+exports.loginUser =catchAsyncError(async (req,res,next)=>{
+   const{email,password}= req.body
+   if(!email||!password){
+        return next(new ErrorHandler('Please Enter Email and Password',400))
+   }
+
+//finding user database
+   const user = await User.findOne({email}).select('+password');
+   if(!user){
+    return next(new ErrorHandler('Invalid Email or Password',401))
+   }
+
+   if(! await user.isValidPassword(password)){
+    return next(new ErrorHandler('Invalid Email or Password',401))
+   }
+   
+   sendToken(user,201,res);
+   
+})
+
+//logout -/api/v1/logout
+exports.logoutUser=(req,res,next)=>{
+    res.cookie('token',null, {
+        expires :new Date(Date.now()),
+        httpOnly:true
+    }).status(200).json({
+        success: true,
+        message:"Loggedout"
+    }
+    )
+}
+
+// forgotPassword - /api/v1/password/forgot
+exports.forgotPassword = catchAsyncError(async (req, res, next) => {
+    const user = await User.findOne({ email: req.body.email });
+
+    // If user not found
+    if (!user) {
+        return next(new ErrorHandler('User not found with this email', 404));
+    }
+
+    // Generate OTP (6 digit OTP)
+    const otp = Math.floor(100000 + Math.random() * 900000);
+
+    // Save OTP to user document (you can also add expiration time)
+    user.resetPasswordOtp = otp;
+    user.resetPasswordOtpExpire = Date.now() + 10 * 60 * 1000; // OTP expires in 10 minutes
+    await user.save({ validateBeforeSave: false });
+
+    // Email message content with OTP
+    const message = `Your OTP for password reset is: ${otp}\n\n
+    This OTP will expire in 10 minutes.\n\nIf you did not request this email, please ignore it.`;
+
+    try {
+        // Send OTP via email
+        await sendEmail({
+            email: user.email,
+            subject: "SK Rental - Password Reset OTP",
+            message: message,
+        });
+
+        // Respond with success message
+        res.status(200).json({
+            success: true,
+            message: `OTP sent to ${user.email}`,
+        });
+    } catch (error) {
+        // If sending email fails, clear OTP and its expiration
+        user.resetPasswordOtp = undefined;
+        user.resetPasswordOtpExpire = undefined;
+        await user.save({ validateBeforeSave: false });
+
+        // Log the error message and send error response
+        console.error('Error sending OTP email:', error); // Log for debugging
+        return next(new ErrorHandler('Email could not be sent. Please try again later.', 500));
+    }
+});
+// resetPassword - /api/v1/password/reset
+exports.resetPassword = catchAsyncError(async (req, res, next) => {
+    const { otp, newPassword, confirmPassword } = req.body; // OTP and new password
+
+    // Find the user by OTP and check if OTP is expired
+    const user = await User.findOne({
+        resetPasswordOtp: otp,
+        resetPasswordOtpExpire: { $gt: Date.now() }, // OTP should not be expired
+    });
+
+    if (!user) {
+        return next(new ErrorHandler('Invalid or expired OTP', 400));
+    }
+
+    // Check if password and confirm password match
+    if (newPassword !== confirmPassword) {
+        return next(new ErrorHandler('Passwords do not match', 400));
+    }
+
+    // Set the new password and clear OTP fields
+    user.password = newPassword;
+    user.resetPasswordOtp = undefined;
+    user.resetPasswordOtpExpire = undefined;
+
+    // Save the updated user document
+    await user.save();
+
+    // Send back a token or a success message
+    sendToken(user, 200, res); // Send token or success response
+});
+
+
+
+
+
+
+
+
+//get User profile -/api/v1/myprofile
+exports.getUserProfile =catchAsyncError(async(req,res,next)=>{
+   const user= await User.findById(req.user.id)
+   res.status(200).json({
+        success:true,
+        user
+   })
+})
+
+//change password -/api/v1/password/change
+exports.changePasswsword = catchAsyncError(async(req,res,next)=>{
+    const user= await User.findById(req.user.id).select('+password')
+
+    //chk old password
+    if(!await user.isValidPassword(req.body.oldPassword)){
+        return next(new ErrorHandler('Old password is incorrect',401))
+    }
+
+    //assign new password
+    user.password =req.body.password;
+    await user.save();
+    res.status(200).json({
+        success:true
+        
+   })
+
+    }
+
+)
+
+
+
+
+
+
+
+
+
+// Update Profile
+exports.UpdateProfile = catchAsyncError(async (req, res, next) => {
+    // Extract only the fields that are allowed to be updated
+    const allowedFields = ['name', 'email', 'phone', 'address', 'dateOfBirth', 'driversLicense'];
+
+    // Filter and construct the update object with the fields provided in the request body
+    const updates = Object.keys(req.body);
+    const isValidUpdate = updates.every((update) => allowedFields.includes(update));
+
+    // If there are invalid fields, return an error
+    if (!isValidUpdate) {
+        return res.status(400).json({ error: 'Invalid update fields.' });
+    }
+
+    // Prepare new data to update the user profile
+    const newUserData = {};
+
+    // Add valid fields to the update object
+    updates.forEach((update) => {
+        newUserData[update] = req.body[update];
+    });
+
+    // Check if email is being updated and whether it's already taken
+    if (req.body.email) {
+        const emailExists = await User.findOne({ email: req.body.email });
+        if (emailExists && emailExists._id.toString() !== req.user.id) {
+            return res.status(400).json({ error: 'Email is already in use by another account.' });
+        }
+    }
+
+    // Check if phone number is being updated and whether it's already taken
+    if (req.body.phone) {
+        const phoneExists = await User.findOne({ phone: req.body.phone });
+        if (phoneExists && phoneExists._id.toString() !== req.user.id) {
+            return res.status(400).json({ error: 'Phone number is already in use by another account.' });
+        }
+    }
+
+    // Update the user profile with new data
+    const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
+        new: true,
+        runValidators: true, // Ensure the validators are applied
+    });
+
+    // If user not found, return an error
+    if (!user) {
+        return res.status(404).json({ error: 'User not found.' });
+    }
+
+    // Return the updated user profile
+    res.status(200).json({
+        success: true,
+        user,
+    });
+});
