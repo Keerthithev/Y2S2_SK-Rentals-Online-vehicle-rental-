@@ -4,23 +4,14 @@ const ErrorHandler=require('../../utils/errorHandler')
 
 const crypto = require('crypto')
 
-// Admin: Get all users -/api/v1/admin/users
-exports.getAllUsers = catchAsyncError(async (req, res, next) => {
-  // Exclude the current admin and users with the 'admin' role
-  const users = await User.find({
-    _id: { $ne: req.user.id },  // Exclude the current admin by ID
-    role: { $ne: 'admin' },     // Exclude all users with the 'admin' role
-  });
-  
+//Admin: Get all users -/api/v1/admin/users
+exports.getAllUsers=catchAsyncError(async(req,res,next)=>{
+  const users = await  User.find();
   res.status(200).json({
-    success: true,
-    users,
-  });
-});
-
-
-
-
+    success:true,
+    users
+  })
+})
 
 
 

@@ -1,9 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require('validator');
-const bcrypt = require('bcryptjs');  // This is correct for bcryptjs
-
-
-
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 
@@ -21,7 +18,7 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: [true, 'Please enter password'],
-       // maxlength: [6, 'Password cannot exceed 6 characters'],
+        maxlength: [6, 'Password cannot exceed 6 characters'],
         select: false
     },
     phone: {
@@ -84,7 +81,6 @@ const userSchema = new mongoose.Schema({
         required: true,
         default: "user"
     },
-    
   // New fields for OTP
   resetPasswordOtp: {
     type: Number, // Store OTP as a number
@@ -92,7 +88,6 @@ const userSchema = new mongoose.Schema({
 resetPasswordOtpExpire: {
     type: Date, // Store OTP expiration time
 },
-
     createdAt: {
         type: Date,
         default: Date.now

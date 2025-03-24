@@ -7,7 +7,7 @@ const { resetPassword } = require('../../controllers/user_management/authControl
 const {isAuthenticatedUser}= require('../../middlewares/authenticate');
 const { getUserProfile } = require('../../controllers/user_management/authController');
 const { changePasswsword } = require('../../controllers/user_management/authController');
-const { UpdateProfile } = require('../../controllers/user_management/authController'); 
+const { UpdateProfile } = require('../../controllers/user_management/authController');
 const router=express.Router();
 
 router.route('/register').post(registerUser);

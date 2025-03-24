@@ -5,7 +5,7 @@ const {
     getUser,
     updateUser,
     deleteUser
- } = require('../../controllers/admin_managment/Admin_userController');
+ } = require('../../controllers/admin_fleet_managment/Admin_userController');
 
 
 const { isAuthenticatedUser, authorizeRoles } = require('../../middlewares/authenticate')

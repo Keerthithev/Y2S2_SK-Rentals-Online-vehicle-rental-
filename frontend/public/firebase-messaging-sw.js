@@ -7,10 +7,10 @@ const firebaseConfig = {
   apiKey: "AIzaSyB51FE0Mi5nKyP7n4SWKhg32LoTootgthI",
   authDomain: "sk-vehicle-rental.firebaseapp.com",
   projectId: "sk-vehicle-rental",
-  storageBucket: "sk-vehicle-rental.firebasestorage.app",
+  storageBucket: "sk-vehicle-rental.appspot.com",  // Corrected storage bucket
   messagingSenderId: "455591049001",
-  appId: "1:455591049001:web:8d1ac98447f495541b6938",
-  measurementId: "G-1C0NWNWLP0"
+  appId: "1:455591049001:web:7b29aac8c97205e31b6938",
+  measurementId: "G-ZJ5SX8EVYR"
 };
 
 // Initialize Firebase

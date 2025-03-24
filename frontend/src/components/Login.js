@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
- //import '../login.css';  // Import your CSS here
+import '../login.css';  // Import your CSS here
 import bgimg from '../images/bg.svg';
 // import wave from '../images/wave.png'
 import avatar from '../images/avatar.svg'
@@ -22,24 +22,12 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post("http://localhost:1111/api/v1/login", formData);
-      console.log("Login Response:", response.data); // Debugging: Check API response
-  
-      localStorage.setItem("token", response.data.token); // Save token
-  
-      // Check if the role exists and is 'admin'
-      if (response.data.user.role && response.data.user.role.toLowerCase() === "admin") {
-        console.log("Redirecting to Admin Dashboard");
-        navigate("/admindashboard"); // Redirect admin
-      } else {
-        console.log("Redirecting to Profile Page");
-        navigate("/profile"); // Redirect regular user
-      }
+      localStorage.setItem("token", response.data.token); // Save token to localStorage
+      navigate("/profile"); // Redirect to profile page after login
     } catch (err) {
-      console.error("Login Error:", err.response?.data || err.message);
-      setError(err.response?.data?.message || "Something went wrong!");
+      setError(err.response.data.message || "Something went wrong!");
     }
   };
-  
 
   useEffect(() => {
     // Select all input elements
