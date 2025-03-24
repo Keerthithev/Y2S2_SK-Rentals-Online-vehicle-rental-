@@ -2,7 +2,6 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
- 
   "dependencies": {
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
@@ -11,6 +10,7 @@
     "ajv": "^8.17.1",
     "axios": "^1.8.1",
     "firebase": "^9.23.0",
+    "jwt-decode": "^4.0.0",
     "later": "^1.2.0",
     "or": "^0.2.0",
     "react": "^19.0.0",

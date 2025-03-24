@@ -1,0 +1,96 @@
+/* User List Container */
+.user-list-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+}
+
+/* Table Styling */
+.user-list-table {
+  width: 80%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+thead {
+  background-color: #ff5722; /* Vehicle rental theme orange */
+  color: white;
+}
+
+th, td {
+  padding: 15px;
+  border: 1px solid #ddd; /* Light gray border */
+}
+
+th {
+  background-color: #f8f9fa;
+  font-weight: bold;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #fafafa; /* Light gray background for even rows */
+}
+
+tbody tr:hover {
+  background-color: #f1f1f1; /* Light gray hover effect */
+}
+
+/* Profile Header */
+.user-list-header {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Profile Buttons */
+.profile-buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.profile-buttons button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.profile-buttons button:hover {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.profile-buttons button.logout {
+  background-color: #f44336;
+}
+
+.profile-buttons button.edit {
+  background-color: #2196F3;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .user-list-table {
+      width: 100%;
+  }
+
+  th, td {
+      padding: 10px;
+      font-size: 0.9rem;
+  }
+
+  .user-list-header {
+      font-size: 1.5rem;
+  }
+}

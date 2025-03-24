@@ -9,14 +9,14 @@ const bcrypt = require('bcryptjs');
 // Register user API endpoint
 exports.registerUser = catchAsyncError(async (req, res, next) => {
     const { 
-      name, 
-      email, 
-      password, 
-      phone, 
-      address, 
-      dateOfBirth, 
-      driversLicense, 
-      isPhoneVerified 
+        name, 
+        email, 
+        password, 
+        phone, 
+        address, 
+        dateOfBirth, 
+        driversLicense, 
+        isPhoneVerified 
     } = req.body;
   
     // 1. Validate that all fields are provided
@@ -40,46 +40,51 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
     if (!isPhoneVerified) {
       return next(new ErrorHandler('Phone number not verified, registration failed', 400));
     }
-  
-    // 4. Hash the password before saving to database
-    const hashedPassword = await bcrypt.hash(password, 12);
-  
-    // 5. Create the new user in the database
+
+    // 4. Create the new user in the database with hashed password
     const user = await User.create({
       name,
       email,
-      password: hashedPassword, // Store hashed password
+      password,  // The password will be hashed by the middleware before saving
       phone,
       address,
       dateOfBirth,
       driversLicense,
       isPhoneVerified,
     });
-  
-    // 6. Send token and response (JWT or session-based)
-    sendToken(user, 201, res); // Assuming sendToken handles sending JWT token and response
-  });
+
+    // 5. Send the token and response (JWT or session-based)
+    sendToken(user, 201, res); // Assuming sendToken handles sending the JWT token and response
+});
 
 //login user -/api/v1/login
-exports.loginUser =catchAsyncError(async (req,res,next)=>{
-   const{email,password}= req.body
-   if(!email||!password){
-        return next(new ErrorHandler('Please Enter Email and Password',400))
-   }
+exports.loginUser = catchAsyncError(async (req, res, next) => {
+    const { email, password } = req.body;
 
-//finding user database
-   const user = await User.findOne({email}).select('+password');
-   if(!user){
-    return next(new ErrorHandler('Invalid Email or Password',401))
-   }
+    if (!email || !password) {
+        return next(new ErrorHandler('Please enter email & password', 400));
+    }
 
-   if(! await user.isValidPassword(password)){
-    return next(new ErrorHandler('Invalid Email or Password',401))
-   }
-   
-   sendToken(user,201,res);
-   
-})
+    // Finding the user in the database
+    const user = await User.findOne({ email }).select('+password');
+
+    if (!user) {
+        return next(new ErrorHandler('Invalid email or password', 401));
+    }
+
+    // Compare the entered password with the stored hashed password
+    const isPasswordValid = await user.isValidPassword(password);
+    
+    if (!isPasswordValid) {
+       
+        return next(new ErrorHandler('Invalid email or password', 401));
+    }
+
+    // Generate and send token if password is valid
+    sendToken(user, 201, res);
+});
+
+
 
 //logout -/api/v1/logout
 exports.logoutUser=(req,res,next)=>{
