@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "erental using mern ",
   "main": "server.js",
- 
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon backend/server.js",
@@ -24,6 +23,7 @@
     "firebase-admin": "^13.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.11.0",
+    "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.10.0",
     "twilio": "^5.4.5",
     "validator": "^13.12.0"

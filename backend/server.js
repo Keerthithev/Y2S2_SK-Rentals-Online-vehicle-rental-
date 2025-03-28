@@ -8,4 +8,3 @@ dotenv.config({path:path.join(__dirname,"config/config.env")})
 
 connectDatabase();
 app.listen(process.env.PORT,()=> {console.log(`Server listen to the part ${process.env.PORT} in ${process.env.NODE_ENV}`)})
-

@@ -12,15 +12,18 @@ import UpdateProfile from "./components/updateProfile";  // Import UpdateProfile
 import EnterOtp from "./components/EnterOtp";  // Import EnterOtp component
 import Header from './components/layouts/Header';
 import './Header.css'; 
-import VehicleList from './components/VehicleList';
+
 import VehicleForm from './components/VehicleForm';
+import VehicleListMain from './components/VehicleListMain';
+import AddMaintenance from './components/AddMaintenance';
+;
 
 
 function App() {
   return (
     
     <Router>
-      <Header/>
+      
       <main>
     
       </main>
@@ -33,6 +36,12 @@ function App() {
         <Route path="/logout" element={<Logout />} />
         <Route path="/EnterOtp" element={<EnterOtp />} />
         <Route path="/add-vehicle" element={<VehicleForm />} />
+        <Route path="/list" element={<VehicleListMain />} />
+        <Route path="/add" element={<AddMaintenance />} />
+      
+       
+    
+       
       </Routes>
     </Router>
   );

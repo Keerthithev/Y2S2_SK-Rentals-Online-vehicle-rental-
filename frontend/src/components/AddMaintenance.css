@@ -1,0 +1,95 @@
+/* Full-page background */
+.add-maintenance-page {
+  background-image: url('https://media.istockphoto.com/id/1347150429/photo/professional-mechanic-working-on-the-engine-of-the-car-in-the-garage.jpg?s=612x612&w=0&k=20&c=5zlDGgLNNaWsp_jq_L1AsGT85wrzpdl3kVH-75S-zTU='); 
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Dark overlay for better contrast */
+.add-maintenance-page::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+}
+
+/* Centered Form */
+.maintenance-form {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  z-index: 2;
+}
+
+/* Form Fields without labels */
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  border: 1px solid #F78B00;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #ddd;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #F78B00;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Buttons */
+button {
+  width: 100%;
+  padding: 15px;
+  background: #F78B00;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+button:hover {
+  background: #ED5506;
+  transform: translateY(-2px);
+}
+
+button[type="button"] {
+  background-color: #F78B00;
+  margin-top: 15px;
+}
+
+button[type="button"]:hover {
+  background-color: #ED5506;
+  transform: translateY(-2px);
+}
