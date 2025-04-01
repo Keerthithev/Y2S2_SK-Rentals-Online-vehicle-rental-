@@ -10,7 +10,7 @@ const app = express();
 // Cloudinary configuration
 cloudinary.config({
   cloud_name: 'dpcl7yv77', // Replace with your Cloudinary cloud name
-  api_key: 'y137132211156391', // Replace with your Cloudinary API key
+  api_key: '137132211156391', // Replace with your Cloudinary API key
   api_secret: 'XwcRiPhYuaEr-7Qhs_SH8QR7Odo', // Replace with your Cloudinary API secret
 });
 

@@ -1,9 +1,12 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Register = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const role = queryParams.get("role") || "user"; // Default to "user" if not provided
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -12,7 +15,8 @@ const Register = () => {
     address: "",
     dateOfBirth: "",
     driversLicense: "",
-    isPhoneVerified :true
+    isPhoneVerified: true,
+    role: role, // Set role from URL
   });
 
   const [error, setError] = useState("");
@@ -27,19 +31,24 @@ const Register = () => {
     e.preventDefault();
     setError("");
 
-    const response = await fetch("http://localhost:1111/api/v1/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
+    try {
+      const response = await fetch("http://localhost:1111/api/v1/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (!response.ok) {
-      setError(data.message || "Something went wrong");
-    } else {
-      alert("Registration successful! Please login.");
-      navigate("/login"); // Redirect to login page
+      if (!response.ok) {
+        setError(data.message || "Something went wrong");
+      } else {
+        alert("Registration successful! Please login.");
+        navigate("/login"); // Redirect to login page
+      }
+    } catch (error) {
+      setError("Failed to connect to server.");
+      console.error("Error:", error);
     }
   };
 
@@ -63,7 +72,7 @@ const Register = () => {
 
             <div className="mb-3">
               <label className="form-label">Password</label>
-              <input type="password" className="form-control" name="password"  onChange={handleChange} />
+              <input type="password" className="form-control" name="password" onChange={handleChange} />
             </div>
 
             <div className="mb-3">
@@ -86,7 +95,7 @@ const Register = () => {
               <input type="text" className="form-control" name="driversLicense" required pattern="[A-Z]{2}-\d{10}" placeholder="AB-1234567890" onChange={handleChange} />
             </div>
 
-            <button type="submit" className="btn btn-primary w-100">Register</button>
+            <button type="submit" className="btn btn-primary w-100">Register as {role}</button>
           </form>
         </div>
       </div>

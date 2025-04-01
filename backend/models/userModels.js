@@ -96,7 +96,20 @@ resetPasswordOtpExpire: {
     createdAt: {
         type: Date,
         default: Date.now
-    }
+    },
+    bannedUntil: {
+        type: Date,
+        default: null, // null if not banned
+    },
+    banReason: {
+        type: String,  // Field to store the ban reason
+        default: null,
+    },
+    unbanReason: { type: String, default: null },
+    blacklisted: {
+        type: Boolean,
+        default: false, // Initially, the user is not blacklisted
+    },
 });
 
 // Middleware for hashing password before saving

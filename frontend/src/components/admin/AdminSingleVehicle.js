@@ -119,6 +119,8 @@ const AdminSingleVehicle = () => {
               <p><strong>Available:</strong> {vehicle.availableStatus ? 'Yes' : 'No'}</p>
               <p><strong>Description:</strong> {vehicle.description}</p>
 
+
+
               <div className="button-group">
                 <button onClick={() => vehicle._id && navigate(`/editvehicle/${vehicle._id}`)} className="action-button">Edit</button>
                 <button onClick={() => deleteVehicle(vehicle._id)} className="action-button">Delete</button>

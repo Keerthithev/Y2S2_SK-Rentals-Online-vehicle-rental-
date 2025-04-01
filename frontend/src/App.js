@@ -21,6 +21,10 @@ import AdminAddVehicle from './components/admin/AdminAddvehicle';
 import AdminVehicleList from './components/admin/AdminVehicleList';
 import AdminEditVehicle from './components/admin/AdminEditVehicle';
 import AdminSingleVehicle from './components/admin/AdminSingleVehicle';
+import AdminBlacklistPage from './components/admin/AdminBlacklistPage'
+
+
+
 
 function App() {
   return (
@@ -48,6 +52,9 @@ function App() {
         <Route path="/editvehicle/:id" element={<AdminEditVehicle />} />
         <Route path="/admin/vehicle/:id" element={<AdminSingleVehicle />} /> {/* Updated route */}
 
+        <Route path="/adminblacklist" element={<AdminBlacklistPage />} /> {/* Updated route */}
+
+      
       </Routes>
     </Router>
   );
