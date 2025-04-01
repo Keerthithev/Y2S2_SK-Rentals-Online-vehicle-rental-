@@ -2,7 +2,6 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
- 
   "dependencies": {
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
@@ -11,6 +10,7 @@
     "ajv": "^8.17.1",
     "axios": "^1.8.1",
     "firebase": "^9.23.0",
+    "jwt-decode": "^4.0.0",
     "later": "^1.2.0",
     "or": "^0.2.0",
     "react": "^19.0.0",
@@ -22,10 +22,12 @@
     "redux": "^5.0.1",
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^3.1.0",
+    "sweetalert2": "^11.17.2",
     "web-vitals": "^2.1.4",
     "webpack": "^5.98.0",
     "webpack-cli": "^6.0.1",
-    "webpack-dev-server": "^5.2.0"
+    "webpack-dev-server": "^5.2.0",
+    "xlsx": "^0.18.5"
   },
   "scripts": {
     "start": "react-scripts start",

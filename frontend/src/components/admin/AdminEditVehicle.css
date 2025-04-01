@@ -1,0 +1,110 @@
+/* Edit Vehicle Page Styles */
+.edit-vehicle-container {
+    width: 80%;
+    margin: 30px auto;
+    padding: 30px;
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  .edit-vehicle-container h1 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  /* Input Fields */
+  .edit-vehicle-container input,
+  .edit-vehicle-container textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+  }
+  
+  .edit-vehicle-container input:focus,
+  .edit-vehicle-container textarea:focus {
+    border-color: #ED5506; /* Highlight with primary color */
+    outline: none;
+  }
+  
+  /* File Input Styles */
+  .edit-vehicle-container input[type="file"] {
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  /* Image Preview Styles */
+  .edit-vehicle-container img {
+    margin: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .edit-vehicle-container .error-message {
+    color: red;
+    font-size: 1rem;
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  /* Submit Button Styles */
+  .edit-vehicle-container button {
+    background-color: #ED5506; /* Primary Color */
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .edit-vehicle-container button:hover {
+    background-color: #F78B00; /* Secondary Hover Color */
+  }
+  
+  .edit-vehicle-container button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  /* Responsive Styles for Edit Vehicle Page */
+  @media (max-width: 768px) {
+    .edit-vehicle-container {
+      width: 90%;
+      padding: 20px;
+    }
+  
+    .edit-vehicle-container h1 {
+      font-size: 1.5rem;
+    }
+  
+    .edit-vehicle-container input,
+    .edit-vehicle-container textarea {
+      font-size: 14px;
+    }
+  }
+  .cancel-button {
+    background-color: #f44336; /* Red color */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .cancel-button:hover {
+    background-color: #d32f2f; /* Darker red on hover */
+  }
+  

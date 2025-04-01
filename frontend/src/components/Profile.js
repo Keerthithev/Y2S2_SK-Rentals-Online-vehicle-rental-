@@ -32,13 +32,28 @@ const Profile = () => {
     navigate("/update");
   };
 
+  const handleRaiseComplaint = () => {
+    navigate("/complaintform");
+  };
+
+  const handleViewComplaints = () => {
+    navigate("/complaintlist"); // Navigate to the complaint list page
+  };
+
+  const handleViewAllComplaints = () => {
+    navigate("/allcomplaints"); // Navigate to the all complaints page (for staff)
+  };
+
+  const handleAdminDashboard = () => {
+    navigate("/admin-dashboard"); // Navigate to the admin dashboard if the user is an admin
+  };
+
   return (
     <div>
       <h2>Profile</h2>
       {error && <div>{error}</div>}
       {user ? (
         <div>
-          
           <p><strong>Name:</strong> {user.name}</p>
           <p><strong>Email:</strong> {user.email}</p>
           <p><strong>Phone:</strong> {user.phone}</p>
@@ -46,7 +61,19 @@ const Profile = () => {
           <p><strong>Date of Birth:</strong> {user.dateOfBirth}</p>
           <p><strong>Driver's License:</strong> {user.driversLicense}</p>
           <button onClick={handleLogout}>Logout</button>
-          <button onClick={handleEditProfile}>Edit Profile</button> {/* Edit Button */}
+          <button onClick={handleEditProfile}>Edit Profile</button>
+
+          {/* Conditionally render buttons based on user role */}
+          {user.role === "user" ? (
+            <>
+              <button onClick={handleRaiseComplaint}>Raise Complaint</button>
+              <button onClick={handleViewComplaints}>My Complaints</button>
+            </>
+          ) : user.role === "admin" ? (
+            <button onClick={handleAdminDashboard}>Admin Dashboard</button> // Button for admin users
+          ) : (
+            <button onClick={handleViewAllComplaints}>All Complaints</button> // Navigate to all complaints page for staff
+          )}
         </div>
       ) : (
         <p>Loading profile...</p>

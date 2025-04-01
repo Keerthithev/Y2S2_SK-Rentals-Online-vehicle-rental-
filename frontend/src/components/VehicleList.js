@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../VehicleList.css'
 import { useNavigate } from 'react-router-dom';
 const VehicleList = () => {
   const [vehicles, setVehicles] = useState([]);
