@@ -16,11 +16,13 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
         address, 
         dateOfBirth, 
         driversLicense, 
-        isPhoneVerified 
+        isPhoneVerified,
+        role // Added role to be received from the request
     } = req.body;
-  
+    console.log(req.body); // Log the request body to check if the role is coming correctly
+
     // 1. Validate that all fields are provided
-    if (!name || !email || !password || !phone || !address || !dateOfBirth || !driversLicense) {
+    if (!name || !email || !password || !phone || !address || !dateOfBirth || !driversLicense || !role) {
       return next(new ErrorHandler('Please provide all required fields.', 400));
     }
   
@@ -41,7 +43,12 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
       return next(new ErrorHandler('Phone number not verified, registration failed', 400));
     }
 
-    // 4. Create the new user in the database with hashed password
+    // 4. Ensure the role is either 'user' or 'staff' (you can extend this logic)
+    if (!['user', 'staff'].includes(role)) {
+      return next(new ErrorHandler('Invalid role specified. Must be "user" or "staff".', 400));
+    }
+
+    // 5. Create the new user in the database with hashed password and the role
     const user = await User.create({
       name,
       email,
@@ -51,11 +58,14 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
       dateOfBirth,
       driversLicense,
       isPhoneVerified,
+      role // Set the role here
     });
+    console.log(user); // Log the request body to check if the role is coming correctly
 
-    // 5. Send the token and response (JWT or session-based)
+    // 6. Send the token and response (JWT or session-based)
     sendToken(user, 201, res); // Assuming sendToken handles sending the JWT token and response
 });
+
 
 //login user -/api/v1/login
 exports.loginUser = catchAsyncError(async (req, res, next) => {
@@ -67,7 +77,17 @@ exports.loginUser = catchAsyncError(async (req, res, next) => {
 
     // Finding the user in the database
     const user = await User.findOne({ email }).select('+password');
-
+    if (user.bannedUntil) {
+        const bannedUntilDate = new Date(user.bannedUntil);
+        const currentDate = new Date();
+    
+        // Ensure both dates are in UTC and compare them
+        if (bannedUntilDate > currentDate) {
+            console.log("User is banned until:", bannedUntilDate);
+            return next(new ErrorHandler('Your account is banned for 30 days temporary. Please contact support.', 403));
+        }
+    }
+    
     if (!user) {
         return next(new ErrorHandler('Invalid email or password', 401));
     }

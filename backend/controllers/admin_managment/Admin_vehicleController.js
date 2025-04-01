@@ -261,6 +261,8 @@ exports.updateVehicle = catchAsyncError(async (req, res, next) => {
             for (let i = 0; i < req.body.images.length; i++) {
                 try {
                     console.log(`Uploading image ${i + 1}...`);
+                    console.log("Uploading Image: ", req.body.images[i]);
+
                     const result = await cloudinary.uploader.upload(req.body.images[i], { folder: 'vehicles' });
                     uploadedImages.push({
                         url: result.secure_url,

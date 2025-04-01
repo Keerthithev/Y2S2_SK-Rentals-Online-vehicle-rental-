@@ -64,7 +64,7 @@ const Header = () => {
         </Link>
     </li>
     <li>
-        <Link to="/blacklist">
+        <Link to="/adminblacklist">
             <div className="icon-container">
                 <i className="fas fa-ban"></i>
             </div>

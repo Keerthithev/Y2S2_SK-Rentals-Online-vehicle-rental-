@@ -15,7 +15,7 @@ dotenv.config({ path: path.join(__dirname, "config/config.env") });
 // Enable CORS for frontend on localhost:2222
 const corsOptions = {
   origin: "http://localhost:2222", // Frontend URL
-  methods: "GET,POST,PUT,DELETE",
+  methods: "GET,POST,PUT,DELETE,PATCH",
   credentials: true, // Allow cookies if needed
 };
 

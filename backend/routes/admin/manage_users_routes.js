@@ -4,7 +4,7 @@ const {
     getAllUsers,
     getUser,
     updateUser,
-    deleteUser
+    deleteUser,toggleBanUser,getBlacklistedUsers,inviteStaff
  } = require('../../controllers/admin_managment/Admin_userController');
 
 
@@ -18,5 +18,13 @@ router.route('/admin/user/:id').get(isAuthenticatedUser,authorizeRoles('admin'),
                                 .put(isAuthenticatedUser,authorizeRoles('admin'), updateUser)
                                 .delete(isAuthenticatedUser,authorizeRoles('admin'), deleteUser);
 
-                                
+                                router.route('/admin/user/ban/:id')
+    .put(isAuthenticatedUser, authorizeRoles('admin'), toggleBanUser);
+
+    // Admin: Get all blacklisted users
+router.get('/admin/blacklist', getBlacklistedUsers);
+
+
+router.post('/admin/staff/invite', inviteStaff);
+
 module.exports = router;

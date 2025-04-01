@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
- //import '../login.css';  // Import your CSS here
+ import '../login.css';  // Import your CSS here
 import bgimg from '../images/bg.svg';
 // import wave from '../images/wave.png'
 import avatar from '../images/avatar.svg'
@@ -23,7 +23,11 @@ const Login = () => {
     try {
       const response = await axios.post("http://localhost:1111/api/v1/login", formData);
       console.log("Login Response:", response.data); // Debugging: Check API response
-  
+  // Check if login failed due to ban
+  if (response.data.success === false || response.data.message === 'Your account is banned for 30 days temporary. Please contact support.') {
+    setError('Your account is banned for 30 days temperory. Please contact support.');
+    return; // Prevent login
+}
       localStorage.setItem("token", response.data.token); // Save token
   
       // Check if the role exists and is 'admin'
