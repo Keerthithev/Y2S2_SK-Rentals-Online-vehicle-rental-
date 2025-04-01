@@ -1,0 +1,178 @@
+/* 🌟 Gold-Themed Professional Dashboard */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #1e1e1e;
+    color: #fff;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.complaint-dashboard {
+    width: 90%;
+    max-width: 1200px;
+    background: linear-gradient(135deg, #b8860b, #ffd700);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0px 0px 15px rgba(255, 215, 0, 0.5);
+}
+
+.dashboard-header h2 {
+    text-align: center;
+    color: #000;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* 🌟 Table Styling */
+.table-container {
+    overflow-x: auto;
+}
+
+.complaint-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    color: #333;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 5px 15px rgba(255, 215, 0, 0.3);
+}
+
+.complaint-table th, .complaint-table td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.complaint-table th {
+    background-color: #b8860b;
+    color: white;
+    font-weight: bold;
+}
+
+.complaint-table tr:hover {
+    background-color: rgba(255, 215, 0, 0.2);
+}
+
+/* 🌟 Status Badges */
+.status {
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.status.pending {
+    background: #ffcc00;
+    color: #000;
+}
+
+.status.resolved {
+    background: #4caf50;
+    color: white;
+}
+
+.status.rejected {
+    background: #f44336;
+    color: white;
+}
+
+/* 🌟 Responsive Design */
+@media (max-width: 768px) {
+    .complaint-dashboard {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .complaint-table th, .complaint-table td {
+        padding: 10px;
+        font-size: 14px;
+    }
+}
+
+/* 🌟 Loading & Error Messages */
+.loading, .error, .no-complaints {
+    text-align: center;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
+}
+
+/* Update Section - Dark Background */
+.update-section {
+    margin-top: 30px;
+    padding: 20px;
+    background: #333; /* Changed from white to dark */
+    border-radius: 8px;
+    box-shadow: 0px 2px 6px rgba(255, 215, 0, 0.3);
+    width: 100%;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.update-section h3 {
+    color: #ffd700;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.update-section p {
+    margin: 5px 0;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.update-section textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    border: 1px solid #666;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-size: 14px;
+    resize: vertical;
+    background: #222; /* Dark background */
+    color: white;
+}
+
+.update-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background: #4caf50;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.update-btn:hover {
+    background: #388e3c;
+}
+
+.update-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    opacity: 0.7;
+}

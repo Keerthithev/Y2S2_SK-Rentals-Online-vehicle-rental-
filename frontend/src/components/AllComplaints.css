@@ -1,0 +1,208 @@
+/* Global Styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #181818; /* Dark background */
+  color: #e0e0e0; /* Light text color */
+  margin: 0;
+  padding: 0;
+}
+
+/* Heading Style */
+.complaints-heading {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #f1f1f1;
+  text-align: center;
+  margin: 30px 0;
+  padding: 10px;
+  background-color: #333; /* Darker background for heading */
+  border-radius: 5px;
+}
+
+/* Loading, Error, and Status Message */
+.loading-message,
+.error-message,
+.status-update,
+.no-complaints {
+  text-align: center;
+  font-size: 1.1rem;
+  margin-top: 20px;
+  padding: 10px;
+}
+
+.loading-message {
+  color: #007bff;
+}
+
+.error-message {
+  color: #dc3545;
+}
+
+.status-update {
+  color: #28a745;
+}
+
+.no-complaints {
+  color: #6c757d;
+}
+
+/* Table Styling */
+.complaints-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 30px;
+  background-color: #222; /* Dark background for table */
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.complaints-table th,
+.complaints-table td {
+  padding: 12px 20px;
+  border: 1px solid #444; /* Lighter borders */
+  text-align: left;
+  font-size: 1rem;
+}
+
+.complaints-table th {
+  background-color: #333; /* Dark background for header */
+  color: #f1f1f1;
+  font-weight: 600;
+}
+
+.complaints-table td {
+  background-color: #222;
+  color: #f1f1f1; /* Light text for cells */
+}
+
+.complaints-table tr:nth-child(even) td {
+  background-color: #2b2b2b;
+}
+
+/* Hover effect for table rows */
+.complaints-table tr:hover td {
+  background-color: #444;
+  cursor: pointer;
+}
+
+/* Reply Section Styling */
+.reply-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.reply-input {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #555; /* Lighter border */
+  border-radius: 5px;
+  margin-bottom: 10px;
+  background-color: #333; /* Dark background */
+  color: #e0e0e0; /* Light text */
+  resize: vertical;
+}
+
+.reply-button {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.reply-button:hover {
+  background-color: #218838;
+}
+
+/* General Button Styling */
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease-in-out;
+  margin: 5px 0;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Logout Button */
+.logout-button {
+  background-color: #dc3545;
+  margin-top: 20px;
+}
+
+.logout-button:hover {
+  background-color: #b02a37;
+}
+
+/* Export Button */
+.export-button {
+  background-color: #ffc107;
+  color: black;
+  font-weight: bold;
+  margin: 20px 0;
+}
+
+.export-button:hover {
+  background-color: #e0a800;
+  color: white;
+  transition: background-color 0.3s;
+}
+
+/* Styling for Tables and Forms */
+table {
+  border-spacing: 0;
+}
+
+th, td {
+  font-size: 1rem;
+  padding: 12px 16px;
+  text-align: left;
+}
+
+th {
+  background-color: #333;
+  color: white;
+  font-weight: bold;
+}
+
+td {
+  background-color: #444;
+  color: #f1f1f1;
+}
+
+/* Overall Layout */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .complaints-table th,
+  .complaints-table td {
+    font-size: 0.9rem;
+    padding: 10px 12px;
+  }
+
+  .reply-input {
+    padding: 10px;
+  }
+
+  button {
+    font-size: 0.9rem;
+    padding: 8px 16px;
+  }
+}
