@@ -14,9 +14,12 @@ import Header from './components/layouts/Header';
 import './Header.css'; 
 
 import VehicleForm from './components/VehicleForm';
-import VehicleListMain from './components/VehicleListMain';
-import AddMaintenance from './components/AddMaintenance';
-;
+import VehicleListMain from "./components/VehicleListMain";
+import AddMaintenance from "./components/AddMaintenance";
+import ReminderPage from "./components/ReminderPage";
+
+
+
 
 
 function App() {
@@ -38,10 +41,7 @@ function App() {
         <Route path="/add-vehicle" element={<VehicleForm />} />
         <Route path="/list" element={<VehicleListMain />} />
         <Route path="/add" element={<AddMaintenance />} />
-      
-       
-    
-       
+        <Route path="/reminder" element={<ReminderPage />} />
       </Routes>
     </Router>
   );

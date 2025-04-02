@@ -6,7 +6,8 @@ const maintenanceSchema = new mongoose.Schema({
   type: { type: String, required: true },
   description: { type: String, required: true },
   cost: { type: Number, required: true },
-//   file: { type: String } // File upload URL
+//   file: { type: String } 
+//status: { type: String, enum: ["Pending", "Done"], default: "Pending" }
 });
 
 module.exports = mongoose.model("Maintenance", maintenanceSchema);

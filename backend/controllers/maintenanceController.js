@@ -1,5 +1,6 @@
 const Maintenance = require('../models/maintenance');
 
+
 // Get all maintenance records
 exports.getAllMaintenance = async (req, res) => {
   try {
@@ -9,6 +10,8 @@ exports.getAllMaintenance = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+
 // Add new maintenance record
 exports.addMaintenance = async (req, res) => {
     try {
@@ -37,6 +40,8 @@ exports.addMaintenance = async (req, res) => {
   };
   
  
+
+
 // Delete a record
 exports.deleteMaintenance = async (req, res) => {
   try {
@@ -52,8 +57,7 @@ exports.deleteMaintenance = async (req, res) => {
 
 
 
-
-
+//update the record
 exports.editMaintenance = async (req, res) => {
   try {
     const { vehicleId, date, type, description, cost } = req.body;
@@ -81,4 +85,50 @@ exports.editMaintenance = async (req, res) => {
     console.error("Error updating record:", error);
     res.status(500).json({ error: error.message });
   }
+
 };
+
+// Permanently delete a reminder from the database
+// exports.deleteReminder = async (req, res) => {
+//   try {
+//     console.log("Received request to delete ID:", req.params.id);
+
+//     const record = await Maintenance.findByIdAndDelete(req.params.id);
+    
+//     if (!record) {
+//       console.log("Reminder not found");
+//       return res.status(404).json({ error: "Reminder not found" });
+//     }
+
+//     console.log("Reminder deleted successfully:", record);
+//     res.json({ message: "Reminder deleted permanently" });
+
+//   } catch (error) {
+//     console.error("Error deleting reminder:", error);
+//     res.status(500).json({ error: error.message });
+//   }
+// };
+
+
+
+// exports.markAsDone = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+
+//     // Find and update the maintenance record's status
+//     const updatedMaintenance = await Maintenance.findByIdAndUpdate(
+//       id,
+//       { status: "Done" },
+//       { new: true }
+//     );
+
+//     if (!updatedMaintenance) {
+//       return res.status(404).json({ error: "Maintenance record not found" });
+//     }
+
+//     res.status(200).json({ message: "Maintenance marked as Done", data: updatedMaintenance });
+//   } catch (error) {
+//     console.error("Error updating maintenance status:", error);
+//     res.status(500).json({ error: error.message });
+//   }
+// };

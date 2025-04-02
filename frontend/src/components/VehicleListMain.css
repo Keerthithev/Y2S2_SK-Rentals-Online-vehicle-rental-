@@ -27,6 +27,8 @@ body {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  flex: 1;
+  margin-top: 5cm;  
 }
 
 /* Top Section (Search & Button) */
@@ -41,12 +43,17 @@ body {
 
 /* Search Bar */
 .search-container {
-  flex: 1;
   display: flex;
-  background-color: #222;
-  padding: 10px;
-  border-radius: 6px;
-  width: 100%;
+  gap: 10px;
+  margin-bottom: 20px;
+  margin-top: 50px; /* Push search bar down */
+}
+
+.search-container input,
+.search-container select {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
 /* Add Button */
@@ -68,26 +75,22 @@ body {
 /* Improved Notification Box */
 .notification-box {
   background-color: #222; /* Slightly lighter than background */
-  padding: 15px;
+  padding: 25px; /* Increased padding for a larger box */
   border-radius: 8px;
   margin-bottom: 20px;
   width: 100%;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  max-width: 800px; /* Max width for better appearance */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* More intense shadow for emphasis */
   border-left: 5px solid #f39c12; /* Gold highlight border */
+  flex-grow: 1; /* Allows it to grow and take more space */
+  height: auto; /* Ensure height adjusts based on content */
 }
 
 /* Notification Title */
 .notification-box h3 {
   color: #f39c12; /* Gold text color */
-  margin-bottom: 12px;
-  font-size: 1.2rem;
-}
-
-/* Notification List */
-.notification-box ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  margin-bottom: 15px; /* Increased margin for spacing */
+  font-size: 1.5rem; /* Larger title font */
 }
 
 /* Notification Items */
@@ -95,11 +98,11 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 12px;
+  padding: 15px 20px; /* Increased padding */
   background-color: #333;
   border-radius: 6px;
-  margin-bottom: 6px;
-  font-size: 0.95rem;
+  margin-bottom: 8px; /* Increased margin for spacing */
+  font-size: 1rem; /* Larger font size for readability */
 }
 
 /* Close Button (Done Button) */
@@ -143,7 +146,7 @@ body {
 
 /* Edit Button Styling */
 .edit-btn {
-  background-color: #f39c12; /* Gold button background */
+  background-color: #2ecc71; /* Green background */
   border: none;
   color: white;
   padding: 8px 16px;
@@ -153,11 +156,14 @@ body {
   transition: background 0.3s ease, transform 0.3s ease;
   text-align: center;
   display: inline-block;
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Space between the emoji and text */
 }
 
 /* Hover Effect for Edit Button */
 .edit-btn:hover {
-  background-color: #e67e22; /* Darker gold on hover */
+  background-color: #27ae60; /* Darker green on hover */
   transform: scale(1.05); /* Slight scaling effect */
 }
 
@@ -173,6 +179,9 @@ body {
   transition: background 0.3s ease, transform 0.3s ease;
   text-align: center;
   display: inline-block;
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Space between the emoji and text */
 }
 
 /* Hover Effect for Delete Button */
@@ -228,18 +237,220 @@ body {
     max-width: 100%;
   }
 }
-.edit-btn, .save-btn, .cancel-btn {
-  padding: 5px 10px;
-  margin: 5px;
+
+
+/* Header and Navigation Bar Styles */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  padding: 20px;
+  color: white;
+}
+
+.header .logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.navbar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.navbar ul li {
+  margin: 0 20px;
+  font-size: 18px;
   cursor: pointer;
 }
 
-.save-btn {
-  background-color: green;
-  color: white;
+.navbar ul li:hover {
+  text-decoration: underline;
 }
 
-.cancel-btn {
-  background-color: red;
-  color: white;
+.navbar ul li.active {
+  font-weight: bold;
+  text-decoration: underline;
 }
+
+/* Add this to your VehicleListMain.css file */
+
+/* Blinking effect */
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Logo styles */
+.logo {
+  font-size: 2rem;
+  color: #F78B00; /* Set the color to #F78B00 */
+  font-weight: bold;
+  animation: blink 1s infinite; /* Apply the blinking effect */
+}
+
+/* Styles for the navigation bar */
+/* Add to .navbar to make it sticky at the top */
+.navbar {
+  position: sticky;
+  top: 0;
+  background-color: #333;
+  z-index: 10; /* Ensures navbar is always on top */
+}
+
+/* Add styles for logout button */
+.logout-btn {
+  background-color: #e74c3c; /* Red color for logout */
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: background 0.3s ease, transform 0.3s ease;
+  text-align: center;
+  display: inline-block;
+  margin-left: 20px;
+}
+
+.logout-btn:hover {
+  background-color: #c0392b; /* Darker red on hover */
+  transform: scale(1.05); /* Slight scaling effect */
+}
+
+
+.navbar ul {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navbar li {
+  cursor: pointer;
+  padding: 10px 20px;
+  transition: color 0.3s;
+}
+
+.navbar li:hover {
+  color: #ED5506; /* Color on hover */
+}
+
+/* Active navigation link color */
+.navbar .active {
+  color: #ED5506; /* Active page color */
+}
+/* Save Button Styling */
+.save-btn {
+  background-color: #3498db; /* Blue background */
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: background 0.3s ease, transform 0.3s ease;
+  text-align: center;
+  display: inline-block;
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Space between the emoji and text */
+}
+
+/* Hover Effect for Save Button */
+.save-btn:hover {
+  background-color: #2ecc71; /* Darker blue on hover */
+  transform: scale(1.05); /* Slight scaling effect */
+}
+/* Search Bar */
+.search-container {
+  flex: 1;
+  display: flex;
+  background-color: #222;
+  padding: 10px;
+  border-radius: 6px;
+  width: 100%;
+}
+@media screen and (max-width: 768px) {
+  .search-container {
+    width: 100%;
+  }
+}
+/* Search Bar */
+.search-container {
+  flex: 1;
+  display: flex;
+  background-color: #222;
+  padding: 10px;
+  border-radius: 6px;
+  width: 100%;
+  max-width: 1200px;
+  margin-top: 3cm;  
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.search-input::placeholder {
+  color: #aaa;
+}
+/* Logout Button */
+.logout-btn {
+  background-color: #e74c3c;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  width: 100px;
+}
+
+.logout-btn:hover {
+  background-color: #c0392b;
+  transform: scale(1.05);
+}
+
+/* Generate Report Button */
+.generate-report-container {
+  display: flex;
+  justify-content: flex-end; /* Align to right */
+  margin-top: 10px;
+  margin-right: 10px;
+}
+
+.generate-report-btn {
+  padding: 6px 10px; /* Reduce padding */
+  font-size: 16px; /* Keep text readable */
+  min-width: 100px; /* Adjust as needed */
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+
+.generate-report-btn:hover {
+  background-color: #2980b9; /* Darker blue on hover */
+  transform: scale(1.05);
+}
+
