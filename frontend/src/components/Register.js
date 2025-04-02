@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-
+import "./register.css"; 
 const Register = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -53,53 +53,52 @@ const Register = () => {
   };
 
   return (
-    <div className="container mt-5">
-      <div className="row justify-content-center">
-        <div className="col-md-6">
-          <h2 className="text-center mb-4">Register for Vehicle Rental</h2>
-          {error && <div className="alert alert-danger">{error}</div>}
-
-          <form onSubmit={handleSubmit} className="border p-4 rounded shadow">
-            <div className="mb-3">
-              <label className="form-label">Full Name</label>
-              <input type="text" className="form-control" name="name" required onChange={handleChange} />
-            </div>
-
-            <div className="mb-3">
-              <label className="form-label">Email</label>
-              <input type="email" className="form-control" name="email" required onChange={handleChange} />
-            </div>
-
-            <div className="mb-3">
-              <label className="form-label">Password</label>
-              <input type="password" className="form-control" name="password" onChange={handleChange} />
-            </div>
-
-            <div className="mb-3">
-              <label className="form-label">Phone Number</label>
-              <input type="text" className="form-control" name="phone" required pattern="[0-9]{10}" onChange={handleChange} />
-            </div>
-
-            <div className="mb-3">
-              <label className="form-label">Address</label>
-              <input type="text" className="form-control" name="address" required onChange={handleChange} />
-            </div>
-
-            <div className="mb-3">
-              <label className="form-label">Date of Birth</label>
-              <input type="date" className="form-control" name="dateOfBirth" required onChange={handleChange} />
-            </div>
-
-            <div className="mb-3">
-              <label className="form-label">Driver's License</label>
-              <input type="text" className="form-control" name="driversLicense" required pattern="[A-Z]{2}-\d{10}" placeholder="AB-1234567890" onChange={handleChange} />
-            </div>
-
-            <button type="submit" className="btn btn-primary w-100">Register as {role}</button>
-          </form>
+    <div class="container2">
+    <div class="form-wrapper">
+      <h2 class="title">Register for Vehicle Rental</h2>
+      {error && <div class="alert error">{error}</div>}
+  
+      <form onSubmit={handleSubmit} class="form-container">
+        <div class="form-group">
+          <label id="l" for="name">Full Name</label>
+          <input type="text" id="name" name="name" class="form-input" required onChange={handleChange} />
         </div>
-      </div>
+  
+        <div class="form-group">
+          <label id="l" for="email">Email</label>
+          <input type="email" id="email" name="email" class="form-input" required onChange={handleChange} />
+        </div>
+  
+        <div class="form-group">
+          <label id="l" for="password">Password</label>
+          <input type="password" id="password" name="password" class="form-input" onChange={handleChange} />
+        </div>
+  
+        <div class="form-group">
+          <label id="l" for="phone">Phone Number</label>
+          <input type="text" id="phone" name="phone" class="form-input" required pattern="[0-9]{10}" onChange={handleChange} />
+        </div>
+  
+        <div class="form-group">
+          <label id="l" for="address">Address</label>
+          <input type="text" id="address" name="address" class="form-input" required onChange={handleChange} />
+        </div>
+  
+        <div class="form-group">
+          <label id="l" for="dateOfBirth">Date of Birth</label>
+          <input type="date" id="dateOfBirth" name="dateOfBirth" class="form-input" required onChange={handleChange} />
+        </div>
+  
+        <div class="form-group">
+          <label id="l" for="driversLicense">Driver's License</label>
+          <input type="text" id="driversLicense" name="driversLicense" class="form-input" required pattern="[A-Z]{2}-\d{10}" placeholder="AB-1234567890" onChange={handleChange} />
+        </div>
+  
+        <button type="submit" class="submit-btn">Register as {role}</button>
+      </form>
     </div>
+  </div>
+  
   );
 };
 

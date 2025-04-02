@@ -1,0 +1,28 @@
+
+/* Basic styling for the footer */
+.footer {
+    background-color: #FFBF00; /* Dark background for the footer */
+    color: white; /* White text for contrast */
+    text-align: center; /* Center the text */
+    padding: 20px 0; /* Top and bottom padding */
+    width: 100%; /* Ensure it spans the full width */
+    position: relative; /* Keeps the footer in place */
+    bottom: 0;
+  }
+  
+  /* Optional: Add a border at the top of the footer for visual separation */
+  .footer p {
+    font-size: 14px; /* Smaller text size */
+    margin: 0; /* Remove default margin */
+  }
+  
+  /* Ensure responsiveness on smaller screens */
+  @media (max-width: 768px) {
+    .footer {
+      padding: 15px 0; /* Slightly reduce padding on small screens */
+    }
+  
+    .footer p {
+      font-size: 12px; /* Make text smaller on smaller screens */
+    }
+  } 

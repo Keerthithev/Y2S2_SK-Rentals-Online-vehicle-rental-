@@ -1,0 +1,140 @@
+.user-vehicle-list {
+  text-align: center;
+  padding: 20px;
+}
+
+.search-bar {
+  width: 50%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 2px solid #f4c430; 
+  border-radius: 20px;
+  font-size: 16px;
+  margin-top: 50px;
+}
+
+.loading-message {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.error-message {
+  color: red;
+  font-weight: bold;
+}
+
+.vehicle-grid {
+  margin-top: 120px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  padding: 20px;
+  justify-content: center;
+}
+
+.vehicle-card {
+  cursor: pointer;
+  background: white;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.3s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  max-width: 220px;
+}
+
+.vehicle-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.vehicle-image {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.vehicle-card h3 {
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+.vehicle-price {
+  font-size: 14px;
+  font-weight: bold;
+  color: #2a9d8f;
+}
+
+.vehicle-status {
+  font-size: 13px;
+  font-weight: bold;
+  padding: 5px;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+.available {
+  color: green;
+  background: #e7f9e7;
+}
+
+.unavailable {
+  color: red;
+  background: #f9e7e7;
+}
+.search-container {
+  display: flex;
+  justify-content: space-around;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.search-input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 18%;
+  font-size: 14px;
+}
+
+.vehicle-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.vehicle-card {
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.vehicle-card:hover {
+  transform: scale(1.05);
+}
+
+.vehicle-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.vehicle-status {
+  font-weight: bold;
+  padding: 5px;
+}
+
+.vehicle-status.available {
+  color: green;
+}
+
+.vehicle-status.unavailable {
+  color: red;
+}

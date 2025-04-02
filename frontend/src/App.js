@@ -11,9 +11,15 @@ import ForgotPassword from "./components/ForgotPassword";  // Import ForgotPassw
 import Profile from "./components/Profile";  // Import Profile component
 import UpdateProfile from "./components/updateProfile";  // Import UpdateProfile component
 import EnterOtp from "./components/EnterOtp";  // Import EnterOtp component
+import Hedaer from "./components/layouts/Header.js";
+
+import Bookings from './components/user/Bookings'; 
+
+import Top from './components/layouts/Top';
+import VehicleList from './components/VehicleList';
 
 import './Header.css'; 
-import VehicleList from './components/VehicleList';
+
 
 import AdminUserList from './components/admin/AdminUserList';
 import AdminDashboard from './components/admin/AdminDashboard';
@@ -24,7 +30,9 @@ import AdminSingleVehicle from './components/admin/AdminSingleVehicle';
 import AdminBlacklistPage from './components/admin/AdminBlacklistPage'
 
 
-
+import UserVehicleList from './components/user/UserVehicleList';
+import UserSingleVehicleList from './components/user/UserSinglevehicleList';
+import VehicleFilter from './components/user/VehicleFilter';
 
 function App() {
   return (
@@ -32,6 +40,9 @@ function App() {
     <Router>
      
       <main>
+        
+      
+        {/* <Hedaer /> */}
     
       </main>
       <Routes>
@@ -44,6 +55,7 @@ function App() {
         <Route path="/EnterOtp" element={<EnterOtp />} />
        
         <Route path="/vehiclelist" element={<VehicleList />} />
+        <Route path="/bookings" element={<Bookings />} />  {/* Bookings page route */}
 
         <Route path="/adminuserlist" element={<AdminUserList />} />
         <Route path="/admindashboard" element={<AdminDashboard />} />
@@ -54,6 +66,10 @@ function App() {
 
         <Route path="/adminblacklist" element={<AdminBlacklistPage />} /> {/* Updated route */}
 
+
+        <Route path="/uservehiclelist" element={<UserVehicleList />} />
+        <Route path="/vehicle/:id" element={<UserSingleVehicleList />} />
+        <Route path="/vehiclefilter" element={<VehicleFilter />} />
       
       </Routes>
     </Router>

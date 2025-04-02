@@ -12,6 +12,10 @@ const multer = require('multer');
 const vehicleController = require('./controllers/admin_managment/Admin_vehicleController');
 dotenv.config({ path: path.join(__dirname, "config/config.env") });
 
+
+const managevehiclesforusers = require('./routes/usermanagement/uservehiclelist');
+
+
 // Enable CORS for frontend on localhost:2222
 const corsOptions = {
   origin: "http://localhost:2222", // Frontend URL
@@ -39,6 +43,13 @@ app.use('/api/v1/', managevehicles);
 
 // Apply error handling middleware
 app.use(errorMiddleware);
+
+
+
+
+app.use('/api/v1/', managevehicles);
+app.use('/api/v1/', managevehiclesforusers);
+
 
 module.exports = app;  // Export the app to be used in server.js
 

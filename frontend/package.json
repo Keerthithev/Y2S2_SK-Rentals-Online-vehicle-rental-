@@ -12,6 +12,7 @@
     "firebase": "^9.23.0",
     "jwt-decode": "^4.0.0",
     "later": "^1.2.0",
+    "lucide-react": "^0.486.0",
     "or": "^0.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

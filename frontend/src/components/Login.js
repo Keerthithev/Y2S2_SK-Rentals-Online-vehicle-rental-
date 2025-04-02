@@ -5,6 +5,12 @@ import { useNavigate, Link } from "react-router-dom";
 import bgimg from '../images/bg.svg';
 // import wave from '../images/wave.png'
 import avatar from '../images/avatar.svg'
+
+import skbg from '../images/skbg.png'
+import th from '../images/th.jpg'
+
+
+
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -79,13 +85,13 @@ const Login = () => {
   }, []);
 
   return (
-    <div className="container">
+    <div id="bglogin" className="container">
       <div className="img">
-        <img src={bgimg} alt="login illustration" />
+        <img src={skbg} alt="login illustration" />
       </div>
 
       <div className="login-content">
-        <img src={avatar} alt="logo" />
+        <img src={th} alt="logo" />
        
         {error && <div>{error}</div>}
         
