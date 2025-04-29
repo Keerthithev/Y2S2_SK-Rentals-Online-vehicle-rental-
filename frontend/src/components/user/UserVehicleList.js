@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './UserVehicleList.css';
 import Top from '../layouts/Top';
 import Slideshow from './Slideshow';
 import Details from './Details';
@@ -20,8 +19,6 @@ const UserVehicleList = () => {
     const fetchVehicles = async () => {
       try {
         const response = await axios.get('http://localhost:1111/api/v1/vehicles');
-        console.log("API Response:", response.data);
-
         if (response.data.success && response.data.vehicles.length > 0) {
           setVehicles(response.data.vehicles);
           setFilteredVehicles(response.data.vehicles);
@@ -41,7 +38,6 @@ const UserVehicleList = () => {
   const handleSearch = (event) => {
     const query = event.target.value.trim().toLowerCase();
     setSearchTerm(query);
-
     if (!query) {
       setFilteredVehicles(vehicles);
     } else {
@@ -58,46 +54,55 @@ const UserVehicleList = () => {
   };
 
   return (
-    <div className="user-vehicle-list">
+    <div className="min-h-screen bg-gradient-to-br from-[#0c0f23] via-[#101c3a] to-[#0f1d2e] text-white font-sans">
       <Top />
       <Slideshow />
-      <input
-        type="text"
-        placeholder="Search vehicles...." 
-        // Brand, Model, Year, License Plate, and Vehicle Type in"
-        value={searchTerm}
-        onChange={handleSearch}
-        className="search-bar"
-      />
 
-      {error && <p className="error-message">{error}</p>}
+      {/* Search */}
+      <div className="flex justify-center mt-6 px-4">
+        <input
+          type="text"
+          placeholder="Search brand, model, year or type"
+          value={searchTerm}
+          onChange={handleSearch}
+          className="w-full max-w-3xl px-5 py-3 rounded-xl bg-[#1e2a45] text-white border border-blue-600 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+        />
+      </div>
+
+      {/* Status/Error */}
+      {error && <p className="text-red-400 text-center mt-4">{error}</p>}
       {loading ? (
-        <p className="loading-message">Loading vehicles...</p>
+        <p className="text-center text-gray-300 mt-10">Loading vehicles...</p>
       ) : (
-        <div className="vehicle-grid">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 p-6 max-w-7xl mx-auto">
           {filteredVehicles.map((vehicle) => (
-            <div 
-              key={vehicle._id} 
-              className="vehicle-card" 
+            <div
+              key={vehicle._id}
               onClick={() => navigate(`/vehicle/${vehicle._id}`)}
+              className="bg-[#162035] hover:bg-[#1c2a45] border border-blue-700 rounded-2xl p-4 shadow-lg hover:shadow-xl transition cursor-pointer transform hover:-translate-y-1"
             >
-              <img 
-                src={vehicle.images?.[0]?.url || '/images/default-vehicle.jpg'} 
-                alt={vehicle.name} 
-                className="vehicle-image"
+              <img
+                src={vehicle.images?.[0]?.url || '/images/default-vehicle.jpg'}
+                alt={vehicle.name}
+                className="w-full h-48 object-cover rounded-xl mb-4"
                 onError={(e) => (e.target.src = '/images/default-vehicle.jpg')}
               />
-              <h3>{vehicle.name}</h3>
-              <p className="vehicle-price">${vehicle.rentPerDay} / day</p>
-              <p className={`vehicle-status ${vehicle.availableStatus ? 'available' : 'unavailable'}`}>
-                {vehicle.availableStatus ? "Available" : "Not Available"}
+              <h3 className="text-lg font-bold text-blue-300">{vehicle.name}</h3>
+              <p className="text-sm text-gray-300">Type: {vehicle.vehicleType}</p>
+              <p className="text-sm text-gray-300">Rent: ${vehicle.rentPerDay} / day</p>
+              <p className={`text-sm font-semibold mt-2 ${vehicle.availableStatus ? 'text-green-400' : 'text-red-500'}`}>
+                {vehicle.availableStatus ? 'Available' : 'Not Available'}
               </p>
             </div>
           ))}
         </div>
       )}
-      
-      <Filter />
+
+      {/* Filters */}
+      <div className="mt-10">
+        <Filter />
+      </div>
+
       <Details />
       <Footer />
     </div>

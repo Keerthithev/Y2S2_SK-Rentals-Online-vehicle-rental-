@@ -42,7 +42,6 @@ function App() {
       <main>
         
       
-        {/* <Hedaer /> */}
     
       </main>
       <Routes>
