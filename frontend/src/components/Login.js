@@ -21,9 +21,35 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:1111/api/v1/login", formData);
-      localStorage.setItem("token", response.data.token); // Save token to localStorage
-      navigate("/profile"); // Redirect to profile page after login
+      const response = await axios.post("http://localhost:1111/api/v1/login", formData)
+
+      if (
+        response.data.success === false ||
+        response.data.message === "Your account is banned for 30 days temporary. Please contact support."
+      ) {
+        setError("Your account is banned for 30 days temporary. Please contact support.")
+        setLoading(false)
+        return
+      }
+
+      localStorage.setItem("token", response.data.token)
+      localStorage.setItem("username", response.data.user.name)
+      localStorage.setItem("email", response.data.user.email)
+
+      // Redirect based on user role
+const role = response.data.user.role?.toLowerCase();
+
+if (role === "admin") {
+  navigate("/admindashboard");
+} else if (role === "user") {
+  navigate("/uservehiclelist");
+} else if (role === "staff") {
+  navigate("/staff");
+} else {
+  // Optional: if role is unknown, navigate to a default page
+  navigate("/profile");
+}
+
     } catch (err) {
       setError(err.response.data.message || "Something went wrong!");
     }

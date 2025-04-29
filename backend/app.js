@@ -5,7 +5,18 @@ const errorMiddleware = require('../backend/middlewares/error');
 const auth = require('./routes/usermanagement/auth');
 const managevehicles = require('./routes/admin/manage_vehicle_routes');
 const manageusers = require('./routes/admin/manage_users_routes');
+const cookieParser = require('cookie-parser');
+const cors = require("cors");
+const dotenv = require('dotenv');
+const path = require('path');
+const multer = require('multer');
+const vehicleController = require('./controllers/admin_managment/Admin_vehicleController');
+dotenv.config({ path: path.join(__dirname, "config/config.env") });
 const manintenance = require('./routes/maintenanceRoutes');
+
+
+
+const managevehiclesforusers = require('./routes/usermanagement/uservehiclelist');
 
 const app = express();
 
@@ -28,7 +39,10 @@ app.use('/api/v1/', managevehicles);
 app.use('/api/v1/', manageusers);
 app.use('/api/v1/', auth);
 app.use('/api/v1/', manintenance);
-// Error handling middleware (should be after routes)
+
+app.use('/api/v1/', managevehicles);
+
+// Apply error handling middleware
 app.use(errorMiddleware);
 
 module.exports = app;

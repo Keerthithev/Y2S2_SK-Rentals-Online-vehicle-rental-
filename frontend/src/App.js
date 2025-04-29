@@ -14,11 +14,28 @@ import Header from './components/layouts/Header';
 import './Header.css'; 
 
 import VehicleForm from './components/VehicleForm';
-import VehicleListMain from "./components/VehicleListMain";
-import AddMaintenance from "./components/AddMaintenance";
+// import VehicleListMain from "./components/VehicleListMain";
+// import AddMaintenance from "./components/AddMaintenance";
 import ReminderPage from "./components/ReminderPage";
 
 
+
+
+import AdminUserList from './components/admin/AdminUserList';
+import AdminDashboard from './components/admin/AdminDashboard';
+import AdminAddVehicle from './components/admin/AdminAddvehicle';
+import AdminVehicleList from './components/admin/AdminVehicleList';
+import AdminEditVehicle from './components/admin/AdminEditVehicle';
+import AdminSingleVehicle from './components/admin/AdminSingleVehicle';
+import AdminBlacklistPage from './components/admin/AdminBlacklistPage'
+
+
+import UserVehicleList from './components/user/UserVehicleList';
+import UserSingleVehicleList from './components/user/UserSinglevehicleList';
+import VehicleFilter from './components/user/VehicleFilter';
+import VehicleListMain from './components/VehicleListMain.js';
+import AddMaintenance from './components/AddMaintenance.js';
+import StaffDashboard from './components/StaffDashboard.js';
 
 
 
@@ -38,10 +55,28 @@ function App() {
         <Route path="/update" element={<UpdateProfile />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/EnterOtp" element={<EnterOtp />} />
-        <Route path="/add-vehicle" element={<VehicleForm />} />
+       
+        <Route path="/vehiclelist" element={<VehicleList />} />
+        <Route path="/bookings" element={<Bookings />} />  {/* Bookings page route */}
+
+        <Route path="/adminuserlist" element={<AdminUserList />} />
+        <Route path="/admindashboard" element={<AdminDashboard />} />
+        <Route path="/addvehicle" element={<AdminAddVehicle />} />
+        <Route path="/listvehicle" element={<AdminVehicleList />} />
+        <Route path="/editvehicle/:id" element={<AdminEditVehicle />} />
+        <Route path="/admin/vehicle/:id" element={<AdminSingleVehicle />} /> {/* Updated route */}
+
+        <Route path="/adminblacklist" element={<AdminBlacklistPage />} /> {/* Updated route */}
+
+
+        <Route path="/uservehiclelist" element={<UserVehicleList />} />
+        <Route path="/vehicle/:id" element={<UserSingleVehicleList />} />
+        <Route path="/vehiclefilter" element={<VehicleFilter />} />
+
         <Route path="/list" element={<VehicleListMain />} />
         <Route path="/add" element={<AddMaintenance />} />
-        <Route path="/reminder" element={<ReminderPage />} />
+        <Route path="/staff" element={<StaffDashboard/>} />
+      
       </Routes>
     </Router>
   );
