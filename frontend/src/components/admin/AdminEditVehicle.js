@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import './AdminEditVehicle.css';
 
+import Header from '../layouts/Header';
+import Footer from '../layouts/Footer';
 // Upload function to Cloudinary
 const uploadImagesToCloudinary = async (files) => {
   const cloudinaryUrl = 'https://api.cloudinary.com/v1_1/dpcl7yv77/image/upload';
@@ -151,7 +152,7 @@ const handleCancel = () => {
   return (
     <div className="edit-vehicle-container">
       <h1>Edit Vehicle</h1>
-
+      <Header />
       <form onSubmit={handleSubmit}>
         <input type="text" name="name" value={vehicle.name} onChange={handleInputChange} placeholder="Vehicle Name" required />
         <input type="text" name="brand" value={vehicle.brand} onChange={handleInputChange} placeholder="Brand" required />
@@ -177,6 +178,7 @@ const handleCancel = () => {
 <button type="button" onClick={handleCancel} className="cancel-button">Cancel</button>
         <button type="submit">Update Vehicle</button>
       </form>
+      <Footer/>
     </div>
   );
 };

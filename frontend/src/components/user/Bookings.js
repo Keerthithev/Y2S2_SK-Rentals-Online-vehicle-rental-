@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './Bookings.css';
+
 import Top from '../layouts/Top';
 
 const Bookings = () => {

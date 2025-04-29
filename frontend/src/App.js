@@ -18,7 +18,7 @@ import Bookings from './components/user/Bookings';
 import Top from './components/layouts/Top';
 import VehicleList from './components/VehicleList';
 
-import './Header.css'; 
+
 
 
 import AdminUserList from './components/admin/AdminUserList';
@@ -42,7 +42,6 @@ function App() {
       <main>
         
       
-        {/* <Hedaer /> */}
     
       </main>
       <Routes>

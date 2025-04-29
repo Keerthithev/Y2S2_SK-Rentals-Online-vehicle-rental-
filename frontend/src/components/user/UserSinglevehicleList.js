@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import './UserSingleVehicle.css';  
+  
 import Header from '../layouts/Header';
 
 const UserSingleVehicle = () => {
