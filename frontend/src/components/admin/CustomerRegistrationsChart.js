@@ -1,7 +1,7 @@
 // src/components/CustomerRegistrationsChart.js
 import React from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
-import './CustomerRegisterationsChart.css'
+
 // Dummy data for the graph (Replace with backend data in future)
 const dummyData = [
   { date: "2024-03-01", count: 5 },

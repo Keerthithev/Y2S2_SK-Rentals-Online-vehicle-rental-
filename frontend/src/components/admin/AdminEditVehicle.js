@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import './AdminEditVehicle.css';
+
 import Header from '../layouts/Header';
 import Footer from '../layouts/Footer';
 // Upload function to Cloudinary

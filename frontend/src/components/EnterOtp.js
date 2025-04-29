@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom"; // useNavigate instead of useHistory
-import './EnterOtp.css'; // Your updated CSS
+
 
 const EnterOtp = () => {
   const [otp, setOtp] = useState("");
