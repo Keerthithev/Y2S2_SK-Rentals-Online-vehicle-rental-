@@ -40,11 +40,19 @@ const Login = () => {
       localStorage.setItem("email", response.data.user.email)
 
       // Redirect based on user role
-      if (response.data.user.role?.toLowerCase() === "admin") {
-        navigate("/admindashboard")
-      } else {
-        navigate("/profile")
-      }
+const role = response.data.user.role?.toLowerCase();
+
+if (role === "admin") {
+  navigate("/admindashboard");
+} else if (role === "user") {
+  navigate("/uservehiclelist");
+} else if (role === "staff") {
+  navigate("/staffdashboard");
+} else {
+  // Optional: if role is unknown, navigate to a default page
+  navigate("/profile");
+}
+
     } catch (err) {
       console.error("Login Error:", err.response?.data || err.message)
       setError(err.response?.data?.message || "Invalid email or password. Please try again.")
