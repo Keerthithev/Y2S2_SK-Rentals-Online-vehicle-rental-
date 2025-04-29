@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
-import "./VehicleListMain.css";
+
 import * as XLSX from "xlsx"; // Import the xlsx library
 
 function VehicleListMain() {

@@ -1,7 +1,8 @@
 // src/App.js
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import './App.css';  // Your custom styles
+// Your custom styles
+
 
 import Login from './components/Login';  // Import Login component
 import Register from './components/Register';  // Import Register component
@@ -11,12 +12,31 @@ import Profile from "./components/Profile";  // Import Profile component
 import UpdateProfile from "./components/updateProfile";  // Import UpdateProfile component
 import EnterOtp from "./components/EnterOtp";  // Import EnterOtp component
 import Header from './components/layouts/Header';
-import './Header.css'; 
+
 
 import VehicleForm from './components/VehicleForm';
 // import VehicleListMain from "./components/VehicleListMain";
 // import AddMaintenance from "./components/AddMaintenance";
 import ReminderPage from "./components/ReminderPage";
+
+
+
+
+
+
+import UserVehicleList from './components/user/UserVehicleList';
+import UserSingleVehicleList from './components/user/UserSinglevehicleList';
+import VehicleFilter from './components/user/VehicleFilter';
+import VehicleListMain from './components/VehicleListMain.js';
+import AddMaintenance from './components/AddMaintenance.js';
+import StaffDashboard from './components/StaffDashboard.js';
+
+import Hedaer from "./components/layouts/Header.js";
+
+import Bookings from './components/user/Bookings'; 
+
+import Top from './components/layouts/Top';
+import VehicleList from './components/VehicleList';
 
 
 
@@ -30,12 +50,6 @@ import AdminSingleVehicle from './components/admin/AdminSingleVehicle';
 import AdminBlacklistPage from './components/admin/AdminBlacklistPage'
 
 
-import UserVehicleList from './components/user/UserVehicleList';
-import UserSingleVehicleList from './components/user/UserSinglevehicleList';
-import VehicleFilter from './components/user/VehicleFilter';
-import VehicleListMain from './components/VehicleListMain.js';
-import AddMaintenance from './components/AddMaintenance.js';
-import StaffDashboard from './components/StaffDashboard.js';
 
 
 
@@ -44,7 +58,10 @@ function App() {
     
     <Router>
       
+     
       <main>
+        
+      
     
       </main>
       <Routes>

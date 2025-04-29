@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../VehicleList.css'
 import { useNavigate } from 'react-router-dom';
+
+
 const VehicleList = () => {
+  
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -43,7 +45,7 @@ const VehicleList = () => {
     setCurrentPage(page);
   };
 
-  return (
+  return ( 
     <div>
       <h1>Vehicles List</h1>
       {loading && <p>Loading vehicles...</p>}
