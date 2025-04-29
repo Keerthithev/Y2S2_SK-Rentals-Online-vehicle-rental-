@@ -4,6 +4,7 @@ const errorMiddleware = require('../backend/middlewares/error');
 const auth = require('./routes/usermanagement/auth');
 const managevehicles = require('./routes/admin/manage_vehicle_routes');
 const manageusers = require('./routes/admin/manage_users_routes');
+const manintenance = require('./routes/maintenanceRoutes')
 const cookieParser = require('cookie-parser');
 const cors = require("cors");
 const dotenv = require('dotenv');
@@ -44,8 +45,16 @@ app.use('/api/v1/', managevehicles);
 // Apply error handling middleware
 app.use(errorMiddleware);
 
+// Routes
+app.use('/api/v1/', managevehicles);
+app.use('/api/v1/', manageusers);
+app.use('/api/v1/', auth);
+app.use('/api/v1/', manintenance);
 
+app.use('/api/v1/', managevehicles);
 
+// Apply error handling middleware
+app.use(errorMiddleware);
 
 app.use('/api/v1/', managevehicles);
 app.use('/api/v1/', managevehiclesforusers);

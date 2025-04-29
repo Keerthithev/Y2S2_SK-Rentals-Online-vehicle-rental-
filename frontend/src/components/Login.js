@@ -47,7 +47,7 @@ if (role === "admin") {
 } else if (role === "user") {
   navigate("/uservehiclelist");
 } else if (role === "staff") {
-  navigate("/staffdashboard");
+  navigate("/staff");
 } else {
   // Optional: if role is unknown, navigate to a default page
   navigate("/profile");

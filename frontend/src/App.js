@@ -11,6 +11,26 @@ import ForgotPassword from "./components/ForgotPassword";  // Import ForgotPassw
 import Profile from "./components/Profile";  // Import Profile component
 import UpdateProfile from "./components/updateProfile";  // Import UpdateProfile component
 import EnterOtp from "./components/EnterOtp";  // Import EnterOtp component
+import Header from './components/layouts/Header';
+
+
+import VehicleForm from './components/VehicleForm';
+// import VehicleListMain from "./components/VehicleListMain";
+// import AddMaintenance from "./components/AddMaintenance";
+import ReminderPage from "./components/ReminderPage";
+
+
+
+
+
+
+import UserVehicleList from './components/user/UserVehicleList';
+import UserSingleVehicleList from './components/user/UserSinglevehicleList';
+import VehicleFilter from './components/user/VehicleFilter';
+import VehicleListMain from './components/VehicleListMain.js';
+import AddMaintenance from './components/AddMaintenance.js';
+import StaffDashboard from './components/StaffDashboard.js';
+
 import Hedaer from "./components/layouts/Header.js";
 
 import Bookings from './components/user/Bookings'; 
@@ -30,14 +50,14 @@ import AdminSingleVehicle from './components/admin/AdminSingleVehicle';
 import AdminBlacklistPage from './components/admin/AdminBlacklistPage'
 
 
-import UserVehicleList from './components/user/UserVehicleList';
-import UserSingleVehicleList from './components/user/UserSinglevehicleList';
-import VehicleFilter from './components/user/VehicleFilter';
+
+
 
 function App() {
   return (
     
     <Router>
+      
      
       <main>
         
@@ -69,6 +89,10 @@ function App() {
         <Route path="/uservehiclelist" element={<UserVehicleList />} />
         <Route path="/vehicle/:id" element={<UserSingleVehicleList />} />
         <Route path="/vehiclefilter" element={<VehicleFilter />} />
+
+        <Route path="/list" element={<VehicleListMain />} />
+        <Route path="/add" element={<AddMaintenance />} />
+        <Route path="/staff" element={<StaffDashboard/>} />
       
       </Routes>
     </Router>
