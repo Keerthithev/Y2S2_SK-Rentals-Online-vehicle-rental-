@@ -16,6 +16,8 @@ dotenv.config({ path: path.join(__dirname, "config/config.env") });
 
 const managevehiclesforusers = require('./routes/usermanagement/uservehiclelist');
 
+const feedbackRoutes = require('./routes/feedbackmanagement/feedbackRoutes');
+const complaintRoutes = require('./routes/complaintmanagement/complaintRoutes');
 
 // Enable CORS for frontend on localhost:2222
 const corsOptions = {
@@ -41,7 +43,8 @@ app.use('/api/v1/', manageusers);
 app.use('/api/v1/', auth);
 
 app.use('/api/v1/', managevehicles);
-
+app.use('/api/v1/', feedbackRoutes);
+app.use('/api/v1', complaintRoutes);
 // Apply error handling middleware
 app.use(errorMiddleware);
 

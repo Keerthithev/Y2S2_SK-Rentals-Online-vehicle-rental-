@@ -52,6 +52,13 @@ import AdminBlacklistPage from './components/admin/AdminBlacklistPage'
 
 
 
+import FeedbackForm from './components/FeedbackForm';
+import FeedbackList from './components/FeedbackList';
+import ComplaintForm from './components/ComplaintForm';
+import ComplaintList from './components/ComplaintList';
+//import ComplaintDetails from './components/ComplaintDetails'; 
+import AllComplaints from './components/AllComplaints';
+
 
 function App() {
   return (
@@ -93,6 +100,18 @@ function App() {
         <Route path="/list" element={<VehicleListMain />} />
         <Route path="/add" element={<AddMaintenance />} />
         <Route path="/staff" element={<StaffDashboard/>} />
+
+
+        <Route path="/feedbackform" element={<FeedbackForm />} />
+        
+        <Route path="/feedbacklist" element={<FeedbackList />} />
+        <Route path="/complaintform" element={<ComplaintForm />} />
+        <Route path="/complaintlist/:customerID" element={<ComplaintList />} />
+        <Route path="/complaintlist" element={<ComplaintList />} />
+       
+        
+         <Route path="/allcomplaints" element={<AllComplaints />} />
+
       
       </Routes>
     </Router>
