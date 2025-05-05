@@ -95,10 +95,9 @@ function ComplaintForm() {
             <select value={issueType} onChange={(e) => setIssueType(e.target.value)}>
             <option value="">Select Issue Type</option>
             <option value="vehicle">Vehicle</option>
-            <option value="payment">Payment</option>
-            <option value="staff">Staff Behavior</option>
-            <option value="other">Other</option>
+            <option value="service">Service</option>
           </select>
+
 
             {errors.issueType && <span className="error">{errors.issueType}</span>}
           </div>
