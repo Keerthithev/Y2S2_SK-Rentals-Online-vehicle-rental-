@@ -1,33 +1,54 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Swal from 'sweetalert2'; 
-
+import Swal from 'sweetalert2';
 
 function FeedbackForm() {
   const [customerID, setCustomerID] = useState('');
+  const [customerName, setCustomerName] = useState('');
   const [vehicleID, setVehicleID] = useState('');
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
+  const [sentiment, setSentiment] = useState(null);
+  const [loading, setLoading] = useState(true);
 
+  // Fetch customer info from token
   useEffect(() => {
-    document.body.classList.add('feedback-body');
-    return () => {
-      document.body.classList.remove('feedback-body');
+    const fetchCustomer = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const res = await axios.get('http://localhost:1111/api/v1/myprofile', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const user = res.data.user;
+        setCustomerID(user._id);
+        setCustomerName(user.name); // Assumes user object has a "name" field
+      } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Unauthorized',
+          text: '⚠️ Please log in again to continue.',
+        });
+      } finally {
+        setLoading(false);
+      }
     };
+
+    fetchCustomer();
   }, []);
 
-  const handleStarClick = (star) => {
-    setRating(star);
-  };
+  const handleStarClick = (star) => setRating(star);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!customerID.trim() || !vehicleID.trim() || rating === 0 || !comment.trim()) {
+    if (!vehicleID.trim() || rating === 0 || !comment.trim()) {
       Swal.fire({
         icon: 'warning',
         title: 'Missing Fields',
-        text: '⚠️ Please fill in all fields before submitting.',
+        text: '⚠️ Please fill in all required fields before submitting.',
         confirmButtonText: 'OK',
         confirmButtonColor: '#FFA500',
       });
@@ -70,10 +91,10 @@ function FeedbackForm() {
           confirmButtonColor: '#b8860b',
         });
 
-        setCustomerID('');
         setVehicleID('');
         setRating(0);
         setComment('');
+        setSentiment(response.data.sentiment);
       } else {
         throw new Error('Unexpected response');
       }
@@ -88,18 +109,16 @@ function FeedbackForm() {
     }
   };
 
+  if (loading) return <p>Loading...</p>;
+
   return (
     <div className="feedback-container">
       <h2>Submit Your Feedback</h2>
       <form onSubmit={handleSubmit} className="feedback-form">
+        {/* ✅ Show Customer Name */}
         <div className="form-group">
-          <label>Customer ID:</label>
-          <input
-            type="text"
-            value={customerID}
-            onChange={(e) => setCustomerID(e.target.value)}
-            required
-          />
+          <label>Customer Name:</label>
+          <input type="text" value={customerName} readOnly />
         </div>
 
         <div className="form-group">
@@ -138,6 +157,15 @@ function FeedbackForm() {
 
         <button type="submit" className="submit-btn">Submit Feedback</button>
       </form>
+
+      {sentiment && (
+        <div className="sentiment-badge" style={{ marginTop: '15px' }}>
+          <strong>Sentiment:</strong>{' '}
+          <span className={`badge badge-${sentiment}`}>
+            {sentiment.charAt(0).toUpperCase() + sentiment.slice(1)}
+          </span>
+        </div>
+      )}
     </div>
   );
 }

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-
 const FeedbackList = () => {
   const [feedback, setFeedback] = useState([]);
   const [message, setMessage] = useState('');
@@ -38,7 +37,7 @@ const FeedbackList = () => {
     });
 
     if (!confirmDelete.isConfirmed) return;
-    
+
     try {
       await axios.delete(`http://localhost:1111/api/v1/feedback/${id}`);
       setFeedback(feedback.filter((item) => item._id !== id));
@@ -59,7 +58,7 @@ const FeedbackList = () => {
     });
 
     if (!confirmEdit.isConfirmed) return;
-    
+
     setEditingFeedback(item._id);
     setEditedComment(item.comment);
     setEditedRating(item.rating);
@@ -76,6 +75,23 @@ const FeedbackList = () => {
       Swal.fire('Updated!', 'Feedback has been updated.', 'success');
     } catch (error) {
       Swal.fire('Error!', 'Error updating feedback', 'error');
+    }
+  };
+
+  const getSentimentBadge = (rating) => {
+    switch (rating) {
+      case 5:
+        return <span className="sentiment-badge">😍 Excellent</span>;
+      case 4:
+        return <span className="sentiment-badge">🙂 Good</span>;
+      case 3:
+        return <span className="sentiment-badge">😐 Average</span>;
+      case 2:
+        return <span className="sentiment-badge">🙁 Poor</span>;
+      case 1:
+        return <span className="sentiment-badge">😡 Terrible</span>;
+      default:
+        return <span className="sentiment-badge">🤔 Unknown</span>;
     }
   };
 
@@ -101,7 +117,25 @@ const FeedbackList = () => {
                 <tr key={item._id}>
                   <td>{item.customerID}</td>
                   <td>{item.vehicleID}</td>
-                  <td className="rating">{'⭐'.repeat(item.rating)}</td>
+                  <td>
+                    {editingFeedback === item._id ? (
+                      <select
+                        value={editedRating}
+                        onChange={(e) => setEditedRating(Number(e.target.value))}
+                      >
+                        {[1, 2, 3, 4, 5].map((r) => (
+                          <option key={r} value={r}>
+                            {r} ⭐
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <>
+                        <span className="rating-stars">{'⭐'.repeat(item.rating)}</span><br />
+                        {getSentimentBadge(item.rating)}
+                      </>
+                    )}
+                  </td>
                   <td>
                     {editingFeedback === item._id ? (
                       <input

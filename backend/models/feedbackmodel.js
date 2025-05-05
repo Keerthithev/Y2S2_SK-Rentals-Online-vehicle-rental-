@@ -19,6 +19,15 @@ const feedbackSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  sentiment: {
+    type: String,
+    enum: ['positive', 'negative', 'neutral'],
+    default: 'neutral'
+  },
+  sentimentScore: {
+    type: Number,
+    default: 0
+  },
   datePosted: {
     type: Date,
     default: Date.now,
