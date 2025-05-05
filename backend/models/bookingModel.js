@@ -12,6 +12,10 @@ const bookingSchema = new mongoose.Schema({
         ref: 'Vehicle', // Reference to the Vehicle model
         required: true
     },
+    vehicleName: {
+        type: String,
+        required: true
+    },
     rentalStartDate: {
         type: Date,
         required: true
@@ -68,6 +72,6 @@ bookingSchema.pre('save', function(next) {
 });
 
 // Create the Booking model
-const Booking = mongoose.model('Booking', bookingSchema);
+const Booking = mongoose.model('Booking', bookingSchema, 'bookings');
 
 module.exports = Booking;

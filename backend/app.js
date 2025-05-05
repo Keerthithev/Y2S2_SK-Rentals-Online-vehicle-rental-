@@ -5,6 +5,7 @@ const auth = require('./routes/usermanagement/auth');
 const managevehicles = require('./routes/admin/manage_vehicle_routes');
 const manageusers = require('./routes/admin/manage_users_routes');
 const manintenance = require('./routes/maintenanceRoutes')
+const manageBookingRoutes = require("./routes/booking/booking_routes.js");
 const cookieParser = require('cookie-parser');
 const cors = require("cors");
 const dotenv = require('dotenv');
@@ -62,7 +63,7 @@ app.use(errorMiddleware);
 app.use('/api/v1/', managevehicles);
 app.use('/api/v1/', managevehiclesforusers);
 
-
+app.use("/api/v2/", manageBookingRoutes); 
 module.exports = app;  // Export the app to be used in server.js
 
 app.post('/api/v1/admin/vehicle/new', upload.none(),isAuthenticatedUser, authorizeRoles('admin'), vehicleController.newVehicle);

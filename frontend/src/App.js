@@ -58,7 +58,8 @@ import ComplaintForm from './components/ComplaintForm';
 import ComplaintList from './components/ComplaintList';
 //import ComplaintDetails from './components/ComplaintDetails'; 
 import AllComplaints from './components/AllComplaints';
-
+import BookingVehicle from './components/bookingVehicle';
+import GetAllBookings from './components/getAllBookings';
 
 function App() {
   return (
@@ -111,7 +112,8 @@ function App() {
        
         
          <Route path="/allcomplaints" element={<AllComplaints />} />
-
+         <Route path="/bookingVehicle" element={<BookingVehicle />} />
+        <Route path="/allBookings" element={<GetAllBookings />} />
       
       </Routes>
     </Router>
