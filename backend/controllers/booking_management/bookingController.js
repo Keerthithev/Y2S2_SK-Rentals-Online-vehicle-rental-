@@ -1,26 +1,30 @@
 const mongoose = require("mongoose");
 const catchAsyncError = require("../../middlewares/catchAsyncError");
-const Booking = require("../../models/bookingModel");
+const Booking = require("../../models/bookingModel"); // Ensure this path is correct
+const User = require('../../models/userModels'); // Adjust path as necessary
 
+// Create a new booking
 exports.newBooking = catchAsyncError(async (req, res, next) => {
-    console.log("🔹 newBooking API hit"); // Check if the function is being called
+    console.log("🔹 newBooking API hit");
 
     try {
-        console.log("🔹 Request Body:", req.body); // See the data received
+        console.log("🔹 Request Body:", req.body);
 
         const {
-            user,
-            vehicle,
-            vehicleName,
+            vehicleId,
             rentalStartDate,
             rentalEndDate,
             pickUpLocation,
             dropOffLocation,
+            totalDays,
             totalAmount,
             paymentMethod,
+            additionalDrivers,
+            specialRequests,
         } = req.body;
 
-        if (!user || !vehicle || !vehicleName || !rentalStartDate || !rentalEndDate || !pickUpLocation || !dropOffLocation || !totalAmount || !paymentMethod) {
+        // Validate required fields
+        if (!vehicleId || !rentalStartDate || !rentalEndDate || !pickUpLocation || !dropOffLocation || !totalAmount || !paymentMethod) {
             console.log("❌ Missing fields in request");
             return res.status(400).json({
                 success: false,
@@ -30,28 +34,27 @@ exports.newBooking = catchAsyncError(async (req, res, next) => {
 
         console.log("✅ All required fields are present");
 
-        /* if (!mongoose.Types.ObjectId.isValid(user)) {
-            console.log("❌ Invalid user ID format:", user);
-            return res.status(400).json({ message: "Invalid user ID format" });
+        // Ensure the user is authenticated and the userId exists
+        if (!req.user || !req.user.id) {
+            return res.status(401).json({
+                success: false,
+                message: "User not authenticated",
+            });
         }
 
-        if (!mongoose.Types.ObjectId.isValid(vehicle)) {
-            console.log("❌ Invalid vehicle ID format:", vehicle);
-            return res.status(400).json({ message: "Invalid vehicle ID format" });
-        } */
-
-        console.log("✅ User and Vehicle IDs are valid");
-
+        // Create a new booking instance with the userId
         const newBooking = new Booking({
-            user,
-            vehicle,
-            vehicleName,
+            vehicleId,
+            userId: req.user.id, // Set userId from authenticated user
             rentalStartDate,
             rentalEndDate,
-            pickUpLocation,
-            dropOffLocation,
+            totalDays,
             totalAmount,
             paymentMethod,
+            pickUpLocation,
+            dropOffLocation,
+            additionalDrivers,
+            specialRequests,
         });
 
         console.log("📝 Saving new booking:", newBooking);
@@ -60,9 +63,9 @@ exports.newBooking = catchAsyncError(async (req, res, next) => {
 
         console.log("✅ Booking saved successfully:", newBooking);
 
-        res.status(200).json({
+        res.status(201).json({
             success: true,
-            message: "Booking data received and saved successfully",
+            message: "Booking created successfully",
             booking: newBooking,
         });
 
@@ -76,24 +79,29 @@ exports.newBooking = catchAsyncError(async (req, res, next) => {
     }
 });
 
-
+// Get all bookings
+// Get all bookings
 exports.getAllBookings = catchAsyncError(async (req, res, next) => {
     try {
-        const bookings = await Booking.find().populate("user", "email").populate("vehicle", "name");
-        
+        // Fetch bookings and populate full user and vehicle details
+        const bookings = await Booking.find()
+            .populate("userId")  // Populate all fields from the user schema
+            .populate("vehicleId");  // Populate all fields from the vehicle schema
+
         if (!bookings || bookings.length === 0) {
             return res.status(404).json({
                 success: false,
                 message: "No bookings found",
             });
         }
-        
+
+        // Send the response with the populated booking data
         res.status(200).json({
             success: true,
             bookings,
         });
     } catch (error) {
-        console.error("Error fetching bookings:", error);
+        console.error("Get all bookings error:", error); // ✅ fixed
         res.status(500).json({
             success: false,
             message: "Internal Server Error",
@@ -103,86 +111,30 @@ exports.getAllBookings = catchAsyncError(async (req, res, next) => {
 });
 
 
-exports.deleteBooking = async (req, res) => {
-    try {
-        const { id } = req.params;
-
-        // Check if the booking exists
-        const booking = await Booking.findById(id);
-        if (!booking) {
-            return res.status(404).json({
-                success: false,
-                message: "Booking not found",
-            });
-        }
-
-        // Delete the booking
-        await Booking.findByIdAndDelete(id);
-
-        res.status(200).json({
-            success: true,
-            message: "Booking deleted successfully",
-        });
-    } catch (error) {
-        console.error("Error deleting booking:", error);
-        res.status(500).json({
-            success: false,
-            message: "Internal Server Error",
-            error: error.message,
-        });
-    }
-};
-
 exports.cancelBooking = async (req, res) => {
+    const bookingId = req.params.id; // Extract the booking ID from the URL parameter
+  
     try {
-        const { id } = req.params;
-
-        // Check if the booking exists
-        const booking = await Booking.findById(id);
-        if (!booking) {
-            return res.status(404).json({
-                success: false,
-                message: "Booking not found",
-            });
-        }
-
-        // Delete the booking
-        await Booking.findByIdAndDelete(id);
-
-        res.status(200).json({
-            success: true,
-            message: "Booking canceled successfully",
-        });
+      // Find the booking by ID and delete it from the database
+      const deletedBooking = await Booking.findByIdAndDelete(bookingId);
+  
+      // If the booking was not found, return an error
+      if (!deletedBooking) {
+        return res.status(404).json({ message: 'Booking not found' });
+      }
+  
+      // Return a success message when booking is deleted
+      res.status(200).json({
+        success: true,
+        message: 'Booking successfully cancelled and deleted',
+      });
     } catch (error) {
-        console.error("Error canceling booking:", error);
-        res.status(500).json({
-            success: false,
-            message: "Internal Server Error",
-            error: error.message,
-        });
+      console.error('Error cancelling booking:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Failed to cancel and delete booking',
+        error: error.message,
+      });
     }
-};
-
-exports.editBooking = async (req, res) => {
-    try {
-        const { id } = req.params;  // Extract booking ID from URL
-        const updatedData = req.body; // Extract new booking data from request body
-
-        // Check if the booking exists
-        let booking = await Booking.findById(id);
-        if (!booking) {
-            return res.status(404).json({ success: false, message: "Booking not found" });
-        }
-
-        // Update the booking
-        booking = await Booking.findByIdAndUpdate(id, updatedData, { new: true, runValidators: true });
-
-        res.status(200).json({ success: true, message: "Booking updated successfully", booking });
-    } catch (error) {
-        console.error("Error updating booking:", error);
-        res.status(500).json({ success: false, message: "Internal Server Error", error: error.message });
-    }
-};
-
-
-
+  };
+  

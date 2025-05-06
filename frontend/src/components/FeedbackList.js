@@ -1,175 +1,421 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import Swal from 'sweetalert2';
+"use client"
 
-const FeedbackList = () => {
-  const [feedback, setFeedback] = useState([]);
-  const [message, setMessage] = useState('');
-  const [editingFeedback, setEditingFeedback] = useState(null);
-  const [editedComment, setEditedComment] = useState('');
-  const [editedRating, setEditedRating] = useState(1);
+import { useEffect, useState } from "react"
+import axios from "axios"
+import Swal from "sweetalert2"
+import { Star, Edit, Trash2, ThumbsUp } from 'lucide-react'
 
+const VehicleFeedbackComponent = ({ vehicleID, refreshTrigger }) => {
+  const [feedback, setFeedback] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [message, setMessage] = useState("")
+  const [editingFeedback, setEditingFeedback] = useState(null)
+  const [editedComment, setEditedComment] = useState("")
+  const [editedRating, setEditedRating] = useState(1)
+  const [currentUserID, setCurrentUserID] = useState(null)
+  const [averageRating, setAverageRating] = useState(0)
+  const [customerNames, setCustomerNames] = useState({}) // Store customer names by ID
+
+  // Fetch current user info
   useEffect(() => {
-    fetchFeedback();
-  }, []);
+    const fetchCurrentUser = async () => {
+      try {
+        const token = localStorage.getItem("token")
+        if (token) {
+          const res = await axios.get("http://localhost:1111/api/v1/myprofile", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          setCurrentUserID(res.data.user._id)
 
-  const fetchFeedback = async () => {
+          // Add current user to customer names
+          setCustomerNames((prev) => ({
+            ...prev,
+            [res.data.user._id]: res.data.user.name || "Me",
+          }))
+        }
+      } catch (error) {
+        console.error("Error fetching current user:", error)
+      }
+    }
+
+    fetchCurrentUser()
+  }, [])
+
+  // Fetch feedback for this specific vehicle
+  useEffect(() => {
+    fetchFeedback()
+  }, [vehicleID, refreshTrigger])
+
+  // Fetch customer names for all feedback
+  const fetchCustomerNames = async (feedbackList) => {
     try {
-      const response = await axios.get('http://localhost:1111/api/v1/feedbacks');
-      if (response.data.length > 0) {
-        setFeedback(response.data);
-      } else {
-        setMessage('No feedback available.');
+      // Create a unique list of customer IDs
+      const customerIDs = [...new Set(feedbackList.map((item) => item.customerID))].filter(
+        (id) => id && !customerNames[id],
+      )
+
+      if (customerIDs.length === 0) return
+
+      // For each customer ID, make an API call to get their details
+      // This is a more reliable approach than batch fetching
+      for (const id of customerIDs) {
+        try {
+          const response = await axios.get(`http://localhost:1111/api/v1/customer/${id}`)
+          
+          // Extract the name from the response - try different possible fields
+          const customerName = response.data.name || 
+                              response.data.fullName || 
+                              response.data.customerName ||
+                              `Customer ${id.substring(0, 5)}`
+          
+          // Update the customer names state
+          setCustomerNames((prev) => ({ 
+            ...prev, 
+            [id]: customerName 
+          }))
+        } catch (error) {
+          console.log(`Could not fetch name for customer ${id}`)
+          // Set a fallback name
+          setCustomerNames((prev) => ({ 
+            ...prev, 
+            [id]: `Customer ${id.substring(0, 5)}` 
+          }))
+        }
       }
     } catch (error) {
-      setMessage('Error fetching feedback');
+      console.error("Error fetching customer names:", error)
     }
-  };
+  }
+
+  // Update the fetchFeedback function to handle different API endpoint formats and provide better error handling
+  const fetchFeedback = async () => {
+    setLoading(true)
+    try {
+      // Try the vehicle-specific endpoint first (preferred approach)
+      let response
+      try {
+        response = await axios.get(`http://localhost:1111/api/v1/feedbacks/vehicle/${vehicleID}`)
+        console.log("Successfully fetched feedback using /vehicle/ endpoint")
+      } catch (endpointError) {
+        console.log("First endpoint failed, trying fallback endpoint")
+        // Fallback to query parameter approach if the first endpoint fails
+        response = await axios.get(`http://localhost:1111/api/v1/feedbacks?vehicleID=${vehicleID}`)
+        console.log("Successfully fetched feedback using query parameter endpoint")
+      }
+
+      // Process the feedback data
+      if (response.data && response.data.length > 0) {
+        // Filter the feedback to ensure it's only for this vehicle
+        // This is a safety measure in case the API doesn't filter properly
+        const vehicleSpecificFeedback = response.data.filter(
+          (item) => item.vehicleID === vehicleID || item.vehicleId === vehicleID,
+        )
+
+        if (vehicleSpecificFeedback.length > 0) {
+          // Sort feedback by date (newest first)
+          const sortedFeedback = vehicleSpecificFeedback.sort(
+            (a, b) => new Date(b.datePosted || b.createdAt) - new Date(a.datePosted || a.createdAt),
+          )
+
+          setFeedback(sortedFeedback)
+
+          // Fetch customer names for the feedback
+          fetchCustomerNames(sortedFeedback)
+
+          // Calculate average rating
+          const totalRating = sortedFeedback.reduce((sum, item) => sum + item.rating, 0)
+          setAverageRating((totalRating / sortedFeedback.length).toFixed(1))
+        } else {
+          setMessage("No feedback available for this vehicle.")
+          setFeedback([])
+        }
+      } else {
+        setMessage("No feedback available for this vehicle.")
+        setFeedback([])
+      }
+    } catch (error) {
+      console.error("Error fetching feedback:", error)
+      setMessage("Unable to load feedback. Please try again later.")
+      setFeedback([])
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleDelete = async (id) => {
     const confirmDelete = await Swal.fire({
-      title: 'Are you sure?',
-      text: 'Do you want to delete this feedback?',
-      icon: 'warning',
+      title: "Are you sure?",
+      text: "Do you want to delete this feedback?",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, cancel!',
-    });
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "No, cancel!",
+      confirmButtonColor: "#f44336",
+    })
 
-    if (!confirmDelete.isConfirmed) return;
+    if (!confirmDelete.isConfirmed) return
 
     try {
-      await axios.delete(`http://localhost:1111/api/v1/feedback/${id}`);
-      setFeedback(feedback.filter((item) => item._id !== id));
-      Swal.fire('Deleted!', 'Feedback has been deleted.', 'success');
+      const token = localStorage.getItem("token")
+      await axios.delete(`http://localhost:1111/api/v1/feedback/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      setFeedback(feedback.filter((item) => item._id !== id))
+      Swal.fire({
+        icon: "success",
+        title: "Deleted!",
+        text: "Your feedback has been deleted.",
+        confirmButtonColor: "#b8860b",
+      })
     } catch (error) {
-      Swal.fire('Error!', 'Error deleting feedback', 'error');
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "Error deleting feedback",
+        confirmButtonColor: "#f44336",
+      })
     }
-  };
+  }
 
   const handleEdit = async (item) => {
     const confirmEdit = await Swal.fire({
-      title: 'Edit Feedback',
-      text: 'Do you want to edit this feedback?',
-      icon: 'question',
+      title: "Edit Feedback",
+      text: "Do you want to edit this feedback?",
+      icon: "question",
       showCancelButton: true,
-      confirmButtonText: 'Yes, edit it!',
-      cancelButtonText: 'No, cancel!',
-    });
+      confirmButtonText: "Yes, edit it!",
+      cancelButtonText: "No, cancel!",
+      confirmButtonColor: "#b8860b",
+    })
 
-    if (!confirmEdit.isConfirmed) return;
+    if (!confirmEdit.isConfirmed) return
 
-    setEditingFeedback(item._id);
-    setEditedComment(item.comment);
-    setEditedRating(item.rating);
-  };
+    setEditingFeedback(item._id)
+    setEditedComment(item.comment)
+    setEditedRating(item.rating)
+  }
 
   const handleUpdate = async () => {
     try {
-      const response = await axios.put(`http://localhost:1111/api/v1/feedback/${editingFeedback}`, {
-        rating: editedRating,
-        comment: editedComment,
-      });
-      setFeedback(feedback.map(item => item._id === editingFeedback ? response.data.feedback : item));
-      setEditingFeedback(null);
-      Swal.fire('Updated!', 'Feedback has been updated.', 'success');
-    } catch (error) {
-      Swal.fire('Error!', 'Error updating feedback', 'error');
-    }
-  };
+      const token = localStorage.getItem("token")
+      const response = await axios.put(
+        `http://localhost:1111/api/v1/feedback/${editingFeedback}`,
+        {
+          rating: editedRating,
+          comment: editedComment,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
 
-  const getSentimentBadge = (rating) => {
-    switch (rating) {
-      case 5:
-        return <span className="sentiment-badge">😍 Excellent</span>;
-      case 4:
-        return <span className="sentiment-badge">🙂 Good</span>;
-      case 3:
-        return <span className="sentiment-badge">😐 Average</span>;
-      case 2:
-        return <span className="sentiment-badge">🙁 Poor</span>;
-      case 1:
-        return <span className="sentiment-badge">😡 Terrible</span>;
-      default:
-        return <span className="sentiment-badge">🤔 Unknown</span>;
+      // Update the feedback in the state
+      setFeedback(feedback.map((item) => (item._id === editingFeedback ? response.data.feedback : item)))
+      setEditingFeedback(null)
+
+      Swal.fire({
+        icon: "success",
+        title: "Updated!",
+        text: "Your feedback has been updated.",
+        confirmButtonColor: "#b8860b",
+      })
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "Error updating feedback",
+        confirmButtonColor: "#f44336",
+      })
     }
-  };
+  }
+
+  const getSentimentBadge = (sentiment) => {
+    switch (sentiment) {
+      case "positive":
+        return (
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
+            <ThumbsUp className="w-3 h-3 mr-1" /> Positive
+          </span>
+        )
+      case "negative":
+        return (
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+            <ThumbsUp className="w-3 h-3 mr-1 rotate-180" /> Negative
+          </span>
+        )
+      default:
+        return (
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+            Neutral
+          </span>
+        )
+    }
+  }
+
+  const renderStars = (rating) => {
+    return (
+      <div className="flex">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <Star key={star} className={`w-4 h-4 ${star <= rating ? "text-yellow-400" : "text-gray-300"} fill-current`} />
+        ))}
+      </div>
+    )
+  }
+
+  // Get customer name display
+  const getCustomerName = (customerId) => {
+    if (customerId === currentUserID) return "Me"
+  
+    // If we have the customer name in our state, use it
+    if (customerNames[customerId]) {
+      return customerNames[customerId]
+    }
+    
+    // For any feedback that has customerName directly in the object
+    const feedbackItem = feedback.find(item => item.customerID === customerId)
+    if (feedbackItem && feedbackItem.customerName) {
+      return feedbackItem.customerName
+    }
+    
+    // Fallback to a formatted ID
+    return `Customer ${customerId?.substring(0, 5) || "Anonymous"}`
+  }
+
+  // Get customer initial for avatar
+  const getCustomerInitial = (customerId) => {
+    if (customerId === currentUserID) return "M"
+    const name = customerNames[customerId]
+    return name ? name.charAt(0).toUpperCase() : customerId ? customerId.charAt(0).toUpperCase() : "A"
+  }
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center py-8">
+        <div className="w-8 h-8 border-4 border-teal-200 border-t-teal-600 rounded-full animate-spin"></div>
+      </div>
+    )
+  }
+
+  if (message && feedback.length === 0) {
+    return (
+      <div className="bg-gray-50 rounded-lg p-6 text-center">
+        <p className="text-gray-600">{message}</p>
+      </div>
+    )
+  }
 
   return (
-    <div className="feedback-dashboard">
-      <h2>Customer Feedback</h2>
-      {message && <p className="message">{message}</p>}
+    <div className="space-y-6">
+      {feedback.map((item) => (
+        <div key={item._id} className="bg-white rounded-lg border border-gray-100 p-5 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex items-start justify-between">
+            <div className="flex items-start">
+              <div className="h-12 w-12 rounded-full bg-teal-100 flex items-center justify-center text-teal-700 font-medium text-lg">
+                {getCustomerInitial(item.customerID)}
+              </div>
+              <div className="ml-4">
+                <h4 className="text-base font-semibold text-gray-900">{getCustomerName(item.customerID)}</h4>
+                <div className="mt-1 flex items-center">
+                  {editingFeedback === item._id ? (
+                    <div className="flex space-x-1">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <button
+                          key={star}
+                          type="button"
+                          onClick={() => setEditedRating(star)}
+                          className="focus:outline-none"
+                        >
+                          <Star
+                            className={`w-5 h-5 ${
+                              star <= editedRating ? "text-yellow-400" : "text-gray-300"
+                            } fill-current`}
+                          />
+                        </button>
+                      ))}
+                    </div>
+                  ) : (
+                    renderStars(item.rating)
+                  )}
+                  <span className="ml-2 text-xs text-gray-500">
+                    {new Date(item.datePosted || item.createdAt).toLocaleDateString()}
+                  </span>
+                </div>
+                {item.sentiment && (
+                  <div className="mt-1">
+                    {getSentimentBadge(item.sentiment)}
+                  </div>
+                )}
+              </div>
+            </div>
 
-      {feedback.length > 0 ? (
-        <div className="feedback-table">
-          <table>
-            <thead>
-              <tr>
-                <th>Customer ID</th>
-                <th>Vehicle ID</th>
-                <th>Rating</th>
-                <th>Comment</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {feedback.map((item) => (
-                <tr key={item._id}>
-                  <td>{item.customerID}</td>
-                  <td>{item.vehicleID}</td>
-                  <td>
-                    {editingFeedback === item._id ? (
-                      <select
-                        value={editedRating}
-                        onChange={(e) => setEditedRating(Number(e.target.value))}
-                      >
-                        {[1, 2, 3, 4, 5].map((r) => (
-                          <option key={r} value={r}>
-                            {r} ⭐
-                          </option>
-                        ))}
-                      </select>
-                    ) : (
-                      <>
-                        <span className="rating-stars">{'⭐'.repeat(item.rating)}</span><br />
-                        {getSentimentBadge(item.rating)}
-                      </>
-                    )}
-                  </td>
-                  <td>
-                    {editingFeedback === item._id ? (
-                      <input
-                        type="text"
-                        value={editedComment}
-                        onChange={(e) => setEditedComment(e.target.value)}
-                      />
-                    ) : (
-                      item.comment
-                    )}
-                  </td>
-                  <td>
-                    {editingFeedback === item._id ? (
-                      <>
-                        <button className="save-btn" onClick={handleUpdate}>Save</button>
-                        <button className="cancel-btn" onClick={() => setEditingFeedback(null)}>Cancel</button>
-                      </>
-                    ) : (
-                      <>
-                        <button className="edit-btn" onClick={() => handleEdit(item)}>Edit</button>
-                        <button className="delete-btn" onClick={() => handleDelete(item._id)}>Delete</button>
-                      </>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+            {/* Only show edit/delete buttons if the feedback belongs to the current user */}
+            {currentUserID && item.customerID === currentUserID && (
+              <div className="flex space-x-2">
+                {editingFeedback === item._id ? (
+                  <>
+                    <button
+                      onClick={handleUpdate}
+                      className="px-3 py-1 bg-teal-600 text-white text-sm rounded hover:bg-teal-700 transition-colors"
+                    >
+                      Save
+                    </button>
+                    <button
+                      onClick={() => setEditingFeedback(null)}
+                      className="px-3 py-1 bg-gray-200 text-gray-700 text-sm rounded hover:bg-gray-300 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => handleEdit(item)}
+                      className="p-1 text-gray-500 hover:text-teal-600 transition-colors"
+                      aria-label="Edit feedback"
+                    >
+                      <Edit className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(item._id)}
+                      className="p-1 text-gray-500 hover:text-red-600 transition-colors"
+                      aria-label="Delete feedback"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+
+          {editingFeedback === item._id ? (
+            <div className="mt-4">
+              <textarea
+                value={editedComment}
+                onChange={(e) => setEditedComment(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                rows={3}
+              />
+            </div>
+          ) : (
+            <p className="mt-3 text-gray-700">{item.comment}</p>
+          )}
         </div>
-      ) : (
-        <p className="no-feedback">No feedback available.</p>
+      ))}
+    
+      {feedback.length === 0 && message && (
+        <div className="bg-gray-50 rounded-lg p-6 text-center">
+          <p className="text-gray-600">{message}</p>
+        </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default FeedbackList;
+export default VehicleFeedbackComponent

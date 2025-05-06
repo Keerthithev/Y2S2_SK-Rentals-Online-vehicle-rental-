@@ -112,7 +112,7 @@ function App() {
        
         
          <Route path="/allcomplaints" element={<AllComplaints />} />
-         <Route path="/bookingVehicle" element={<BookingVehicle />} />
+         <Route path="/bookingVehicle/:id" element={<BookingVehicle />} />
         <Route path="/allBookings" element={<GetAllBookings />} />
       
       </Routes>

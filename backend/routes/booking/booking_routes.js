@@ -1,20 +1,17 @@
 const express = require("express");
 const router = express.Router();
-const { newBooking} = require("../../controllers/booking_management/bookingController");
-const { getAllBookings} = require("../../controllers/booking_management/bookingController");
-//const { getUserBooking} = require("../../controllers/booking_management/bookingController");
-const { cancelBooking} = require("../../controllers/booking_management/bookingController");
-const { editBooking } = require("../../controllers/booking_management/bookingController");
+const { newBooking, getAllBookings, cancelBooking, editBooking } = require("../../controllers/booking_management/bookingController");
+const protect = require("../../middlewares/authMiddleware"); // Import the middleware
+
+// Create a new booking - requires user authentication
+router.post("/newbook", protect, newBooking);
+
+// Get all bookings - add protection if needed
+router.get("/allbookings", protect, getAllBookings);
 
 
-
-
-// Create new booking
-router.post("/booking/new", newBooking);
- router.get("/booking/all", getAllBookings);
-//router.get("/booking/all/:userId", getUserBooking);
-router.delete("/booking/delete/:id", cancelBooking);
-router.put("/booking/edit/:id", editBooking); // Update booking by ID
+// Cancel a booking (same functionality as delete in this case)
+router.delete('/cancelbooking/:id', cancelBooking);
 
 
 module.exports = router;
