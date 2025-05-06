@@ -56,7 +56,8 @@ const vehicleSchema = new mongoose.Schema({
     },
     availableStatus: { 
         type: Boolean, 
-        required: true 
+        required: true ,
+        default: true,
     }
 });
 

@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^13.5.0",
     "ajv": "^8.17.1",
     "axios": "^1.8.1",
+    "date-fns": "^4.1.0",
     "firebase": "^9.23.0",
     "jwt-decode": "^4.0.0",
     "later": "^1.2.0",

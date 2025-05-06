@@ -96,21 +96,17 @@ exports.newVehicle = catchAsyncError(async (req, res, next) => {
 });
 
 
-
 // Get all vehicles -- api/v1/vehicles
 exports.getVehicles = catchAsyncError(async (req, res, next) => {
-    const resPerPage = 10;  // Vehicles per page
-
-    // Create API query features: search, filter, and paginate
+    // Create API query features: search and filter only (no pagination)
     const apiFeatures = new ApiFeatures(Vehicle.find(), req.query)
         .search()
-        .filter()
-        .paginate(resPerPage);
+        .filter();
 
-    // Fetch the vehicles for the current page
+    // Fetch all matching vehicles
     const vehicles = await apiFeatures.query;
 
-    // Get the total count of vehicles matching the search and filter criteria
+    // Get total count of vehicles matching the filters
     const totalCount = await Vehicle.countDocuments(apiFeatures.query.getFilter());
 
     if (!vehicles.length) {
@@ -119,7 +115,7 @@ exports.getVehicles = catchAsyncError(async (req, res, next) => {
 
     res.status(200).json({
         success: true,
-        count: totalCount, // Total number of vehicles for pagination
+        count: totalCount,
         vehicles
     });
 });

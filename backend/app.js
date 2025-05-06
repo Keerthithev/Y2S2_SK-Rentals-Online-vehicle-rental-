@@ -63,7 +63,7 @@ app.use(errorMiddleware);
 app.use('/api/v1/', managevehicles);
 app.use('/api/v1/', managevehiclesforusers);
 
-app.use("/api/v2/", manageBookingRoutes); 
+app.use("/api/v1/", manageBookingRoutes); 
 module.exports = app;  // Export the app to be used in server.js
 
 app.post('/api/v1/admin/vehicle/new', upload.none(),isAuthenticatedUser, authorizeRoles('admin'), vehicleController.newVehicle);
