@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
-import { Search, Users, MapPin, Sliders, X } from "lucide-react"
+import { Search, Users, MapPin, Sliders, AlertTriangle, MessageSquare, Bell } from "lucide-react"
 import Header from "../layouts/userheader"
 
-const UserVehicleList = () => {
+const UserVehicleListWithComplaint = () => {
   const [vehicles, setVehicles] = useState([])
   const [filteredVehicles, setFilteredVehicles] = useState([])
   const [searchTerm, setSearchTerm] = useState("")
@@ -19,6 +19,7 @@ const UserVehicleList = () => {
   const [rentRangeFilter, setRentRangeFilter] = useState({ min: 0, max: 100000 })
   const [maxRent, setMaxRent] = useState(0)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [showComplaintModal, setShowComplaintModal] = useState(false)
   const navigate = useNavigate()
 
   const fetchVehicles = async () => {
@@ -127,13 +128,18 @@ const UserVehicleList = () => {
     }).format(amount)
   }
 
+  // Handle raising a complaint
+  const handleRaiseComplaint = () => {
+    navigate("/complaintform")
+  }
+
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-50">
       {/* Custom Header for User Site */}
-     <Header/>
+      <Header />
 
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-teal-500 to-emerald-600 text-white">
+      <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
           <div className="text-center">
             <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">Find Your Perfect Rental Vehicle</h1>
@@ -153,7 +159,7 @@ const UserVehicleList = () => {
                 value={searchTerm}
                 onChange={handleSearch}
                 placeholder="Search by brand, model, type or year..."
-                className="block w-full pl-10 pr-4 py-3 border border-transparent rounded-lg bg-white shadow-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                className="block w-full pl-10 pr-4 py-3 border border-transparent rounded-lg bg-white shadow-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               />
             </div>
           </div>
@@ -188,6 +194,15 @@ const UserVehicleList = () => {
               <option value="all">All Vehicles</option>
               <option value="available">Available Only</option>
             </select>
+
+            {/* Report Issue Button */}
+            <button
+              onClick={handleRaiseComplaint}
+              className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors flex items-center gap-2"
+            >
+              <MessageSquare className="h-4 w-4" />
+              Report an Issue
+            </button>
           </div>
         </div>
 
@@ -200,7 +215,7 @@ const UserVehicleList = () => {
                 <select
                   value={selectedVehicleType}
                   onChange={(e) => handleVehicleTypeChange(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                 >
                   <option value="all">All Types</option>
                   {vehicleTypes.map((type) => (
@@ -223,7 +238,7 @@ const UserVehicleList = () => {
                       max={maxRent}
                       value={rentRangeFilter.min}
                       onChange={(e) => handleRentRangeChange("min", e.target.value)}
-                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-teal-600"
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
                     />
                     <div className="flex justify-between text-xs text-gray-500 mt-1">
                       <span>{formatCurrency(0)}</span>
@@ -237,7 +252,7 @@ const UserVehicleList = () => {
                       max={maxRent}
                       value={rentRangeFilter.max}
                       onChange={(e) => handleRentRangeChange("max", e.target.value)}
-                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-teal-600"
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
                     />
                     <div className="flex justify-between text-xs text-gray-500 mt-1">
                       <span>{formatCurrency(rentRangeFilter.min)}</span>
@@ -255,19 +270,7 @@ const UserVehicleList = () => {
           <div className="mb-8 bg-red-50 border-l-4 border-red-500 p-4 rounded-md">
             <div className="flex">
               <div className="flex-shrink-0">
-                <svg
-                  className="h-5 w-5 text-red-400"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+                <AlertTriangle className="h-5 w-5 text-red-400" />
               </div>
               <div className="ml-3">
                 <p className="text-sm text-red-700">{error}</p>
@@ -279,7 +282,7 @@ const UserVehicleList = () => {
         {/* Loading State */}
         {loading ? (
           <div className="flex justify-center items-center py-20">
-            <div className="w-12 h-12 border-4 border-teal-200 border-t-teal-600 rounded-full animate-spin"></div>
+            <div className="w-12 h-12 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin"></div>
           </div>
         ) : (
           <>
@@ -299,7 +302,7 @@ const UserVehicleList = () => {
                     />
                     <div
                       className={`absolute top-4 right-4 px-2 py-1 rounded-full text-xs font-semibold ${
-                        vehicle.availableStatus ? "bg-emerald-100 text-emerald-800" : "bg-red-100 text-red-800"
+                        vehicle.availableStatus ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
                       }`}
                     >
                       {vehicle.availableStatus ? "Available" : "Unavailable"}
@@ -314,7 +317,7 @@ const UserVehicleList = () => {
                           {vehicle.brand} {vehicle.model} • {vehicle.year}
                         </p>
                       </div>
-                      <div className="text-teal-600 font-bold">{formatCurrency(vehicle.rentPerDay || 0)}/day</div>
+                      <div className="text-indigo-600 font-bold">{formatCurrency(vehicle.rentPerDay || 0)}/day</div>
                     </div>
 
                     <div className="mt-4 pt-4 border-t border-gray-100">
@@ -330,7 +333,7 @@ const UserVehicleList = () => {
                       </div>
                     </div>
 
-                    <button className="mt-4 w-full py-2 bg-teal-600 text-white font-medium rounded-md hover:bg-teal-700 transition-colors">
+                    <button className="mt-4 w-full py-2 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 transition-colors">
                       View Details
                     </button>
                   </div>
@@ -378,22 +381,22 @@ const UserVehicleList = () => {
               <h3 className="text-lg font-bold mb-4">Quick Links</h3>
               <ul className="space-y-2 text-sm text-gray-400">
                 <li>
-                  <a href="/" className="hover:text-teal-400 transition-colors">
+                  <a href="/" className="hover:text-indigo-400 transition-colors">
                     Home
                   </a>
                 </li>
                 <li>
-                  <a href="/vehicles" className="hover:text-teal-400 transition-colors">
+                  <a href="/vehicles" className="hover:text-indigo-400 transition-colors">
                     Vehicles
                   </a>
                 </li>
                 <li>
-                  <a href="/services" className="hover:text-teal-400 transition-colors">
+                  <a href="/services" className="hover:text-indigo-400 transition-colors">
                     Services
                   </a>
                 </li>
                 <li>
-                  <a href="/about" className="hover:text-teal-400 transition-colors">
+                  <a href="/about" className="hover:text-indigo-400 transition-colors">
                     About Us
                   </a>
                 </li>
@@ -442,7 +445,7 @@ const UserVehicleList = () => {
             <div>
               <h3 className="text-lg font-bold mb-4">Follow Us</h3>
               <div className="flex space-x-4">
-                <a href="#" className="text-gray-400 hover:text-teal-400 transition-colors">
+                <a href="#" className="text-gray-400 hover:text-indigo-400 transition-colors">
                   <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path
                       fillRule="evenodd"
@@ -451,7 +454,7 @@ const UserVehicleList = () => {
                     />
                   </svg>
                 </a>
-                <a href="#" className="text-gray-400 hover:text-teal-400 transition-colors">
+                <a href="#" className="text-gray-400 hover:text-indigo-400 transition-colors">
                   <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path
                       fillRule="evenodd"
@@ -460,7 +463,7 @@ const UserVehicleList = () => {
                     />
                   </svg>
                 </a>
-                <a href="#" className="text-gray-400 hover:text-teal-400 transition-colors">
+                <a href="#" className="text-gray-400 hover:text-indigo-400 transition-colors">
                   <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
                   </svg>
@@ -473,6 +476,22 @@ const UserVehicleList = () => {
           </div>
         </div>
       </footer>
+
+      {/* Complaint Help Banner */}
+      <div className="fixed bottom-0 left-0 right-0 bg-indigo-600 text-white py-3 px-4 shadow-lg">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center">
+          <div className="flex items-center mb-3 sm:mb-0">
+            <Bell className="h-5 w-5 mr-2" />
+            <p className="text-sm">Having issues with a vehicle or service? We're here to help!</p>
+          </div>
+          <button
+            onClick={handleRaiseComplaint}
+            className="px-4 py-2 bg-white text-indigo-600 rounded-md hover:bg-indigo-50 transition-colors text-sm font-medium"
+          >
+            Submit a Complaint
+          </button>
+        </div>
+      </div>
     </div>
   )
 }
@@ -500,4 +519,4 @@ const FuelIcon = (props) => {
   )
 }
 
-export default UserVehicleList
+export default UserVehicleListWithComplaint

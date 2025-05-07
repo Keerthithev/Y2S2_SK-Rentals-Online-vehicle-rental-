@@ -61,6 +61,8 @@ import AllComplaints from './components/AllComplaints';
 import BookingVehicle from './components/bookingVehicle';
 import GetAllBookings from './components/getAllBookings';
 
+
+import Home from './components/user/Home.js';
 function App() {
   return (
     
@@ -114,7 +116,7 @@ function App() {
          <Route path="/allcomplaints" element={<AllComplaints />} />
          <Route path="/bookingVehicle/:id" element={<BookingVehicle />} />
         <Route path="/allBookings" element={<GetAllBookings />} />
-      
+        <Route path="/home" element={<Home />} />
       </Routes>
     </Router>
   );

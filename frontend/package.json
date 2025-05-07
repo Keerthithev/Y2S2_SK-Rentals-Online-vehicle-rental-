@@ -12,6 +12,7 @@
     "axios": "^1.8.1",
     "date-fns": "^4.1.0",
     "firebase": "^9.23.0",
+    "gsap": "^3.13.0",
     "jwt-decode": "^4.0.0",
     "later": "^1.2.0",
     "lucide-react": "^0.486.0",
