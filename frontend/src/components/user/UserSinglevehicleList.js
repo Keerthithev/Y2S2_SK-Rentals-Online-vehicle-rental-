@@ -21,6 +21,7 @@ import {
 } from "lucide-react"
 import VehicleFeedbackComponent from "../FeedbackList"
 import AddFeedbackForm from "../FeedbackForm"
+import Header from "../layouts/userheader"
 
 const UserSingleVehicleWithFeedback = () => {
   const [vehicle, setVehicle] = useState(null)
@@ -165,6 +166,7 @@ const UserSingleVehicleWithFeedback = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <Header/>
       {/* Header removed for brevity */}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

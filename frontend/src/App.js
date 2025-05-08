@@ -1,6 +1,6 @@
 // src/App.js
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes , Navigate } from 'react-router-dom';
 // Your custom styles
 
 
@@ -71,10 +71,12 @@ function App() {
      
       <main>
         
-      
+    
     
       </main>
       <Routes>
+
+      <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/password/forgot" element={<ForgotPassword />} />

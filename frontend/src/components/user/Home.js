@@ -206,11 +206,11 @@ const HomePage = () => {
               </div>
             </div>
             <div className="w-full lg:w-1/2 relative">
-              <div className="hero-image relative z-10 max-w-lg mx-auto">
+              <div >
                 <img 
-                  src="/placeholder.svg?height=500&width=600" 
+                  src="image/car4.png" 
                   alt="SK Rentals Vehicles" 
-                  className="rounded-2xl shadow-2xl"
+                  className="rounded-2xl "
                 />
               </div>
             </div>
@@ -251,7 +251,7 @@ const HomePage = () => {
                     </button>
                   </div>
                   <img 
-                    src="/placeholder.svg?height=300&width=400" 
+                    src="image/i2.jpeg" 
                     alt="Bikes" 
                     className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
                   />
@@ -288,7 +288,7 @@ const HomePage = () => {
                     </button>
                   </div>
                   <img 
-                    src="/placeholder.svg?height=300&width=400" 
+                    src="image/i1.jpeg" 
                     alt="Cars" 
                     className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
                   />
@@ -325,7 +325,7 @@ const HomePage = () => {
                     </button>
                   </div>
                   <img 
-                    src="/placeholder.svg?height=300&width=400" 
+                    src="image/vans.png" 
                     alt="Vans" 
                     className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
                   />
@@ -562,7 +562,7 @@ const HomePage = () => {
               </div>
               <div className="w-full lg:w-1/2 relative min-h-[300px]">
                 <img 
-                  src="/placeholder.svg?height=400&width=600" 
+                  src="image/journeynew.jpg" 
                   alt="Start your journey" 
                   className="absolute inset-0 w-full h-full object-cover"
                 />

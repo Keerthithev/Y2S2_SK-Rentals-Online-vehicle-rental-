@@ -5,6 +5,7 @@ import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import { jwtDecode } from "jwt-decode"
 import Header from "./layouts/Header"
+import UserHeader from "./layouts/userheader"
 import Footer from "./layouts/Footer"
 import { User, Mail, Phone, MapPin, Calendar, FileText, Edit2, LogOut, Shield, Clock, ChevronRight, MessageSquare, AlertCircle, CheckCircle, Filter, Search, Download, RefreshCw, Trash2, Edit, X, Plus, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react'
 
@@ -53,15 +54,18 @@ const ProfileWithComplaints = () => {
         navigate("/login")
         return
       }
-
+  
       const decodedToken = jwtDecode(token)
-      setUserRole(decodedToken.role)
-
+      const role = decodedToken.role
+      setUserRole(role) // for other uses
+      console.log("Decoded token:", decodedToken)
+      // Optional: console.log("Decoded role:", role)
+  
       const response = await axios.get("http://localhost:1111/api/v1/myprofile", {
         headers: { Authorization: `Bearer ${token}` },
       })
-
-      setUser(response.data.user)
+  
+      setUser({ ...response.data.user, role }) // Attach role to user object
       setError("")
     } catch (err) {
       setError(err.response?.data?.message || "Failed to load profile information")
@@ -69,6 +73,7 @@ const ProfileWithComplaints = () => {
       setLoading(false)
     }
   }
+  
 
   const fetchComplaints = async () => {
     setIsRefreshing(true)
@@ -79,17 +84,18 @@ const ProfileWithComplaints = () => {
         navigate("/login")
         return
       }
-
-      // Determine which API endpoint to use based on user role
+  
+      const role = user?.role || userRole // fallback
+      console.log(role)
       const url =
-        userRole === "admin" || userRole === "staff"
+        role === "admin" || role === "staff"
           ? "http://localhost:1111/api/v1/complaints/all"
           : `http://localhost:1111/api/v1/complaints/${user._id}`
-
+  
       const response = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` },
       })
-
+  
       setComplaints(response.data)
       setComplaintsError("")
     } catch (error) {
@@ -100,6 +106,7 @@ const ProfileWithComplaints = () => {
       setIsRefreshing(false)
     }
   }
+  
 
   const handleLogout = () => {
     const confirmLogout = window.confirm("Are you sure you want to log out?")
@@ -368,7 +375,7 @@ const ProfileWithComplaints = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
+    {userRole === "admin" ? <Header /> : <UserHeader />}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">My Account</h1>
