@@ -1,29 +1,48 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
-import { ChevronDown, LogOut, Settings, User, Bell, MessageSquare, HelpCircle } from 'lucide-react'
+import { Link, useNavigate } from "react-router-dom"
+import { ChevronDown, LogOut, Settings, User, Bell, MessageSquare, HelpCircle, LogIn, UserPlus } from 'lucide-react'
 
 const UserHeader = () => {
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [notifications, setNotifications] = useState(3) // Example notification count
+  const [notifications, setNotifications] = useState(3)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
-    setUsername(localStorage.getItem("username") || "User")
-    setEmail(localStorage.getItem("email") || "")
+    const token = localStorage.getItem("token")
+    if (token) {
+      setIsLoggedIn(true)
+      setUsername(localStorage.getItem("username") || "User")
+      setEmail(localStorage.getItem("email") || "")
+    }
   }, [])
 
   const handleLogout = () => {
     localStorage.removeItem("token")
     localStorage.removeItem("username")
     localStorage.removeItem("email")
+    setIsLoggedIn(false)
     window.location.href = "/login"
   }
 
+  const handleNavigation = (e) => {
+    if (!isLoggedIn) {
+      e.preventDefault()
+      alert("Please login to access this page")
+      navigate("/login")
+    }
+  }
+
   const toggleDropdown = () => {
+    if (!isLoggedIn) {
+      navigate("/login")
+      return
+    }
     setIsDropdownOpen(!isDropdownOpen)
   }
 
@@ -32,34 +51,18 @@ const UserHeader = () => {
   }
 
   return (
-    <header className="bg-gradient-to-r from-indigo-700 to-purple-800 text-white shadow-lg border-b border-indigo-900">
+    <header className="bg-gradient-to-r from-gray-900 to-gray-800 text-white shadow-lg border-b border-gray-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
         <div className="flex justify-between items-center">
           {/* Logo */}
           <div className="flex items-center">
-            <Link to="/home" className="flex items-center gap-2">
-              <div className="bg-gradient-to-r from-indigo-500 to-purple-600 p-2 rounded-lg shadow-md">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="w-6 h-6"
-                >
-                  <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2" />
-                  <circle cx="7" cy="17" r="2" />
-                  <path d="M9 17h6" />
-                  <circle cx="17" cy="17" r="2" />
-                </svg>
-              </div>
+            <Link to={isLoggedIn ? "/home" : "/login"} className="flex items-center gap-2">
               <div>
-                <span className="font-bold text-xl tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-indigo-200">
-                  SK Rentals
-                </span>
-                <span className="hidden md:block text-xs text-indigo-200 -mt-1">Premium Vehicle Rentals</span>
+                <img
+                  src="/image/logo.png"
+                  alt="SK Rentals Logo"
+                  className="w--20 h-20 object-contain"
+                />
               </div>
             </Link>
           </div>
@@ -67,7 +70,7 @@ const UserHeader = () => {
           {/* Mobile menu button */}
           <div className="md:hidden">
             <button
-              onClick={toggleMobileMenu}
+              onClick={isLoggedIn ? toggleMobileMenu : () => navigate("/login")}
               className="p-2 rounded-md text-indigo-100 hover:text-white focus:outline-none"
             >
               <svg
@@ -88,92 +91,80 @@ const UserHeader = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-1">
-            <NavItem to="/home" label="Home" />
-            <NavItem to="/uservehiclelist" label="Vehicles" />
-            <NavItem to="/bookings" label="My Bookings" />
-            <NavItem to="/contactus" label="Contact Us" />
-            <NavItem to="/about" label="About" />
+            <NavItem to="/home" label="Home" onClick={handleNavigation} isLoggedIn={isLoggedIn} />
+            <NavItem to="/uservehiclelist" label="Vehicles" onClick={handleNavigation} isLoggedIn={isLoggedIn} />
+            {/* <NavItem to="/allbookings" label="My Bookings" onClick={handleNavigation} isLoggedIn={isLoggedIn} /> */}
+            <NavItem to="/contactus" label="Contact Us" onClick={handleNavigation} isLoggedIn={isLoggedIn} />
+            <NavItem to="/about" label="About" onClick={handleNavigation} isLoggedIn={isLoggedIn} />
 
-            {/* Action buttons */}
-            <div className="flex items-center ml-4 space-x-2">
-              {/* Notifications */}
-              <button className="p-2 rounded-full text-indigo-100 hover:bg-indigo-600 hover:text-white relative">
-                <Bell className="w-5 h-5" />
-                {notifications > 0 && (
-                  <span className="absolute top-0 right-0 block h-4 w-4 rounded-full bg-red-500 text-xs text-white font-bold flex items-center justify-center transform translate-x-1 -translate-y-1">
-                    {notifications}
-                  </span>
+            {/* Auth Buttons or Profile Dropdown */}
+            {isLoggedIn ? (
+              <div className="relative ml-3">
+                <button
+                  onClick={toggleDropdown}
+                  className="flex items-center gap-2 bg-indigo-800 text-white px-3 py-2 rounded-lg border border-indigo-600 hover:bg-indigo-700 transition-colors duration-200"
+                >
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center">
+                    <User className="w-4 h-4" />
+                  </div>
+                  <div className="text-left hidden lg:block">
+                    <div className="text-sm font-medium truncate max-w-[100px]">{username}</div>
+                    <div className="text-xs text-indigo-200 truncate max-w-[100px]">{email}</div>
+                  </div>
+                  <ChevronDown className="w-4 h-4 text-indigo-300" />
+                </button>
+
+                {isDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-56 bg-indigo-800 border border-indigo-700 rounded-lg shadow-lg z-50">
+                    <div className="p-3 border-b border-indigo-700">
+                      <p className="text-sm font-medium text-white">{username}</p>
+                      <p className="text-xs text-indigo-300 truncate">{email}</p>
+                    </div>
+                    <div className="py-1">
+                      <Link
+                        to="/profile"
+                        className="flex items-center px-4 py-2 text-sm text-indigo-200 hover:bg-indigo-700 hover:text-white"
+                        onClick={() => setIsDropdownOpen(false)}
+                      >
+                        <User className="w-4 h-4 mr-2" />
+                        My Profile
+                      </Link>
+                    </div>
+                    <div className="py-1 border-t border-indigo-700">
+                      <button
+                        onClick={handleLogout}
+                        className="flex w-full items-center px-4 py-2 text-sm text-red-400 hover:bg-indigo-700 hover:text-red-300"
+                      >
+                        <LogOut className="w-4 h-4 mr-2" />
+                        Sign out
+                      </button>
+                    </div>
+                  </div>
                 )}
-              </button>
-
-              {/* Messages */}
-              <button className="p-2 rounded-full text-indigo-100 hover:bg-indigo-600 hover:text-white">
-                <MessageSquare className="w-5 h-5" />
-              </button>
-
-              {/* Help */}
-              <button className="p-2 rounded-full text-indigo-100 hover:bg-indigo-600 hover:text-white">
-                <HelpCircle className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Profile Dropdown */}
-            <div className="relative ml-3">
-              <button
-                onClick={toggleDropdown}
-                className="flex items-center gap-2 bg-indigo-800 text-white px-3 py-2 rounded-lg border border-indigo-600 hover:bg-indigo-700 transition-colors duration-200"
-              >
-                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center">
-                  <User className="w-4 h-4" />
-                </div>
-                <div className="text-left hidden lg:block">
-                  <div className="text-sm font-medium truncate max-w-[100px]">{username}</div>
-                  <div className="text-xs text-indigo-200 truncate max-w-[100px]">{email}</div>
-                </div>
-                <ChevronDown className="w-4 h-4 text-indigo-300" />
-              </button>
-
-              {isDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-56 bg-indigo-800 border border-indigo-700 rounded-lg shadow-lg z-50">
-                  <div className="p-3 border-b border-indigo-700">
-                    <p className="text-sm font-medium text-white">{username}</p>
-                    <p className="text-xs text-indigo-300 truncate">{email}</p>
-                  </div>
-                  <div className="py-1">
-                    <Link
-                      to="/profile"
-                      className="flex items-center px-4 py-2 text-sm text-indigo-200 hover:bg-indigo-700 hover:text-white"
-                      onClick={() => setIsDropdownOpen(false)}
-                    >
-                      <User className="w-4 h-4 mr-2" />
-                      My Profile
-                    </Link>
-                    <Link
-                      to="/settings"
-                      className="flex items-center px-4 py-2 text-sm text-indigo-200 hover:bg-indigo-700 hover:text-white"
-                      onClick={() => setIsDropdownOpen(false)}
-                    >
-                      <Settings className="w-4 h-4 mr-2" />
-                      Settings
-                    </Link>
-                  </div>
-                  <div className="py-1 border-t border-indigo-700">
-                    <button
-                      onClick={handleLogout}
-                      className="flex w-full items-center px-4 py-2 text-sm text-red-400 hover:bg-indigo-700 hover:text-red-300"
-                    >
-                      <LogOut className="w-4 h-4 mr-2" />
-                      Sign out
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
+              </div>
+            ) : (
+              <div className="flex gap-2 ml-3">
+                <Link
+                  to="/login"
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition-colors"
+                >
+                  <LogIn className="w-4 h-4" />
+                  <span>Login</span>
+                </Link>
+                <Link
+                  to="/register"
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-white bg-green-600 hover:bg-green-700 transition-colors"
+                >
+                  <UserPlus className="w-4 h-4" />
+                  <span>Register</span>
+                </Link>
+              </div>
+            )}
           </nav>
         </div>
 
         {/* Mobile Navigation */}
-        {isMobileMenuOpen && (
+        {isMobileMenuOpen && isLoggedIn && (
           <div className="md:hidden mt-3 pt-3 border-t border-indigo-600">
             <div className="space-y-1 px-2">
               <MobileNavItem to="/home" label="Home" onClick={() => setIsMobileMenuOpen(false)} />
@@ -225,11 +216,12 @@ const UserHeader = () => {
 }
 
 // Desktop Navigation Item
-const NavItem = ({ to, label }) => {
+const NavItem = ({ to, label, onClick, isLoggedIn }) => {
   const isActive = window.location.pathname === to
   return (
     <Link
-      to={to}
+      to={isLoggedIn ? to : "#"}
+      onClick={onClick}
       className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
         isActive ? "bg-indigo-800 text-white" : "text-indigo-100 hover:bg-indigo-600 hover:text-white"
       }`}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import Header from './layouts/Header';
 
 const BookingList = () => {
   const [bookings, setBookings] = useState([]);
@@ -53,7 +54,10 @@ const BookingList = () => {
   }, []);
 
   return (
-    <div className="p-6">
+    <div >
+      <Header/>
+      <div className="p-6">
+      
       <h2 className="text-2xl font-semibold text-blue-800 mb-4">All Bookings</h2>
       <div className="overflow-x-auto">
         <table className="min-w-full table-auto border">
@@ -93,6 +97,7 @@ const BookingList = () => {
             )}
           </tbody>
         </table>
+      </div>
       </div>
     </div>
   );

@@ -45,7 +45,7 @@ const role = response.data.user.role?.toLowerCase();
 if (role === "admin") {
   navigate("/admindashboard");
 } else if (role === "user") {
-  navigate("/uservehiclelist");
+  navigate("/home");
 } else if (role === "staff") {
   navigate("/staff");
 } else {
