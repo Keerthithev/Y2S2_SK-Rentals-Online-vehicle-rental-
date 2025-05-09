@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
@@ -34,7 +34,41 @@ function AddMaintenance() {
     general: "",
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [vehicles, setVehicles] = useState([])
+  const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
+
+  // Fetch all vehicles when component mounts
+  useEffect(() => {
+    const fetchVehicles = async () => {
+      try {
+        const token = localStorage.getItem("token")
+        if (!token) {
+          navigate("/login")
+          return
+        }
+
+        // Fetch available vehicles
+        const vehiclesResponse = await axios.get("http://localhost:1111/api/v1/vehicles", {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+
+        if (vehiclesResponse.data.success && vehiclesResponse.data.vehicles.length > 0) {
+          setVehicles(vehiclesResponse.data.vehicles)
+        }
+      } catch (error) {
+        console.error("Error fetching vehicles:", error)
+        setErrors({
+          ...errors,
+          general: "Failed to load vehicles. Please try again.",
+        })
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchVehicles()
+  }, [navigate])
 
   const maintenanceTypes = [
     "Oil Change",
@@ -262,92 +296,39 @@ function AddMaintenance() {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Vehicle ID */}
-              <div>
-                <label htmlFor="vehicleId" className="block text-sm font-medium text-gray-700 mb-1">
-                  Vehicle ID <span className="text-red-500">*</span>
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Car className="h-5 w-5 text-gray-400" />
-                  </div>
-                  <input
-                    type="text"
-                    id="vehicleId"
-                    value={vehicleId}
-                    onChange={(e) => {
-                      setVehicleId(e.target.value)
-                      if (errors.vehicleId) setErrors({ ...errors, vehicleId: "" })
-                    }}
-                    className={`pl-10 w-full px-4 py-2 border ${
-                      errors.vehicleId ? "border-red-300 ring-red-500" : "border-gray-300 focus:ring-indigo-500"
-                    } rounded-md focus:outline-none focus:ring-2 focus:border-transparent transition-colors duration-200`}
-                    placeholder="Enter vehicle identification number"
-                  />
+            {loading ? (
+              <div className="py-8 flex justify-center">
+                <div className="flex flex-col items-center">
+                  <div className="w-12 h-12 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin"></div>
+                  <p className="mt-4 text-gray-600">Loading vehicles...</p>
                 </div>
-                {errors.vehicleId && (
-                  <p className="mt-1 text-sm text-red-600 flex items-center">
-                    <AlertCircle className="h-4 w-4 mr-1" /> {errors.vehicleId}
-                  </p>
-                )}
               </div>
-
-              {/* Date and Type - Two Column Layout */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Date */}
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Vehicle ID */}
                 <div>
-                  <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-1">
-                    Maintenance Date <span className="text-red-500">*</span>
+                  <label htmlFor="vehicleId" className="block text-sm font-medium text-gray-700 mb-1">
+                    Vehicle <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Calendar className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                      type="date"
-                      id="date"
-                      value={date}
-                      onChange={(e) => {
-                        setDate(e.target.value)
-                        if (errors.date) setErrors({ ...errors, date: "" })
-                      }}
-                      className={`pl-10 w-full px-4 py-2 border ${
-                        errors.date ? "border-red-300 ring-red-500" : "border-gray-300 focus:ring-indigo-500"
-                      } rounded-md focus:outline-none focus:ring-2 focus:border-transparent transition-colors duration-200`}
-                    />
-                  </div>
-                  {errors.date && (
-                    <p className="mt-1 text-sm text-red-600 flex items-center">
-                      <AlertCircle className="h-4 w-4 mr-1" /> {errors.date}
-                    </p>
-                  )}
-                </div>
-
-                {/* Type */}
-                <div>
-                  <label htmlFor="type" className="block text-sm font-medium text-gray-700 mb-1">
-                    Maintenance Type <span className="text-red-500">*</span>
-                  </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <FileText className="h-5 w-5 text-gray-400" />
+                      <Car className="h-5 w-5 text-gray-400" />
                     </div>
                     <select
-                      id="type"
-                      value={type}
+                      id="vehicleId"
+                      value={vehicleId}
                       onChange={(e) => {
-                        setType(e.target.value)
-                        if (errors.type) setErrors({ ...errors, type: "" })
+                        setVehicleId(e.target.value)
+                        if (errors.vehicleId) setErrors({ ...errors, vehicleId: "" })
                       }}
                       className={`pl-10 w-full px-4 py-2 border ${
-                        errors.type ? "border-red-300 ring-red-500" : "border-gray-300 focus:ring-indigo-500"
-                      } rounded-md focus:outline-none focus:ring-2 focus:border-transparent transition-colors duration-200 appearance-none bg-none`}
+                        errors.vehicleId ? "border-red-300 ring-red-500" : "border-gray-300 focus:ring-indigo-500"
+                      } rounded-md focus:outline-none focus:ring-2 focus:border-transparent transition-colors duration-200 appearance-none`}
                     >
-                      <option value="">Select Maintenance Type</option>
-                      {maintenanceTypes.map((maintenanceType, index) => (
-                        <option key={index} value={maintenanceType}>
-                          {maintenanceType}
+                      <option value="">Select Vehicle</option>
+                      {vehicles.map((vehicle) => (
+                        <option key={vehicle._id} value={vehicle._id}>
+                          {vehicle.name} - {vehicle.brand} {vehicle.model} ({vehicle.year})
                         </option>
                       ))}
                     </select>
@@ -367,126 +348,208 @@ function AddMaintenance() {
                       </svg>
                     </div>
                   </div>
-                  {errors.type && (
+                  {errors.vehicleId && (
                     <p className="mt-1 text-sm text-red-600 flex items-center">
-                      <AlertCircle className="h-4 w-4 mr-1" /> {errors.type}
+                      <AlertCircle className="h-4 w-4 mr-1" /> {errors.vehicleId}
                     </p>
                   )}
                 </div>
-              </div>
 
-              {/* Description */}
-              <div>
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
-                  Description <span className="text-red-500">*</span>
-                </label>
-                <div className="relative">
-                  <textarea
-                    id="description"
-                    value={description}
-                    onChange={(e) => {
-                      setDescription(e.target.value)
-                      if (errors.description) setErrors({ ...errors, description: "" })
-                    }}
-                    rows={4}
-                    className={`w-full px-4 py-2 border ${
-                      errors.description ? "border-red-300 ring-red-500" : "border-gray-300 focus:ring-indigo-500"
-                    } rounded-md focus:outline-none focus:ring-2 focus:border-transparent transition-colors duration-200`}
-                    placeholder="Describe the maintenance work performed"
-                  ></textarea>
-                </div>
-                {errors.description ? (
-                  <p className="mt-1 text-sm text-red-600 flex items-center">
-                    <AlertCircle className="h-4 w-4 mr-1" /> {errors.description}
-                  </p>
-                ) : (
-                  <p className="mt-1 text-xs text-gray-500 flex items-center">
-                    <Info className="h-3 w-3 mr-1" /> Provide details about the maintenance work performed
-                  </p>
-                )}
-              </div>
-
-              {/* Cost */}
-              <div>
-                <label htmlFor="cost" className="block text-sm font-medium text-gray-700 mb-1">
-                  Cost <span className="text-red-500">*</span>
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <DollarSign className="h-5 w-5 text-gray-400" />
+                {/* Date and Type - Two Column Layout */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Date */}
+                  <div>
+                    <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-1">
+                      Maintenance Date <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <Calendar className="h-5 w-5 text-gray-400" />
+                      </div>
+                      <input
+                        type="date"
+                        id="date"
+                        value={date}
+                        onChange={(e) => {
+                          setDate(e.target.value)
+                          if (errors.date) setErrors({ ...errors, date: "" })
+                        }}
+                        className={`pl-10 w-full px-4 py-2 border ${
+                          errors.date ? "border-red-300 ring-red-500" : "border-gray-300 focus:ring-indigo-500"
+                        } rounded-md focus:outline-none focus:ring-2 focus:border-transparent transition-colors duration-200`}
+                      />
+                    </div>
+                    {errors.date && (
+                      <p className="mt-1 text-sm text-red-600 flex items-center">
+                        <AlertCircle className="h-4 w-4 mr-1" /> {errors.date}
+                      </p>
+                    )}
                   </div>
-                  <input
-                    type="number"
-                    id="cost"
-                    value={cost}
-                    onChange={(e) => {
-                      setCost(e.target.value)
-                      if (errors.cost) setErrors({ ...errors, cost: "" })
-                    }}
-                    step="0.01"
-                    min="0"
-                    className={`pl-10 w-full px-4 py-2 border ${
-                      errors.cost ? "border-red-300 ring-red-500" : "border-gray-300 focus:ring-indigo-500"
-                    } rounded-md focus:outline-none focus:ring-2 focus:border-transparent transition-colors duration-200`}
-                    placeholder="Enter maintenance cost"
-                  />
-                </div>
-                {errors.cost && (
-                  <p className="mt-1 text-sm text-red-600 flex items-center">
-                    <AlertCircle className="h-4 w-4 mr-1" /> {errors.cost}
-                  </p>
-                )}
-              </div>
 
-              {/* Form Actions */}
-              <div className="flex flex-col sm:flex-row justify-end gap-3 pt-4 border-t border-gray-100">
-                <button
-                  type="button"
-                  onClick={handleCancel}
-                  className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 transition-all duration-200 flex items-center justify-center gap-2"
-                  disabled={isSubmitting}
-                >
-                  <X className="h-4 w-4" /> Cancel
-                </button>
-                <button
-                  type="submit"
-                  className={`px-4 py-2 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 transition-all duration-200 flex items-center justify-center gap-2 ${
-                    isSubmitting ? "opacity-70 cursor-not-allowed" : ""
-                  }`}
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? (
-                    <>
-                      <svg
-                        className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
+                  {/* Type */}
+                  <div>
+                    <label htmlFor="type" className="block text-sm font-medium text-gray-700 mb-1">
+                      Maintenance Type <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <FileText className="h-5 w-5 text-gray-400" />
+                      </div>
+                      <select
+                        id="type"
+                        value={type}
+                        onChange={(e) => {
+                          setType(e.target.value)
+                          if (errors.type) setErrors({ ...errors, type: "" })
+                        }}
+                        className={`pl-10 w-full px-4 py-2 border ${
+                          errors.type ? "border-red-300 ring-red-500" : "border-gray-300 focus:ring-indigo-500"
+                        } rounded-md focus:outline-none focus:ring-2 focus:border-transparent transition-colors duration-200 appearance-none bg-none`}
                       >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                        ></circle>
-                        <path
-                          className="opacity-75"
+                        <option value="">Select Maintenance Type</option>
+                        {maintenanceTypes.map((maintenanceType, index) => (
+                          <option key={index} value={maintenanceType}>
+                            {maintenanceType}
+                          </option>
+                        ))}
+                      </select>
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                        <svg
+                          className="h-5 w-5 text-gray-400"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
                           fill="currentColor"
-                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        ></path>
-                      </svg>
-                      Saving...
-                    </>
+                          aria-hidden="true"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                    {errors.type && (
+                      <p className="mt-1 text-sm text-red-600 flex items-center">
+                        <AlertCircle className="h-4 w-4 mr-1" /> {errors.type}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Description */}
+                <div>
+                  <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+                    Description <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <textarea
+                      id="description"
+                      value={description}
+                      onChange={(e) => {
+                        setDescription(e.target.value)
+                        if (errors.description) setErrors({ ...errors, description: "" })
+                      }}
+                      rows={4}
+                      className={`w-full px-4 py-2 border ${
+                        errors.description ? "border-red-300 ring-red-500" : "border-gray-300 focus:ring-indigo-500"
+                      } rounded-md focus:outline-none focus:ring-2 focus:border-transparent transition-colors duration-200`}
+                      placeholder="Describe the maintenance work performed"
+                    ></textarea>
+                  </div>
+                  {errors.description ? (
+                    <p className="mt-1 text-sm text-red-600 flex items-center">
+                      <AlertCircle className="h-4 w-4 mr-1" /> {errors.description}
+                    </p>
                   ) : (
-                    <>
-                      <Save className="h-4 w-4" /> Save Record
-                    </>
+                    <p className="mt-1 text-xs text-gray-500 flex items-center">
+                      <Info className="h-3 w-3 mr-1" /> Provide details about the maintenance work performed
+                    </p>
                   )}
-                </button>
-              </div>
-            </form>
+                </div>
+
+                {/* Cost */}
+                <div>
+                  <label htmlFor="cost" className="block text-sm font-medium text-gray-700 mb-1">
+                    Cost <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <DollarSign className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      type="number"
+                      id="cost"
+                      value={cost}
+                      onChange={(e) => {
+                        setCost(e.target.value)
+                        if (errors.cost) setErrors({ ...errors, cost: "" })
+                      }}
+                      step="0.01"
+                      min="0"
+                      className={`pl-10 w-full px-4 py-2 border ${
+                        errors.cost ? "border-red-300 ring-red-500" : "border-gray-300 focus:ring-indigo-500"
+                      } rounded-md focus:outline-none focus:ring-2 focus:border-transparent transition-colors duration-200`}
+                      placeholder="Enter maintenance cost"
+                    />
+                  </div>
+                  {errors.cost && (
+                    <p className="mt-1 text-sm text-red-600 flex items-center">
+                      <AlertCircle className="h-4 w-4 mr-1" /> {errors.cost}
+                    </p>
+                  )}
+                </div>
+
+                {/* Form Actions */}
+                <div className="flex flex-col sm:flex-row justify-end gap-3 pt-4 border-t border-gray-100">
+                  <button
+                    type="button"
+                    onClick={handleCancel}
+                    className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 transition-all duration-200 flex items-center justify-center gap-2"
+                    disabled={isSubmitting}
+                  >
+                    <X className="h-4 w-4" /> Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className={`px-4 py-2 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 transition-all duration-200 flex items-center justify-center gap-2 ${
+                      isSubmitting ? "opacity-70 cursor-not-allowed" : ""
+                    }`}
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <svg
+                          className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
+                        </svg>
+                        Saving...
+                      </>
+                    ) : (
+                      <>
+                        <Save className="h-4 w-4" /> Save Record
+                      </>
+                    )}
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
         </div>
 
@@ -501,7 +564,7 @@ function AddMaintenance() {
                 complete service history for each vehicle.
               </p>
               <ul className="mt-2 text-sm text-indigo-700 list-disc list-inside space-y-1">
-                <li>Use the actual Vehicle ID as it appears on the vehicle</li>
+                <li>Select the vehicle from the dropdown list</li>
                 <li>Select the appropriate maintenance type for accurate reporting</li>
                 <li>Include detailed descriptions for future reference</li>
                 <li>Enter the exact cost for budget tracking</li>

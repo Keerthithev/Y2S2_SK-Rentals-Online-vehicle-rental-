@@ -38,16 +38,39 @@ function VehicleListMain() {
   const [success, setSuccess] = useState(null)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [sortConfig, setSortConfig] = useState({ key: "date", direction: "descending" })
+  const [vehiclesList, setVehiclesList] = useState([])
   const navigate = useNavigate()
   const location = useLocation()
 
   useEffect(() => {
     fetchMaintenanceData()
+    fetchVehicles()
   }, [])
 
   useEffect(() => {
     applyFiltersAndSort()
   }, [vehicles, searchVehicleId, searchDate, searchType, sortConfig])
+
+  const fetchVehicles = async () => {
+    try {
+      const token = localStorage.getItem("token")
+      if (!token) {
+        navigate("/login")
+        return
+      }
+
+      const response = await axios.get("http://localhost:1111/api/v1/vehicles", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+
+      if (response.data.success && response.data.vehicles.length > 0) {
+        setVehiclesList(response.data.vehicles)
+      }
+    } catch (error) {
+      console.error("Error fetching vehicles:", error)
+      setError("Failed to load vehicles. Please try again.")
+    }
+  }
 
   const fetchMaintenanceData = async () => {
     setLoading(true)
@@ -133,13 +156,22 @@ function VehicleListMain() {
   const generateReport = () => {
     try {
       // Prepare data for export
-      const exportData = filteredVehicles.map((v) => ({
-        "Vehicle ID": v.vehicleId,
-        Date: new Date(v.date).toLocaleDateString(),
-        Type: v.type,
-        Description: v.description,
-        "Cost (Rs.)": v.cost,
-      }))
+      const exportData = filteredVehicles.map((v) => {
+        // Find the vehicle details
+        const vehicleDetails = getVehicleDetails(v.vehicleId)
+        const vehicleInfo = vehicleDetails
+          ? `${vehicleDetails.name} - ${vehicleDetails.brand} ${vehicleDetails.model} (${vehicleDetails.year})`
+          : v.vehicleId
+
+        return {
+          Vehicle: vehicleInfo,
+          "Vehicle ID": v.vehicleId,
+          Date: new Date(v.date).toLocaleDateString(),
+          Type: v.type,
+          Description: v.description,
+          "Cost (Rs.)": v.cost,
+        }
+      })
 
       const ws = XLSX.utils.json_to_sheet(exportData)
       const wb = XLSX.utils.book_new()
@@ -211,6 +243,20 @@ function VehicleListMain() {
     setSearchVehicleId("")
     setSearchDate("")
     setSearchType("")
+  }
+
+  // Get vehicle details from vehicleId
+  const getVehicleDetails = (vehicleId) => {
+    return vehiclesList.find((vehicle) => vehicle._id === vehicleId)
+  }
+
+  // Format vehicle display
+  const formatVehicleDisplay = (vehicleId) => {
+    const vehicle = getVehicleDetails(vehicleId)
+    if (vehicle) {
+      return `${vehicle.name} - ${vehicle.brand} ${vehicle.model} (${vehicle.year})`
+    }
+    return vehicleId // Fallback to ID if vehicle not found
   }
 
   // Format currency
@@ -333,20 +379,28 @@ function VehicleListMain() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label htmlFor="vehicleId" className="block text-sm font-medium text-gray-700 mb-1">
-                Vehicle ID
+                Vehicle
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <Car className="h-4 w-4 text-gray-400" />
                 </div>
-                <input
-                  type="text"
+                <select
                   id="vehicleId"
-                  placeholder="Search by Vehicle ID"
                   value={searchVehicleId}
                   onChange={(e) => setSearchVehicleId(e.target.value)}
-                  className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                />
+                  className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 appearance-none"
+                >
+                  <option value="">All Vehicles</option>
+                  {vehiclesList.map((vehicle) => (
+                    <option key={vehicle._id} value={vehicle._id}>
+                      {vehicle.name} - {vehicle.brand} {vehicle.model} ({vehicle.year})
+                    </option>
+                  ))}
+                </select>
+                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                  <ChevronDown className="h-4 w-4 text-gray-400" />
+                </div>
               </div>
             </div>
 
@@ -433,7 +487,7 @@ function VehicleListMain() {
                         onClick={() => handleSort("vehicleId")}
                       >
                         <div className="flex items-center">
-                          Vehicle ID
+                          Vehicle
                           {sortConfig.key === "vehicleId" && (
                             <span className="ml-1">{sortConfig.direction === "ascending" ? "↑" : "↓"}</span>
                           )}
@@ -496,13 +550,18 @@ function VehicleListMain() {
                           {editingId === v._id ? (
                             <>
                               <td className="px-6 py-4 whitespace-nowrap">
-                                <input
-                                  type="text"
+                                <select
                                   name="vehicleId"
                                   value={editData.vehicleId}
                                   onChange={handleChange}
                                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
-                                />
+                                >
+                                  {vehiclesList.map((vehicle) => (
+                                    <option key={vehicle._id} value={vehicle._id}>
+                                      {vehicle.name} - {vehicle.brand} {vehicle.model} ({vehicle.year})
+                                    </option>
+                                  ))}
+                                </select>
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap">
                                 <input
@@ -563,7 +622,7 @@ function VehicleListMain() {
                           ) : (
                             <>
                               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                {v.vehicleId}
+                                {formatVehicleDisplay(v.vehicleId)}
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 {new Date(v.date).toLocaleDateString()}
