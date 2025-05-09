@@ -417,12 +417,7 @@ const AdminUserList = () => {
                         </>
                       ) : (
                         <>
-                          <th
-                            scope="col"
-                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell"
-                          >
-                            Department
-                          </th>
+                         
                           <th
                             scope="col"
                             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell"
@@ -480,9 +475,7 @@ const AdminUserList = () => {
                             </>
                           ) : (
                             <>
-                              <td className="px-6 py-4 whitespace-nowrap hidden md:table-cell">
-                                <div className="text-sm text-gray-900">{user.department || "N/A"}</div>
-                              </td>
+                            
                               <td className="px-6 py-4 whitespace-nowrap hidden lg:table-cell">
                                 <div className="text-sm text-gray-900">{user.role}</div>
                               </td>

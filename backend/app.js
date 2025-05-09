@@ -4,6 +4,8 @@ const errorMiddleware = require('../backend/middlewares/error');
 const auth = require('./routes/usermanagement/auth');
 const managevehicles = require('./routes/admin/manage_vehicle_routes');
 const manageusers = require('./routes/admin/manage_users_routes');
+const manintenance = require('./routes/maintenanceRoutes')
+const manageBookingRoutes = require("./routes/booking/booking_routes.js");
 const cookieParser = require('cookie-parser');
 const cors = require("cors");
 const dotenv = require('dotenv');
@@ -15,6 +17,8 @@ dotenv.config({ path: path.join(__dirname, "config/config.env") });
 
 const managevehiclesforusers = require('./routes/usermanagement/uservehiclelist');
 
+const feedbackRoutes = require('./routes/feedbackmanagement/feedbackRoutes');
+const complaintRoutes = require('./routes/complaintmanagement/complaintRoutes');
 
 // Enable CORS for frontend on localhost:2222
 const corsOptions = {
@@ -40,17 +44,26 @@ app.use('/api/v1/', manageusers);
 app.use('/api/v1/', auth);
 
 app.use('/api/v1/', managevehicles);
+app.use('/api/v1/', feedbackRoutes);
+app.use('/api/v1/', complaintRoutes);
+// Apply error handling middleware
+app.use(errorMiddleware);
+
+// Routes
+app.use('/api/v1/', managevehicles);
+app.use('/api/v1/', manageusers);
+app.use('/api/v1/', auth);
+app.use('/api/v1/', manintenance);
+
+app.use('/api/v1/', managevehicles);
 
 // Apply error handling middleware
 app.use(errorMiddleware);
 
-
-
-
 app.use('/api/v1/', managevehicles);
 app.use('/api/v1/', managevehiclesforusers);
 
-
+app.use("/api/v1/", manageBookingRoutes); 
 module.exports = app;  // Export the app to be used in server.js
 
 app.post('/api/v1/admin/vehicle/new', upload.none(),isAuthenticatedUser, authorizeRoles('admin'), vehicleController.newVehicle);

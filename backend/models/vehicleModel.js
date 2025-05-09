@@ -56,8 +56,14 @@ const vehicleSchema = new mongoose.Schema({
     },
     availableStatus: { 
         type: Boolean, 
-        required: true 
-    }
+        required: true ,
+        default: true,
+    },
+    trackId: {
+        type: String,
+        required: true,
+        unique: true // Important to prevent duplicate trackers
+      },
 });
 
 module.exports = mongoose.model('Vehicle', vehicleSchema);

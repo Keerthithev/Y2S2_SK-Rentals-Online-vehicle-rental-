@@ -43,6 +43,7 @@ const AdminVehicleList = () => {
 
       if (response.data.success && response.data.vehicles.length > 0) {
         const vehiclesData = response.data.vehicles
+        
         setVehicles(vehiclesData)
         setFilteredVehicles(vehiclesData)
         
@@ -65,6 +66,7 @@ const AdminVehicleList = () => {
       setIsRefreshing(false)
     }
   }
+  
 
   useEffect(() => {
     fetchVehicles()

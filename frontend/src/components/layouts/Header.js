@@ -37,29 +37,14 @@ const Header = () => {
           {/* Logo */}
           <div className="flex items-center">
             <Link to="/admindashboard" className="flex items-center gap-2">
-              <div className="bg-gradient-to-r from-blue-500 to-indigo-600 p-2 rounded-lg shadow-md">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="w-6 h-6"
-                >
-                  <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2" />
-                  <circle cx="7" cy="17" r="2" />
-                  <path d="M9 17h6" />
-                  <circle cx="17" cy="17" r="2" />
-                </svg>
+              <div className="">
+              <img
+    src="/image/logo.png" // Change this to your actual logo path
+    alt="SK Rentals Logo"
+    className="w--20 h-20 object-contain"
+  />
               </div>
-              <div>
-                <span className="font-bold text-xl tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300">
-                  SK Rentals
-                </span>
-                <span className="hidden md:block text-xs text-gray-400 -mt-1">Admin Portal</span>
-              </div>
+             
             </Link>
           </div>
 
@@ -90,12 +75,12 @@ const Header = () => {
             <NavItem to="/admindashboard" label="Dashboard" />
             <NavItem to="/adminuserlist" label="Users" />
             <NavItem to="/listvehicle" label="Vehicles" />
-            <NavItem to="/bookinghistory" label="Bookings" />
-            <NavItem to="/staffactivities" label="Staff" />
+            <NavItem to="/allbookings" label="Bookings" />
+            {/* <NavItem to="/staffactivities" label="Staff" /> */}
             <NavItem to="/adminblacklist" label="Blacklist" />
-            <NavItem to="/reports" label="Reports" />
-            <NavItem to="/revenue" label="Revenue" />
-            <NavItem to="/messages" label="Messages" />
+            {/* <NavItem to="/reports" label="Reports" />
+            <NavItem to="/revenue" label="Revenue" /> */}
+            {/* <NavItem to="/messages" label="Messages" /> */}
 
             {/* Profile Dropdown */}
             <div className="relative ml-3">
@@ -128,14 +113,7 @@ const Header = () => {
                       <User className="w-4 h-4 mr-2" />
                       My Profile
                     </Link>
-                    <Link
-                      to="/settings"
-                      className="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white"
-                      onClick={() => setIsDropdownOpen(false)}
-                    >
-                      <Settings className="w-4 h-4 mr-2" />
-                      Settings
-                    </Link>
+                   
                   </div>
                   <div className="py-1 border-t border-gray-700">
                     <button

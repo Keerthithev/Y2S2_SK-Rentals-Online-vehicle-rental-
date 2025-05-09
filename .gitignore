@@ -9,6 +9,7 @@ firebase-debug.*.log*
 
 # Firebase cache
 .firebase/
+.DS_Store
 
 # Firebase config
 
@@ -68,5 +69,10 @@ node_modules/
 # dataconnect generated files
 .dataconnect
 node_modules/
+<<<<<<< HEAD
 .DS_Store
 .DS_Store
+=======
+node_modules/
+node_modules/
+>>>>>>> b00d87eb93da3fa6910ec4e2b7addebc5d4dfba3

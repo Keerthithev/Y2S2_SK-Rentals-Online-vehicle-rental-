@@ -1,6 +1,6 @@
 // src/App.js
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes , Navigate } from 'react-router-dom';
 // Your custom styles
 
 
@@ -11,6 +11,26 @@ import ForgotPassword from "./components/ForgotPassword";  // Import ForgotPassw
 import Profile from "./components/Profile";  // Import Profile component
 import UpdateProfile from "./components/updateProfile";  // Import UpdateProfile component
 import EnterOtp from "./components/EnterOtp";  // Import EnterOtp component
+import Header from './components/layouts/Header';
+
+
+import VehicleForm from './components/VehicleForm';
+// import VehicleListMain from "./components/VehicleListMain";
+// import AddMaintenance from "./components/AddMaintenance";
+import ReminderPage from "./components/ReminderPage";
+
+
+
+
+
+
+import UserVehicleList from './components/user/UserVehicleList';
+import UserSingleVehicleList from './components/user/UserSinglevehicleList';
+import VehicleFilter from './components/user/VehicleFilter';
+import VehicleListMain from './components/VehicleListMain.js';
+import AddMaintenance from './components/AddMaintenance.js';
+import StaffDashboard from './components/StaffDashboard.js';
+
 import Hedaer from "./components/layouts/Header.js";
 
 import Bookings from './components/user/Bookings'; 
@@ -30,21 +50,33 @@ import AdminSingleVehicle from './components/admin/AdminSingleVehicle';
 import AdminBlacklistPage from './components/admin/AdminBlacklistPage'
 
 
-import UserVehicleList from './components/user/UserVehicleList';
-import UserSingleVehicleList from './components/user/UserSinglevehicleList';
-import VehicleFilter from './components/user/VehicleFilter';
 
+
+import FeedbackForm from './components/FeedbackForm';
+import FeedbackList from './components/FeedbackList';
+import ComplaintForm from './components/ComplaintForm';
+import ComplaintList from './components/ComplaintList';
+//import ComplaintDetails from './components/ComplaintDetails'; 
+import AllComplaints from './components/AllComplaints';
+import BookingVehicle from './components/bookingVehicle';
+import GetAllBookings from './components/getAllBookings';
+
+
+import Home from './components/user/Home.js';
 function App() {
   return (
     
     <Router>
+      
      
       <main>
         
-      
+    
     
       </main>
       <Routes>
+
+      <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/password/forgot" element={<ForgotPassword />} />
@@ -69,7 +101,24 @@ function App() {
         <Route path="/uservehiclelist" element={<UserVehicleList />} />
         <Route path="/vehicle/:id" element={<UserSingleVehicleList />} />
         <Route path="/vehiclefilter" element={<VehicleFilter />} />
-      
+
+        <Route path="/list" element={<VehicleListMain />} />
+        <Route path="/add" element={<AddMaintenance />} />
+        <Route path="/staff" element={<StaffDashboard/>} />
+
+
+        <Route path="/feedbackform" element={<FeedbackForm />} />
+        
+        <Route path="/feedbacklist" element={<FeedbackList />} />
+        <Route path="/complaintform" element={<ComplaintForm />} />
+        <Route path="/complaintlist/:customerID" element={<ComplaintList />} />
+        <Route path="/complaintlist" element={<ComplaintList />} />
+       
+        
+         <Route path="/allcomplaints" element={<AllComplaints />} />
+         <Route path="/bookingVehicle/:id" element={<BookingVehicle />} />
+        <Route path="/allBookings" element={<GetAllBookings />} />
+        <Route path="/home" element={<Home />} />
       </Routes>
     </Router>
   );

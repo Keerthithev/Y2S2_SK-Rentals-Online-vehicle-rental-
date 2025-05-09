@@ -140,12 +140,19 @@ userSchema.pre('save', function(next) {
     next();
 });
 
-// JWT token generation method
-userSchema.methods.getJwtToken = function() {
-    return jwt.sign({ id: this.id }, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRES_TIME
-    });
+userSchema.methods.getJwtToken = function () {
+    return jwt.sign(
+        {
+            id: this._id,
+            role: this.role, // 👈 include the role here
+        },
+        process.env.JWT_SECRET,
+        {
+            expiresIn: process.env.JWT_EXPIRES_TIME,
+        }
+    );
 };
+
 
 // Password validation method
 userSchema.methods.isValidPassword = async function(enteredPassword) {
