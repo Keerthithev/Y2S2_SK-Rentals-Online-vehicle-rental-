@@ -36,10 +36,33 @@ function StaffDashboard() {
   const [reminders, setReminders] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [vehiclesList, setVehiclesList] = useState([])
 
   useEffect(() => {
     fetchMaintenanceData()
+    fetchVehicles()
   }, [])
+
+  const fetchVehicles = async () => {
+    try {
+      const token = localStorage.getItem("token")
+      if (!token) {
+        // Handle not logged in case
+        return
+      }
+
+      const response = await axios.get("http://localhost:1111/api/v1/vehicles", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+
+      if (response.data.success && response.data.vehicles.length > 0) {
+        setVehiclesList(response.data.vehicles)
+      }
+    } catch (error) {
+      console.error("Error fetching vehicles:", error)
+      setError("Failed to load vehicles. Please try again.")
+    }
+  }
 
   const fetchMaintenanceData = async () => {
     setLoading(true)
@@ -64,6 +87,20 @@ function StaffDashboard() {
     setReminders(overdue)
   }
 
+  // Get vehicle details from vehicleId
+  const getVehicleDetails = (vehicleId) => {
+    return vehiclesList.find((vehicle) => vehicle._id === vehicleId)
+  }
+
+  // Format vehicle display
+  const formatVehicleDisplay = (vehicleId) => {
+    const vehicle = getVehicleDetails(vehicleId)
+    if (vehicle) {
+      return `${vehicle.name} - ${vehicle.model}`
+    }
+    return vehicleId // Fallback to ID if vehicle not found
+  }
+
   const totalCost = vehicles.reduce((sum, v) => sum + Number.parseFloat(v.cost || 0), 0)
   const totalCount = vehicles.length
   const reminderCount = reminders.length
@@ -72,7 +109,14 @@ function StaffDashboard() {
   vehicles.forEach((v) => {
     const found = costByVehicle.find((item) => item.vehicleId === v.vehicleId)
     if (found) found.cost += Number.parseFloat(v.cost || 0)
-    else costByVehicle.push({ vehicleId: v.vehicleId, cost: Number.parseFloat(v.cost || 0) })
+    else {
+      const vehicleDisplay = formatVehicleDisplay(v.vehicleId)
+      costByVehicle.push({
+        vehicleId: v.vehicleId,
+        vehicleName: vehicleDisplay,
+        cost: Number.parseFloat(v.cost || 0),
+      })
+    }
   })
 
   const types = ["Oil Change", "Tire Replacement", "Brake Inspection", "Battery Replacement", "Other"]
@@ -149,7 +193,10 @@ function StaffDashboard() {
             <p className="text-gray-600 mt-1">Track and analyze vehicle maintenance data</p>
           </div>
           <button
-            onClick={fetchMaintenanceData}
+            onClick={() => {
+              fetchMaintenanceData()
+              fetchVehicles()
+            }}
             disabled={loading}
             className={`px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 transition-all duration-200 flex items-center gap-2 text-sm ${
               loading ? "opacity-70 cursor-not-allowed" : ""
@@ -263,7 +310,7 @@ function StaffDashboard() {
                     <BarChart data={costByVehicle} margin={{ top: 10, right: 10, left: 0, bottom: 20 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
                       <XAxis
-                        dataKey="vehicleId"
+                        dataKey="vehicleName"
                         tick={{ fontSize: 12 }}
                         tickLine={{ stroke: "#9CA3AF" }}
                         axisLine={{ stroke: "#9CA3AF" }}
@@ -395,7 +442,7 @@ function StaffDashboard() {
                           scope="col"
                           className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                         >
-                          Vehicle ID
+                          Vehicle
                         </th>
                         <th
                           scope="col"
@@ -427,7 +474,7 @@ function StaffDashboard() {
                       {reminders.slice(0, 5).map((reminder, index) => (
                         <tr key={index} className="hover:bg-gray-50">
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                            {reminder.vehicleId}
+                            {formatVehicleDisplay(reminder.vehicleId)}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reminder.type}</td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">

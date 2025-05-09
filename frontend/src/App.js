@@ -105,6 +105,8 @@ function App() {
         <Route path="/list" element={<VehicleListMain />} />
         <Route path="/add" element={<AddMaintenance />} />
         <Route path="/staff" element={<StaffDashboard/>} />
+        <Route path="/list" element={<VehicleListMain />} />
+        <Route path="/reminder" element={<ReminderPage />} /> {/* ✅ Add this line */}
 
 
         <Route path="/feedbackform" element={<FeedbackForm />} />
