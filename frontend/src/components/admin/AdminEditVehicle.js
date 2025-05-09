@@ -42,6 +42,7 @@ const EditVehicle = () => {
     rentPerDay: '',
     description: '',
     images: [], // To store Cloudinary URLs
+    trackId: '',
   });
 
   const [selectedImages, setSelectedImages] = useState([]); // To store selected File objects
@@ -163,7 +164,15 @@ const handleCancel = () => {
         <input type="number" name="seatingCapacity" value={vehicle.seatingCapacity} onChange={handleInputChange} placeholder="Seating Capacity" required />
         <input type="number" name="rentPerDay" value={vehicle.rentPerDay} onChange={handleInputChange} placeholder="Rent per Day" required />
         <textarea name="description" value={vehicle.description} onChange={handleInputChange} placeholder="Description" required />
-
+        <input 
+          type="text" 
+          name="trackId" 
+          value={vehicle.trackId} 
+          onChange={handleInputChange} 
+          placeholder="Traccar Device ID" 
+          required 
+        />
+        
         <input type="file" multiple onChange={handleImageChange} />
 
         {/* Display selected and existing images */}

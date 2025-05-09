@@ -212,8 +212,12 @@ const HomePage = () => {
                   alt="SK Rentals Vehicles" 
                   className="rounded-2xl "
                 />
+               
               </div>
+              
+              
             </div>
+            
           </div>
         </div>
 

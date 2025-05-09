@@ -49,17 +49,23 @@ exports.newVehicle = catchAsyncError(async (req, res, next) => {
         mileage, 
         isTuned, 
         lastInsuranceDate, 
-        availableStatus 
+        availableStatus ,
+        trackId
     } = req.body;
 
     // Validate required fields
     if (!name || !brand || !model || !year || !fuelType || !transmission || !seatingCapacity || 
         !rentPerDay || !description || !images || images.length === 0 || !adminId || 
         !licensePlateNumber || !vehicleType || !mileage || isTuned === undefined || 
-        !lastInsuranceDate || availableStatus === undefined) {
+        !lastInsuranceDate || availableStatus === undefined || !trackId) {
         return next(new errorHandler('Please provide all vehicle details', 400));
     }
 
+  // Check if trackId already exists
+  const existingVehicle = await Vehicle.findOne({ trackId });
+  if (existingVehicle) {
+      return next(new errorHandler('This Traccar ID is already assigned to another vehicle', 400));
+  }
     // Map image URLs to objects
     const imageObjects = images.map(url => ({
         url: url,
@@ -84,11 +90,12 @@ exports.newVehicle = catchAsyncError(async (req, res, next) => {
         mileage,
         isTuned,
         lastInsuranceDate,
-        availableStatus
+        availableStatus,
+        trackId
     });
 
     console.log('Vehicle created:', vehicle);
-
+console.log('Vehicle created with Traccar ID:', vehicle.trackId);
     res.status(201).json({
         success: true,
         vehicle
@@ -241,6 +248,14 @@ exports.updateVehicle = catchAsyncError(async (req, res, next) => {
             return next(new errorHandler('Vehicle not found', 404)); 
         }
 
+        // Check if trackId is being updated and if it already exists
+        if (req.body.trackId && req.body.trackId !== vehicle.trackId) {
+            const existingVehicle = await Vehicle.findOne({ trackId: req.body.trackId });
+            if (existingVehicle && existingVehicle._id.toString() !== req.params.vehicleId) {
+                return next(new errorHandler('This Traccar ID is already assigned to another vehicle', 400));
+            }
+        }
+        
         // Step 2: Check if images need updating
         if (req.body.images && Array.isArray(req.body.images) && req.body.images.length > 0) {
             console.log("Updating images...");

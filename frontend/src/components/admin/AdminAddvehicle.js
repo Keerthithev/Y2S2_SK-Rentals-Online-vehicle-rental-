@@ -28,6 +28,7 @@ const AdminAddVehicle = () => {
     isTuned: false,
     lastInsuranceDate: "",
     availableStatus: true,
+    trackId: "",
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
@@ -100,6 +101,8 @@ const AdminAddVehicle = () => {
         "vehicleType",
         "mileage",
         "lastInsuranceDate",
+        "trackId",
+
       ]
 
       for (const field of requiredFields) {
@@ -166,6 +169,7 @@ const AdminAddVehicle = () => {
       formData.append("isTuned", vehicleData.isTuned)
       formData.append("lastInsuranceDate", vehicleData.lastInsuranceDate)
       formData.append("availableStatus", vehicleData.availableStatus)
+      formData.append("trackId", vehicleData.trackId)
 
       // Append the uploaded image URLs
       imageUrls.forEach((url) => formData.append("images", url))
@@ -226,6 +230,7 @@ const AdminAddVehicle = () => {
         isTuned: false,
         lastInsuranceDate: "",
         availableStatus: true,
+        trackId: "",
       })
       setSelectedFiles([])
     } catch (err) {
@@ -356,6 +361,21 @@ const AdminAddVehicle = () => {
                     required
                   />
                 </div>
+
+                {/* Traccar Device ID */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Traccar Device ID*</label>
+                    <input
+                      type="text"
+                      name="trackId"
+                      value={vehicleData.trackId}
+                      onChange={handleInputChange}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                      placeholder="Enter Traccar device ID"
+                      required
+                    />
+                    <p className="text-xs text-gray-500 mt-1">This is the ID from your Traccar mobile app or GPS tracker</p>
+                  </div>
 
                 {/* Fuel Type */}
                 <div>
