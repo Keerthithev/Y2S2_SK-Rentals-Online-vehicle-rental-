@@ -70,18 +70,53 @@ exports.getComplaints = async (req, res) => {
 
 exports.getAllComplaints = async (req, res) => {
   try {
-    const complaints = await Complaint.find()
-      .populate('customerID', 'name email phone') // Populate customer details like name, email, phone
-      .exec();
+    // Add pagination parameters from query string
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    // Add sorting option from query string
+    const sortBy = req.query.sortBy || '-createdAt'; // Default: newest first
+
+    // Build the base query
+    const query = Complaint.find()
+      .populate('customerID', 'name email phone') // Only include necessary fields
+      .sort(sortBy)
+      .skip(skip)
+      .limit(limit);
+
+    // Execute the query
+    const complaints = await query.exec();
+
+    // Get total count for pagination info
+    const total = await Complaint.countDocuments();
 
     if (!complaints.length) {
-      return res.status(404).json({ message: 'No complaints found.' });
+      return res.status(404).json({ 
+        success: false,
+        message: 'No complaints found.',
+        data: []
+      });
     }
 
-    res.status(200).json(complaints);
+    res.status(200).json({
+      success: true,
+      message: 'Complaints retrieved successfully',
+      data: complaints,
+      pagination: {
+        total,
+        page,
+        pages: Math.ceil(total / limit),
+        limit
+      }
+    });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error fetching complaints', error: error.message });
+    console.error('Error fetching complaints:', error);
+    res.status(500).json({ 
+      success: false,
+      message: 'Error fetching complaints',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
   }
 };
 

@@ -223,8 +223,11 @@ const AdminSingleVehicle = () => {
   }, [reconnectAttempts]);
 
   const fetchTrackingData = useCallback(async (trackId) => {
-    if (!trackId) {
-      updateState({ trackingError: "No Traccar ID assigned" });
+    if (!trackId || typeof trackId !== 'string' || !/^\d+$/.test(trackId)) {
+      updateState({ 
+        trackingError: "Invalid Traccar device ID format",
+        isTracking: false
+      });
       return;
     }
   
@@ -240,17 +243,13 @@ const AdminSingleVehicle = () => {
       });
   
       if (!response.ok) {
-        // Handle specific error statuses
-        if (response.status === 400) {
-          throw new Error("Invalid request - check device ID and parameters");
-        } else if (response.status === 401) {
-          throw new Error("Unauthorized - check your Traccar token");
-        } else if (response.status === 404) {
-          throw new Error("Device not found");
-        } else {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(
+          errorData.message || 
+          `HTTP error! status: ${response.status}`
+        );
       }
+  
   
       const positions = await response.json();
   
@@ -267,14 +266,13 @@ const AdminSingleVehicle = () => {
       }
   
     } catch (err) {
-      console.error("Tracking error:", err.message);
+      console.error("Tracking error:", err);
       updateState({
-        trackingError: err.message,
+        trackingError: `Failed to fetch tracking data: ${err.message}`,
         isTracking: false,
       });
     }
   }, [traccarToken]);
-
   // Auto-refresh management
   const startAutoRefresh = useCallback((trackId) => {
     if (refreshInterval) clearInterval(refreshInterval);
