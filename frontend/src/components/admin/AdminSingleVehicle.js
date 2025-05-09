@@ -117,6 +117,13 @@ const AdminSingleVehicle = () => {
   const traccarToken = "RzBFAiB1uxdtO0vEIOioeygaQodkUxwGbvVGuy8RpyRN4nnzPwIhAI7fobYywDsStHqlvtZZ7GuxEiDL438UTO1Q1HQuYlUkeyJ1Ijo3NjE1MCwiZSI6IjIwMjUtMDUtMTRUMTg6MzA6MDAuMDAwKzAwOjAwIn0";
 
   const setupWebSocket = useCallback((trackId) => {
+    if (!trackId || typeof trackId !== 'string' || !/^\d+$/.test(trackId)) {
+      updateState({
+        connectionStatus: 'disconnected',
+        trackingError: "Invalid Traccar device ID - cannot connect"
+      });
+      return () => {}; // Return empty cleanup function
+    }
     updateState({ connectionStatus: 'connecting' });
   
     const ws = new WebSocket(`wss://demo.traccar.org/api/socket?token=${encodeURIComponent(traccarToken)}`);
