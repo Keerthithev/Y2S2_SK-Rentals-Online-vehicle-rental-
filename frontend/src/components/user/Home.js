@@ -1,5 +1,6 @@
 "use client"
 
+
 import { useEffect, useRef } from "react"
 import { useNavigate } from 'react-router-dom';
 import { gsap } from "gsap"
@@ -425,10 +426,10 @@ const HomePage = () => {
             <div className="testimonial-card bg-white rounded-2xl shadow-lg p-8 border-t-4 border-indigo-600">
               <div className="flex items-center mb-6">
                 <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center mr-4">
-                  <span className="text-indigo-700 font-bold text-xl">JD</span>
+                  <span className="text-indigo-700 font-bold text-xl">KE</span>
                 </div>
                 <div>
-                  <h4 className="text-lg font-bold text-gray-900">John Doe</h4>
+                  <h4 className="text-lg font-bold text-gray-900">KENUSHAN</h4>
                   <div className="flex items-center">
                     {[...Array(5)].map((_, i) => (
                       <Star key={i} className="w-4 h-4 text-yellow-500 fill-current" />
@@ -445,10 +446,10 @@ const HomePage = () => {
             <div className="testimonial-card bg-white rounded-2xl shadow-lg p-8 border-t-4 border-indigo-600">
               <div className="flex items-center mb-6">
                 <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center mr-4">
-                  <span className="text-indigo-700 font-bold text-xl">JS</span>
+                  <span className="text-indigo-700 font-bold text-xl">NA</span>
                 </div>
                 <div>
-                  <h4 className="text-lg font-bold text-gray-900">Jane Smith</h4>
+                  <h4 className="text-lg font-bold text-gray-900">NAGA</h4>
                   <div className="flex items-center">
                     {[...Array(5)].map((_, i) => (
                       <Star key={i} className="w-4 h-4 text-yellow-500 fill-current" />
@@ -465,10 +466,10 @@ const HomePage = () => {
             <div className="testimonial-card bg-white rounded-2xl shadow-lg p-8 border-t-4 border-indigo-600">
               <div className="flex items-center mb-6">
                 <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center mr-4">
-                  <span className="text-indigo-700 font-bold text-xl">RJ</span>
+                  <span className="text-indigo-700 font-bold text-xl">VI</span>
                 </div>
                 <div>
-                  <h4 className="text-lg font-bold text-gray-900">Robert Johnson</h4>
+                  <h4 className="text-lg font-bold text-gray-900">VIVIYAN</h4>
                   <div className="flex items-center">
                     {[...Array(5)].map((_, i) => (
                       <Star key={i} className="w-4 h-4 text-yellow-500 fill-current" />
@@ -583,26 +584,19 @@ const HomePage = () => {
             {/* Company Info */}
             <div>
               <div className="flex items-center gap-2 mb-6">
-                <div className="bg-gradient-to-r from-indigo-500 to-purple-600 p-2 rounded-lg shadow-md">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="w-6 h-6"
-                  >
-                    <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2" />
-                    <circle cx="7" cy="17" r="2" />
-                    <path d="M9 17h6" />
-                    <circle cx="17" cy="17" r="2" />
-                  </svg>
-                </div>
-                <span className="font-bold text-xl tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-300">
-                  SK Rentals
-                </span>
+                     {/* Logo */}
+          <div className="flex items-center">
+           
+              <div>
+                <img
+                  src="/image/logo.png"
+                  alt="SK Rentals Logo"
+                  className="w--20 h-20 object-contain"
+                />
+              </div>
+            
+          </div>
+               
               </div>
               <p className="text-gray-400 mb-4">
                 Premium vehicle rentals for every journey. Experience the freedom of the road with our quality bikes, cars, and vans.
@@ -630,11 +624,10 @@ const HomePage = () => {
             <div>
               <h3 className="text-lg font-bold mb-6">Quick Links</h3>
               <ul className="space-y-3">
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Home</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">About Us</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Vehicles</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Pricing</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Contact</a></li>
+                <li><a href="/Home" className="text-gray-400 hover:text-white transition-colors">Home</a></li>
+                <li><a href="/about" className="text-gray-400 hover:text-white transition-colors">About Us</a></li>
+                <li><a href="/uservehiclelist" className="text-gray-400 hover:text-white transition-colors">Vehicles</a></li>
+                <li><a href="/contactus" className="text-gray-400 hover:text-white transition-colors">Contact</a></li>
               </ul>
             </div>
 
@@ -642,11 +635,10 @@ const HomePage = () => {
             <div>
               <h3 className="text-lg font-bold mb-6">Vehicle Types</h3>
               <ul className="space-y-3">
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Bikes</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Cars</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Vans</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Luxury Vehicles</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Special Offers</a></li>
+                <li><a href="/uservehiclelist" className="text-gray-400 hover:text-white transition-colors">Bikes</a></li>
+                <li><a href="/uservehiclelist" className="text-gray-400 hover:text-white transition-colors">Cars</a></li>
+                <li><a href="/uservehiclelist" className="text-gray-400 hover:text-white transition-colors">Vans</a></li>
+                <li><a href="/uservehiclelist" className="text-gray-400 hover:text-white transition-colors">Luxury Vehicles</a></li>
               </ul>
             </div>
 
@@ -659,13 +651,13 @@ const HomePage = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                   </svg>
-                  <span className="text-gray-400">123 Rental Street, City, Country</span>
+                  <span className="text-gray-400">Nelliyadi,West Nelliyadi</span>
                 </li>
                 <li className="flex items-start">
                   <svg className="w-5 h-5 text-indigo-400 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                   </svg>
-                  <span className="text-gray-400">+1 (555) 123-4567</span>
+                  <span className="text-gray-400">+94 777-597-707</span>
                 </li>
                 <li className="flex items-start">
                   <svg className="w-5 h-5 text-indigo-400 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
