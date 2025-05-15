@@ -4,20 +4,8 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
-import {
-  Car,
-  Calendar,
-  FileText,
-  DollarSign,
-  Save,
-  X,
-  ArrowLeft,
-  LogOut,
-  Plus,
-  Bell,
-  AlertCircle,
-  Info,
-} from "lucide-react"
+import { Car, Calendar, FileText, DollarSign, Save, X, ArrowLeft, LogOut, Plus, Bell, AlertCircle, Info, Menu, Settings, List, Wrench } from 'lucide-react'
+
 
 function AddMaintenance() {
   const [vehicleId, setVehicleId] = useState("")
@@ -36,6 +24,7 @@ function AddMaintenance() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [vehicles, setVehicles] = useState([])
   const [loading, setLoading] = useState(true)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const navigate = useNavigate()
 
   // Fetch all vehicles when component mounts
@@ -160,7 +149,7 @@ function AddMaintenance() {
         icon: "success",
         title: "Success",
         text: "Maintenance record saved successfully!",
-        confirmButtonColor: "#4f46e5",
+        confirmButtonColor: "#6366f1",
       })
 
       navigate("/list")
@@ -171,12 +160,11 @@ function AddMaintenance() {
         ...errors,
         general: "There was an error adding the maintenance record. Please try again.",
       })
-
       Swal.fire({
         icon: "error",
         title: "Error",
         text: "There was an error adding the maintenance record.",
-        confirmButtonColor: "#4f46e5",
+        confirmButtonColor: "#6366f1",
       })
     } finally {
       setIsSubmitting(false)
@@ -189,7 +177,7 @@ function AddMaintenance() {
       text: "You will be logged out.",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#4f46e5",
+      confirmButtonColor: "#6366f1",
       cancelButtonColor: "#ef4444",
       confirmButtonText: "Yes, logout!",
     }).then((result) => {
@@ -197,7 +185,7 @@ function AddMaintenance() {
         Swal.fire({
           icon: "success",
           title: "Logged out!",
-          confirmButtonColor: "#4f46e5",
+          confirmButtonColor: "#6366f1",
         })
         navigate("/login")
       }
@@ -211,7 +199,7 @@ function AddMaintenance() {
         text: "You have unsaved changes. Are you sure you want to leave?",
         icon: "question",
         showCancelButton: true,
-        confirmButtonColor: "#4f46e5",
+        confirmButtonColor: "#6366f1",
         cancelButtonColor: "#ef4444",
         confirmButtonText: "Yes, discard",
         cancelButtonText: "No, continue editing",
@@ -227,47 +215,171 @@ function AddMaintenance() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Navigation Header */}
-      <div className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white shadow-md border-b border-gray-700 px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
-        <div className="flex items-center">
-          <Car className="h-6 w-6 text-indigo-400 mr-2" />
-          <h1 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300">
-            Vehicle Maintenance
-          </h1>
+      {/* Enhanced Header */}
+      <header className="relative">
+        {/* Background with gradient and pattern */}
+        <div className="absolute inset-0 bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-800 opacity-95"></div>
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNCI+PHBhdGggZD0iTTM2IDM0djZoNnYtNmgtNnptNiA2djZoNnYtNmgtNnptLTEyIDBoNnY2aC02di02em0xMiAwaDZ2NmgtNnYtNnoiLz48cGF0aCBkPSJNMTIgMTJoNnY2aC02di02em02IDZoNnY2aC02di02em0wLTZoNnY2aC02di02em0xMiAwaDZ2NmgtNnYtNnptLTEyIDEyaDZ2NmgtNnYtNnptMTIgMGg2djZoLTZ2LTZ6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-10"></div>
+
+        <div className="relative z-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center py-6 md:justify-start md:space-x-10">
+              {/* Logo */}
+             
+                 
+           
+              <div>
+                <img
+                  src="/image/logo.png"
+                  alt="SK Rentals Logo"
+                  className="w--20 h-20 object-contain"
+                />
+              </div>
+            
+          
+                
+            
+
+              {/* Mobile menu button */}
+              <div className="-mr-2 -my-2 md:hidden">
+                <button
+                  type="button"
+                  className="bg-white/10 backdrop-blur-sm rounded-md p-2 inline-flex items-center justify-center text-white hover:bg-white/20 focus:outline-none"
+                  onClick={() => setMobileMenuOpen(true)}
+                >
+                  <span className="sr-only">Open menu</span>
+                  <Menu className="h-6 w-6" aria-hidden="true" />
+                </button>
+              </div>
+
+              {/* Desktop Navigation */}
+              <nav className="hidden md:flex space-x-10">
+                <button
+                  onClick={() => navigate("/staff")}
+                  className="text-base font-medium text-white hover:text-indigo-200 transition-colors duration-200 flex items-center"
+                >
+                  <Settings className="h-4 w-4 mr-1" /> Dashboard
+                </button>
+                <button className="text-base font-medium text-indigo-300 border-b-2 border-indigo-300 flex items-center">
+                  <Plus className="h-4 w-4 mr-1" /> Add Maintenance
+                </button>
+                <button
+                  onClick={() => navigate("/list")}
+                  className="text-base font-medium text-white hover:text-indigo-200 transition-colors duration-200 flex items-center"
+                >
+                  <List className="h-4 w-4 mr-1" /> Maintenance List
+                </button>
+                <button
+                  onClick={() => navigate("/reminder")}
+                  className="text-base font-medium text-white hover:text-indigo-200 transition-colors duration-200 flex items-center"
+                >
+                  <Bell className="h-4 w-4 mr-1" /> Reminders
+                </button>
+              </nav>
+
+              {/* Logout Button */}
+              <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
+                <button
+                  onClick={handleLogout}
+                  className="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-purple-600 hover:bg-purple-700 transition-colors duration-200"
+                >
+                  <LogOut className="h-4 w-4 mr-2" /> Logout
+                </button>
+              </div>
+            </div>
+          </div>
+          {/* Mobile menu, show/hide based on mobile menu state */}
+          {mobileMenuOpen && (
+            <div className="absolute top-0 inset-x-0 p-2 transition transform origin-top-right md:hidden z-20">
+              <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white divide-y-2 divide-gray-50">
+                <div className="pt-5 pb-6 px-5">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <Car className="h-8 w-8 text-indigo-600" />
+                      <h2 className="ml-3 text-xl font-bold text-gray-900">Vehicle Maintenance</h2>
+                    </div>
+                    <div className="-mr-2">
+                      <button
+                        type="button"
+                        className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        <span className="sr-only">Close menu</span>
+                        <X className="h-6 w-6" aria-hidden="true" />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="mt-6">
+                    <nav className="grid gap-y-8">
+                      <button
+                        onClick={() => {
+                          navigate("/staff")
+                          setMobileMenuOpen(false)
+                        }}
+                        className="-m-3 p-3 flex items-center rounded-md hover:bg-gray-50"
+                      >
+                        <Settings className="flex-shrink-0 h-6 w-6 text-indigo-600" />
+                        <span className="ml-3 text-base font-medium text-gray-900">Dashboard</span>
+                      </button>
+                      <button className="-m-3 p-3 flex items-center rounded-md bg-indigo-50">
+                        <Plus className="flex-shrink-0 h-6 w-6 text-indigo-600" />
+                        <span className="ml-3 text-base font-medium text-indigo-900">Add Maintenance</span>
+                      </button>
+                      <button
+                        onClick={() => {
+                          navigate("/list")
+                          setMobileMenuOpen(false)
+                        }}
+                        className="-m-3 p-3 flex items-center rounded-md hover:bg-gray-50"
+                      >
+                        <List className="flex-shrink-0 h-6 w-6 text-indigo-600" />
+                        <span className="ml-3 text-base font-medium text-gray-900">Maintenance List</span>
+                      </button>
+                      <button
+                        onClick={() => {
+                          navigate("/reminder")
+                          setMobileMenuOpen(false)
+                        }}
+                        className="-m-3 p-3 flex items-center rounded-md hover:bg-gray-50"
+                      >
+                        <Bell className="flex-shrink-0 h-6 w-6 text-indigo-600" />
+                        <span className="ml-3 text-base font-medium text-gray-900">Reminders</span>
+                      </button>
+                    </nav>
+                  </div>
+                </div>
+                <div className="py-6 px-5 space-y-6">
+                  <button
+                    onClick={() => {
+                      handleLogout()
+                      setMobileMenuOpen(false)
+                    }}
+                    className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bbg-indigo-600 hover:bg-indigo-700"
+
+                  >
+                    <LogOut className="h-4 w-4 mr-2" /> Logout
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Page Title Banner */}
+          <div className="bg-white/10 backdrop-blur-sm border-t border-white/20">
+            <div className="max-w-7xl mx-auto py-3 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+              <div className="flex items-center">
+                <Wrench className="h-6 w-6 text-indigo-300 mr-2" />
+                <h2 className="text-xl font-semibold text-white">Add Maintenance Record</h2>
+              </div>
+              <div className="text-sm text-indigo-200">
+                <span className="bg-indigo-700/50 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs font-medium">
+                  New Entry
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
-        <nav className="flex flex-wrap justify-center gap-2 md:gap-4">
-          <button
-            onClick={() => navigate("/staff")}
-            className="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-200"
-          >
-            Dashboard
-          </button>
-          <button
-            onClick={() => navigate("/add")}
-            className="px-3 py-2 rounded-md text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-700 transition-colors duration-200 flex items-center gap-1"
-          >
-            <Plus className="h-4 w-4" /> Add Maintenance
-          </button>
-          <button
-            onClick={() => navigate("/list")}
-            className="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-200"
-          >
-            Maintenance List
-          </button>
-          <button
-            onClick={() => navigate("/reminder")}
-            className="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-200 flex items-center gap-1"
-          >
-            <Bell className="h-4 w-4" /> Reminders
-          </button>
-          <button
-            onClick={handleLogout}
-            className="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-200 flex items-center gap-1"
-          >
-            <LogOut className="h-4 w-4" /> Logout
-          </button>
-        </nav>
-      </div>
+      </header>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Page Header */}
@@ -468,6 +580,7 @@ function AddMaintenance() {
                   )}
                 </div>
 
+             {/* Cost */}
                 {/* Cost */}
                 <div>
                   <label htmlFor="cost" className="block text-sm font-medium text-gray-700 mb-1">
@@ -475,6 +588,7 @@ function AddMaintenance() {
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <span className="text-sm text-gray-500 font-semibold">Rs</span>
                       <DollarSign className="h-5 w-5 text-gray-400" />
                     </div>
                     <input

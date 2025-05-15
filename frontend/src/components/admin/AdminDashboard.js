@@ -1,11 +1,14 @@
+
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import Header from "../layouts/Header"
 import Footer from "../layouts/Footer"
 import { Car, Users, PenToolIcon as Tool, Plus, ArrowRight, AlertTriangle, Shield, BarChart3, Clock, Calendar, Tag, MapPin, Zap, RefreshCw, ChevronRight, Loader2 } from 'lucide-react'
+import { gsap } from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
 import {
   BarChart,
   Bar,
@@ -19,6 +22,11 @@ import {
   Pie,
   Cell,
 } from "recharts"
+
+// Register ScrollTrigger plugin
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger)
+}
 
 const AdminDashboard = () => {
   const navigate = useNavigate()
@@ -38,9 +46,109 @@ const AdminDashboard = () => {
     ],
   })
   const [isRefreshing, setIsRefreshing] = useState(false)
+  
+  // Refs for animations
+  const metricsRef = useRef(null)
+  const chartsRef = useRef(null)
+  const usersTableRef = useRef(null)
+  const actionsRef = useRef(null)
+  const statusRef = useRef(null)
 
   useEffect(() => {
     fetchDashboardData()
+    
+    // Dashboard animations
+    const dashboardTl = gsap.timeline()
+    
+    // Metrics animation
+    gsap.fromTo(
+      ".metric-card",
+      { opacity: 0, y: 30, scale: 0.95 },
+      { 
+        opacity: 1, 
+        y: 0, 
+        scale: 1, 
+        duration: 0.6, 
+        stagger: 0.1, 
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: metricsRef.current,
+          start: "top 80%",
+        }
+      }
+    )
+    
+    // Charts animation
+    gsap.fromTo(
+      ".chart-container",
+      { opacity: 0, y: 40 },
+      { 
+        opacity: 1, 
+        y: 0, 
+        duration: 0.8, 
+        stagger: 0.2, 
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: chartsRef.current,
+          start: "top 80%",
+        }
+      }
+    )
+    
+    // Users table animation
+    gsap.fromTo(
+      usersTableRef.current,
+      { opacity: 0, y: 30 },
+      { 
+        opacity: 1, 
+        y: 0, 
+        duration: 0.8, 
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: usersTableRef.current,
+          start: "top 80%",
+        }
+      }
+    )
+    
+    // Quick actions animation
+    gsap.fromTo(
+      ".action-button",
+      { opacity: 0, x: 30 },
+      { 
+        opacity: 1, 
+        x: 0, 
+        duration: 0.5, 
+        stagger: 0.1, 
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: actionsRef.current,
+          start: "top 80%",
+        }
+      }
+    )
+    
+    // System status animation
+    gsap.fromTo(
+      ".status-item",
+      { opacity: 0, x: -20 },
+      { 
+        opacity: 1, 
+        x: 0, 
+        duration: 0.5, 
+        stagger: 0.1, 
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: statusRef.current,
+          start: "top 85%",
+        }
+      }
+    )
+    
+    // Cleanup function
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+    }
   }, [])
 
   const fetchDashboardData = async () => {
@@ -135,7 +243,7 @@ const AdminDashboard = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
         <Header />
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="bg-red-50 border-l-4 border-red-400 p-4 rounded-md">
@@ -167,35 +275,35 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
       <Header />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Dashboard Header */}
         <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-            <p className="text-gray-600 mt-1">Welcome back. Here's an overview of your rental business.</p>
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-800 to-purple-700 leading-tight">Admin Dashboard</h1>
+            <p className="text-gray-600 mt-2 text-lg">Welcome back. Here's an overview of your rental business.</p>
           </div>
           <div className="mt-4 md:mt-0">
             <button
               onClick={fetchDashboardData}
               disabled={isRefreshing}
-              className={`inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
+              className={`inline-flex items-center px-6 py-3 rounded-full shadow-sm text-base font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transform hover:-translate-y-1 transition-all duration-300 ${
                 isRefreshing ? "opacity-70 cursor-not-allowed" : ""
               }`}
             >
-              <RefreshCw className={`-ml-1 mr-2 h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`} />
+              <RefreshCw className={`-ml-1 mr-2 h-5 w-5 ${isRefreshing ? "animate-spin" : ""}`} />
               Refresh Data
             </button>
           </div>
         </div>
 
         {/* Key Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div ref={metricsRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {/* Total Vehicles */}
-          <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-100 hover:shadow-md transition-shadow">
+          <div className="metric-card bg-white rounded-2xl shadow-sm p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
             <div className="flex items-center">
-              <div className="p-3 rounded-full bg-indigo-100 text-indigo-600">
+              <div className="p-3 rounded-full bg-gradient-to-br from-indigo-500 to-indigo-600 text-white shadow-md">
                 <Car className="h-6 w-6" />
               </div>
               <div className="ml-4">
@@ -220,17 +328,17 @@ const AdminDashboard = () => {
               </div>
               <button
                 onClick={() => navigate("/listvehicle")}
-                className="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors flex items-center"
+                className="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors flex items-center group"
               >
-                View all <ChevronRight className="h-4 w-4 ml-1" />
+                View all <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
           </div>
 
           {/* Total Users */}
-          <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-100 hover:shadow-md transition-shadow">
+          <div className="metric-card bg-white rounded-2xl shadow-sm p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
             <div className="flex items-center">
-              <div className="p-3 rounded-full bg-emerald-100 text-emerald-600">
+              <div className="p-3 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 text-white shadow-md">
                 <Users className="h-6 w-6" />
               </div>
               <div className="ml-4">
@@ -255,17 +363,17 @@ const AdminDashboard = () => {
               </div>
               <button
                 onClick={() => navigate("/adminuserlist")}
-                className="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors flex items-center"
+                className="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors flex items-center group"
               >
-                View all <ChevronRight className="h-4 w-4 ml-1" />
+                View all <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
           </div>
 
           {/* Vehicle Types */}
-          <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-100 hover:shadow-md transition-shadow">
+          <div className="metric-card bg-white rounded-2xl shadow-sm p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
             <div className="flex items-center">
-              <div className="p-3 rounded-full bg-amber-100 text-amber-600">
+              <div className="p-3 rounded-full bg-gradient-to-br from-amber-500 to-amber-600 text-white shadow-md">
                 <Tag className="h-6 w-6" />
               </div>
               <div className="ml-4">
@@ -296,17 +404,17 @@ const AdminDashboard = () => {
               </div>
               <button
                 onClick={() => navigate("/listvehicle")}
-                className="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors flex items-center"
+                className="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors flex items-center group"
               >
-                View all <ChevronRight className="h-4 w-4 ml-1" />
+                View all <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
           </div>
 
           {/* Blacklisted Users */}
-          <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-100 hover:shadow-md transition-shadow">
+          <div className="metric-card bg-white rounded-2xl shadow-sm p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
             <div className="flex items-center">
-              <div className="p-3 rounded-full bg-red-100 text-red-600">
+              <div className="p-3 rounded-full bg-gradient-to-br from-red-500 to-red-600 text-white shadow-md">
                 <Shield className="h-6 w-6" />
               </div>
               <div className="ml-4">
@@ -337,20 +445,20 @@ const AdminDashboard = () => {
               </div>
               <button
                 onClick={() => navigate("/adminblacklist")}
-                className="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors flex items-center"
+                className="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors flex items-center group"
               >
-                View all <ChevronRight className="h-4 w-4 ml-1" />
+                View all <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
           </div>
         </div>
 
         {/* Charts and Data Visualization */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <div ref={chartsRef} className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           {/* Vehicle Type Distribution */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
+          <div className="chart-container bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
             <div className="px-6 py-5 border-b border-gray-200">
-              <h2 className="text-lg font-medium text-gray-900">Vehicle Type Distribution</h2>
+              <h2 className="text-lg font-bold text-gray-900">Vehicle Type Distribution</h2>
             </div>
             <div className="p-6 h-80">
               {loading ? (
@@ -385,7 +493,7 @@ const AdminDashboard = () => {
                   <p className="text-gray-500">No vehicle type data available</p>
                   <button
                     onClick={() => navigate("/addvehicle")}
-                    className="mt-4 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-700 transition-colors"
+                    className="mt-4 px-6 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm font-medium rounded-full hover:from-indigo-700 hover:to-purple-700 transform hover:-translate-y-1 transition-all duration-300"
                   >
                     Add Vehicle
                   </button>
@@ -395,9 +503,9 @@ const AdminDashboard = () => {
           </div>
 
           {/* Vehicle Availability */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
+          <div className="chart-container bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
             <div className="px-6 py-5 border-b border-gray-200">
-              <h2 className="text-lg font-medium text-gray-900">Vehicle Availability</h2>
+              <h2 className="text-lg font-bold text-gray-900">Vehicle Availability</h2>
             </div>
             <div className="p-6 h-80">
               {loading ? (
@@ -415,7 +523,7 @@ const AdminDashboard = () => {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Bar dataKey="value" name="Vehicles" fill="#4f46e5" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="value" name="Vehicles" fill="#8B5CF6" radius={[8, 8, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               ) : (
@@ -424,7 +532,7 @@ const AdminDashboard = () => {
                   <p className="text-gray-500">No vehicle availability data</p>
                   <button
                     onClick={() => navigate("/addvehicle")}
-                    className="mt-4 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-700 transition-colors"
+                    className="mt-4 px-6 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm font-medium rounded-full hover:from-indigo-700 hover:to-purple-700 transform hover:-translate-y-1 transition-all duration-300"
                   >
                     Add Vehicle
                   </button>
@@ -437,14 +545,14 @@ const AdminDashboard = () => {
         {/* Recent Users and Quick Actions */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Recent Users */}
-          <div className="lg:col-span-2 bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
+          <div ref={usersTableRef} className="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300">
             <div className="px-6 py-5 border-b border-gray-200 flex justify-between items-center">
-              <h2 className="text-lg font-medium text-gray-900">Recent Users</h2>
+              <h2 className="text-lg font-bold text-gray-900">Recent Users</h2>
               <button
                 onClick={() => navigate("/adminuserlist")}
-                className="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors flex items-center"
+                className="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors flex items-center group"
               >
-                View all <ChevronRight className="h-4 w-4 ml-1" />
+                View all <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
             <div className="overflow-x-auto">
@@ -517,7 +625,7 @@ const AdminDashboard = () => {
                       <tr key={user._id} className="hover:bg-gray-50">
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">
-                            <div className="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-medium">
+                            <div className="h-10 w-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-medium">
                               {user.name ? user.name.charAt(0).toUpperCase() : "U"}
                             </div>
                             <div className="ml-4">
@@ -536,7 +644,7 @@ const AdminDashboard = () => {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span
-                            className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                            className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
                               user.bannedUntil && new Date(user.bannedUntil) > new Date()
                                 ? "bg-red-100 text-red-800"
                                 : "bg-green-100 text-green-800"
@@ -560,125 +668,125 @@ const AdminDashboard = () => {
           </div>
 
           {/* Quick Actions */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+          <div ref={actionsRef} className="bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300">
             <div className="px-6 py-5 border-b border-gray-200">
-              <h2 className="text-lg font-medium text-gray-900">Quick Actions</h2>
+              <h2 className="text-lg font-bold text-gray-900">Quick Actions</h2>
             </div>
             <div className="p-6 space-y-4">
               <button
                 onClick={() => navigate("/addvehicle")}
-                className="w-full flex items-center p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors"
+                className="action-button w-full flex items-center p-4 bg-indigo-50 rounded-xl hover:bg-indigo-100 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-md"
               >
-                <div className="p-2 rounded-full bg-indigo-100 text-indigo-600">
+                <div className="p-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-md">
                   <Car className="h-5 w-5" />
                 </div>
                 <div className="ml-4 flex-grow text-left">
                   <p className="text-sm font-medium text-gray-900">Add New Vehicle</p>
                   <p className="text-xs text-gray-500">Register a new vehicle to your fleet</p>
                 </div>
-                <ArrowRight className="h-5 w-5 text-indigo-600" />
+                <ArrowRight className="h-5 w-5 text-indigo-600 group-hover:translate-x-1 transition-transform" />
               </button>
 
               <button
                 onClick={() => navigate("/adminuserlist")}
-                className="w-full flex items-center p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition-colors"
+                className="action-button w-full flex items-center p-4 bg-emerald-50 rounded-xl hover:bg-emerald-100 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-md"
               >
-                <div className="p-2 rounded-full bg-emerald-100 text-emerald-600">
+                <div className="p-2 rounded-full bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-md">
                   <Users className="h-5 w-5" />
                 </div>
                 <div className="ml-4 flex-grow text-left">
                   <p className="text-sm font-medium text-gray-900">Manage Users</p>
                   <p className="text-xs text-gray-500">View and manage customer accounts</p>
                 </div>
-                <ArrowRight className="h-5 w-5 text-emerald-600" />
+                <ArrowRight className="h-5 w-5 text-emerald-600 group-hover:translate-x-1 transition-transform" />
               </button>
 
               <button
                 onClick={() => navigate("/adminblacklist")}
-                className="w-full flex items-center p-4 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
+                className="action-button w-full flex items-center p-4 bg-red-50 rounded-xl hover:bg-red-100 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-md"
               >
-                <div className="p-2 rounded-full bg-red-100 text-red-600">
+                <div className="p-2 rounded-full bg-gradient-to-r from-red-500 to-pink-600 text-white shadow-md">
                   <Shield className="h-5 w-5" />
                 </div>
                 <div className="ml-4 flex-grow text-left">
                   <p className="text-sm font-medium text-gray-900">Blacklist Management</p>
                   <p className="text-xs text-gray-500">Manage blacklisted customers</p>
                 </div>
-                <ArrowRight className="h-5 w-5 text-red-600" />
+                <ArrowRight className="h-5 w-5 text-red-600 group-hover:translate-x-1 transition-transform" />
               </button>
 
               <button
                 onClick={() => navigate("/listvehicle")}
-                className="w-full flex items-center p-4 bg-amber-50 rounded-lg hover:bg-amber-100 transition-colors"
+                className="action-button w-full flex items-center p-4 bg-amber-50 rounded-xl hover:bg-amber-100 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-md"
               >
-                <div className="p-2 rounded-full bg-amber-100 text-amber-600">
+                <div className="p-2 rounded-full bg-gradient-to-r from-amber-500 to-yellow-600 text-white shadow-md">
                   <Tool className="h-5 w-5" />
                 </div>
                 <div className="ml-4 flex-grow text-left">
                   <p className="text-sm font-medium text-gray-900">Vehicle Management</p>
                   <p className="text-xs text-gray-500">View and manage your vehicle fleet</p>
                 </div>
-                <ArrowRight className="h-5 w-5 text-amber-600" />
+                <ArrowRight className="h-5 w-5 text-amber-600 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
           </div>
         </div>
 
         {/* System Status */}
-        <div className="mt-8 bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
+        <div ref={statusRef} className="mt-8 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300">
           <div className="px-6 py-5 border-b border-gray-200">
-            <h2 className="text-lg font-medium text-gray-900">System Status</h2>
+            <h2 className="text-lg font-bold text-gray-900">System Status</h2>
           </div>
           <div className="p-6 space-y-4">
-            <div className="flex items-center justify-between">
+            <div className="status-item flex items-center justify-between">
               <div className="flex items-center">
-                <div className="p-2 rounded-full bg-green-100 text-green-600 mr-3">
+                <div className="p-2 rounded-full bg-gradient-to-r from-green-400 to-green-500 text-white shadow-sm mr-3">
                   <Clock className="h-5 w-5" />
                 </div>
-                <span className="text-sm text-gray-700">Vehicle Management System</span>
+                <span className="text-sm text-gray-700 font-medium">Vehicle Management System</span>
               </div>
-              <span className="text-xs font-medium text-green-600 bg-green-100 px-2 py-1 rounded-full">
+              <span className="text-xs font-medium text-green-600 bg-green-100 px-3 py-1 rounded-full">
                 Operational
               </span>
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className="status-item flex items-center justify-between">
               <div className="flex items-center">
-                <div className="p-2 rounded-full bg-green-100 text-green-600 mr-3">
+                <div className="p-2 rounded-full bg-gradient-to-r from-green-400 to-green-500 text-white shadow-sm mr-3">
                   <Users className="h-5 w-5" />
                 </div>
-                <span className="text-sm text-gray-700">User Management System</span>
+                <span className="text-sm text-gray-700 font-medium">User Management System</span>
               </div>
-              <span className="text-xs font-medium text-green-600 bg-green-100 px-2 py-1 rounded-full">
+              <span className="text-xs font-medium text-green-600 bg-green-100 px-3 py-1 rounded-full">
                 Operational
               </span>
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className="status-item flex items-center justify-between">
               <div className="flex items-center">
-                <div className="p-2 rounded-full bg-green-100 text-green-600 mr-3">
+                <div className="p-2 rounded-full bg-gradient-to-r from-green-400 to-green-500 text-white shadow-sm mr-3">
                   <Shield className="h-5 w-5" />
                 </div>
-                <span className="text-sm text-gray-700">Security System</span>
+                <span className="text-sm text-gray-700 font-medium">Security System</span>
               </div>
-              <span className="text-xs font-medium text-green-600 bg-green-100 px-2 py-1 rounded-full">
+              <span className="text-xs font-medium text-green-600 bg-green-100 px-3 py-1 rounded-full">
                 Operational
               </span>
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className="status-item flex items-center justify-between">
               <div className="flex items-center">
-                <div className="p-2 rounded-full bg-green-100 text-green-600 mr-3">
+                <div className="p-2 rounded-full bg-gradient-to-r from-green-400 to-green-500 text-white shadow-sm mr-3">
                   <Calendar className="h-5 w-5" />
                 </div>
-                <span className="text-sm text-gray-700">Booking System</span>
+                <span className="text-sm text-gray-700 font-medium">Booking System</span>
               </div>
-              <span className="text-xs font-medium text-green-600 bg-green-100 px-2 py-1 rounded-full">
+              <span className="text-xs font-medium text-green-600 bg-green-100 px-3 py-1 rounded-full">
                 Operational
               </span>
             </div>
 
-            <div className="pt-4 border-t border-gray-200">
+            <div className="status-item pt-4 border-t border-gray-200">
               <div className="flex items-center">
                 <Zap className="h-5 w-5 text-indigo-500 mr-2" />
                 <span className="text-sm font-medium text-gray-900">System Updates</span>

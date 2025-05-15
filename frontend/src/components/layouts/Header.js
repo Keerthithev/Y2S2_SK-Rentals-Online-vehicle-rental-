@@ -73,11 +73,12 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-1">
             <NavItem to="/admindashboard" label="Dashboard" />
-            <NavItem to="/adminuserlist" label="Users" />
             <NavItem to="/listvehicle" label="Vehicles" />
+            <NavItem to="/adminuserlist" label="Users" />
+            <NavItem to="/adminblacklist" label="Blacklist" />
             <NavItem to="/allbookings" label="Bookings" />
             {/* <NavItem to="/staffactivities" label="Staff" /> */}
-            <NavItem to="/adminblacklist" label="Blacklist" />
+            
             {/* <NavItem to="/reports" label="Reports" />
             <NavItem to="/revenue" label="Revenue" /> */}
             {/* <NavItem to="/messages" label="Messages" /> */}
