@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "sk-vehicle-rental"
-  }
+    "default": "sk-vehicle-rental",
+    "prod": "sk-vehicle-rental-1234"
+  },
+  "targets": {},
+  "etags": {}
 }

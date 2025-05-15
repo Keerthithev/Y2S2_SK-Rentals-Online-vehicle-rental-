@@ -62,6 +62,10 @@ function ReminderPage() {
     Other: 180,
   }
 
+  useEffect(() => {
+    fetchReminders()
+  }, [])
+
   const fetchReminders = async () => {
     setLoading(true)
     setIsRefreshing(true)

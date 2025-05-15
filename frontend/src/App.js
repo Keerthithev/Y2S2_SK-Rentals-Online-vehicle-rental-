@@ -12,6 +12,8 @@ import Profile from "./components/Profile";  // Import Profile component
 import UpdateProfile from "./components/updateProfile";  // Import UpdateProfile component
 import EnterOtp from "./components/EnterOtp";  // Import EnterOtp component
 import Header from './components/layouts/Header';
+import AboutPage from "./components/user/AboutPage";
+import ContactPage from "./components/user/ContactPage";
 
 
 import VehicleForm from './components/VehicleForm';
@@ -105,6 +107,8 @@ function App() {
         <Route path="/list" element={<VehicleListMain />} />
         <Route path="/add" element={<AddMaintenance />} />
         <Route path="/staff" element={<StaffDashboard/>} />
+        <Route path="/list" element={<VehicleListMain />} />
+        <Route path="/reminder" element={<ReminderPage />} /> {/* ✅ Add this line */}
 
 
         <Route path="/feedbackform" element={<FeedbackForm />} />
@@ -119,6 +123,9 @@ function App() {
          <Route path="/bookingVehicle/:id" element={<BookingVehicle />} />
         <Route path="/allBookings" element={<GetAllBookings />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/contactus" element={<ContactPage />} />
+
       </Routes>
     </Router>
   );

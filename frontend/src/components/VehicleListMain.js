@@ -93,6 +93,8 @@ function VehicleListMain() {
     }
   }
 
+  
+
   const fetchMaintenanceData = async () => {
     setLoading(true)
     setIsRefreshing(true)
@@ -248,7 +250,6 @@ function VehicleListMain() {
           Type: v.type,
           Description: v.description,
           "Cost (Rs.)": v.cost,
-          "Next Due": getNextDueDate(v.date, v.type),
         }
       })
 
@@ -351,6 +352,8 @@ function VehicleListMain() {
     setSearchType("")
     setShowDueSoon(false)
   }
+
+  
 
   // Get vehicle details from vehicleId
   const getVehicleDetails = (vehicleId) => {
