@@ -114,7 +114,7 @@ const AdminSingleVehicle = () => {
   }, [id])
 
   // Traccar token (should be stored securely in production)
-  const traccarToken = "RzBFAiB1uxdtO0vEIOioeygaQodkUxwGbvVGuy8RpyRN4nnzPwIhAI7fobYywDsStHqlvtZZ7GuxEiDL438UTO1Q1HQuYlUkeyJ1Ijo3NjE1MCwiZSI6IjIwMjUtMDUtMTRUMTg6MzA6MDAuMDAwKzAwOjAwIn0";
+  const traccarToken = "SDBGAiEA3l-Ps0dw8ND98J7EeoVfo5i2z3DrRLmM8lERqZ7tIQACIQCp4UZesAXC5-8iGhoowExdjvBpchQNyF_FXkNpS9GrlXsidSI6NzYxNTAsImUiOiIyMDI1LTA2LTIxVDE4OjMwOjAwLjAwMCswMDowMCJ9";
 
   const setupWebSocket = useCallback((trackId) => {
     if (!trackId || typeof trackId !== 'string' || !/^\d+$/.test(trackId)) {
@@ -229,6 +229,29 @@ const AdminSingleVehicle = () => {
     return cleanup;
   }, [reconnectAttempts]);
 
+
+  const getDeviceIdFromUniqueId = async (uniqueId) => {
+    try {
+      const response = await fetch("https://demo.traccar.org/api/devices", {
+        headers: {
+          'Authorization': `Bearer ${traccarToken}`,
+          'Accept': 'application/json'
+        }
+      });
+  
+      if (!response.ok) throw new Error("Failed to fetch devices");
+  
+      const devices = await response.json();
+      const matched = devices.find(device => device.uniqueId === uniqueId);
+  
+      return matched?.id || null;
+    } catch (err) {
+      console.error("Device ID fetch error:", err);
+      return null;
+    }
+  };
+
+  
   const fetchTrackingData = useCallback(async (trackId) => {
     if (!trackId || typeof trackId !== 'string' || !/^\d+$/.test(trackId)) {
       updateState({ 
@@ -241,7 +264,17 @@ const AdminSingleVehicle = () => {
     try {
       updateState({ isTracking: true, trackingError: null });
   
-      const response = await fetch(`https://demo.traccar.org/api/positions?deviceId=${trackId}`, {
+      const deviceId = await getDeviceIdFromUniqueId(trackId);
+if (!deviceId) {
+  updateState({
+    trackingError: "No matching deviceId found for this trackId",
+    isTracking: false,
+  });
+  return;
+}
+
+const response = await fetch(`https://demo.traccar.org/api/positions?deviceId=${deviceId}`, {
+
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${traccarToken}`,
