@@ -52,6 +52,7 @@ exports.getFeedback = async (req, res) => {
   }
 };
 
+
 // ✅ Update Feedback
 exports.updateFeedback = async (req, res) => {
   try {
@@ -130,3 +131,20 @@ exports.getComplaints = async (req, res) => {
   }
 };
 
+
+// Get all feedbacks with optional user info populated
+exports.getAllFeedbacks = async (req, res) => {
+  try {
+    const feedbacks = await Feedback.find()
+      //.populate('customerID', 'name email') // Uncomment if customerID is ObjectId ref
+      .sort({ datePosted: -1 }); // Newest first
+
+    if (!feedbacks.length) {
+      return res.status(404).json({ message: 'No feedbacks found' });
+    }
+
+    res.status(200).json(feedbacks);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching feedbacks', error: error.message });
+  }
+};

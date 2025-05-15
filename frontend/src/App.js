@@ -51,6 +51,7 @@ import AdminBlacklistPage from './components/admin/AdminBlacklistPage'
 
 
 
+import AllFeedbacks from './components/AllFeedbacks.js';
 
 import FeedbackForm from './components/FeedbackForm';
 import FeedbackList from './components/FeedbackList';
@@ -63,6 +64,7 @@ import GetAllBookings from './components/getAllBookings';
 
 
 import Home from './components/user/Home.js';
+
 function App() {
   return (
     
@@ -106,7 +108,8 @@ function App() {
 
 
         <Route path="/feedbackform" element={<FeedbackForm />} />
-        
+        <Route path="/allfeedbacks" element={<AllFeedbacks />} />
+
         <Route path="/feedbacklist" element={<FeedbackList />} />
         <Route path="/complaintform" element={<ComplaintForm />} />
         <Route path="/complaintlist/:customerID" element={<ComplaintList />} />
