@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
 import Swal from "sweetalert2"
-import { Star, Edit, Trash2, ThumbsUp } from 'lucide-react'
+import { Star, Edit, Trash2, ThumbsUp } from "lucide-react"
 
 const VehicleFeedbackComponent = ({ vehicleID, refreshTrigger }) => {
   const [feedback, setFeedback] = useState([])
@@ -63,24 +63,25 @@ const VehicleFeedbackComponent = ({ vehicleID, refreshTrigger }) => {
       for (const id of customerIDs) {
         try {
           const response = await axios.get(`http://localhost:1111/api/v1/customer/${id}`)
-          
+
           // Extract the name from the response - try different possible fields
-          const customerName = response.data.name || 
-                              response.data.fullName || 
-                              response.data.customerName ||
-                              `Customer ${id.substring(0, 5)}`
-          
+          const customerName =
+            response.data.name ||
+            response.data.fullName ||
+            response.data.customerName ||
+            `Customer ${id.substring(0, 5)}`
+
           // Update the customer names state
-          setCustomerNames((prev) => ({ 
-            ...prev, 
-            [id]: customerName 
+          setCustomerNames((prev) => ({
+            ...prev,
+            [id]: customerName,
           }))
         } catch (error) {
           console.log(`Could not fetch name for customer ${id}`)
           // Set a fallback name
-          setCustomerNames((prev) => ({ 
-            ...prev, 
-            [id]: `Customer ${id.substring(0, 5)}` 
+          setCustomerNames((prev) => ({
+            ...prev,
+            [id]: `Customer ${id.substring(0, 5)}`,
           }))
         }
       }
@@ -239,19 +240,19 @@ const VehicleFeedbackComponent = ({ vehicleID, refreshTrigger }) => {
     switch (sentiment) {
       case "positive":
         return (
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
+          <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 border border-emerald-200">
             <ThumbsUp className="w-3 h-3 mr-1" /> Positive
           </span>
         )
       case "negative":
         return (
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+          <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 border border-red-200">
             <ThumbsUp className="w-3 h-3 mr-1 rotate-180" /> Negative
           </span>
         )
       default:
         return (
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+          <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 border border-gray-200">
             Neutral
           </span>
         )
@@ -271,18 +272,18 @@ const VehicleFeedbackComponent = ({ vehicleID, refreshTrigger }) => {
   // Get customer name display
   const getCustomerName = (customerId) => {
     if (customerId === currentUserID) return "Me"
-  
+
     // If we have the customer name in our state, use it
     if (customerNames[customerId]) {
       return customerNames[customerId]
     }
-    
+
     // For any feedback that has customerName directly in the object
-    const feedbackItem = feedback.find(item => item.customerID === customerId)
+    const feedbackItem = feedback.find((item) => item.customerID === customerId)
     if (feedbackItem && feedbackItem.customerName) {
       return feedbackItem.customerName
     }
-    
+
     // Fallback to a formatted ID
     return `Customer ${customerId?.substring(0, 5) || "Anonymous"}`
   }
@@ -298,14 +299,15 @@ const VehicleFeedbackComponent = ({ vehicleID, refreshTrigger }) => {
     return (
       <div className="flex justify-center items-center py-8">
         <div className="w-8 h-8 border-4 border-teal-200 border-t-teal-600 rounded-full animate-spin"></div>
+        <span className="ml-3 text-teal-600 font-medium">Loading reviews...</span>
       </div>
     )
   }
 
   if (message && feedback.length === 0) {
     return (
-      <div className="bg-gray-50 rounded-lg p-6 text-center">
-        <p className="text-gray-600">{message}</p>
+      <div className="bg-gray-50 rounded-lg p-8 text-center border border-gray-100 shadow-sm">
+        <p className="text-gray-600 font-medium">{message}</p>
       </div>
     )
   }
@@ -313,10 +315,13 @@ const VehicleFeedbackComponent = ({ vehicleID, refreshTrigger }) => {
   return (
     <div className="space-y-6">
       {feedback.map((item) => (
-        <div key={item._id} className="bg-white rounded-lg border border-gray-100 p-5 shadow-sm hover:shadow-md transition-shadow">
+        <div
+          key={item._id}
+          className="bg-white rounded-lg border border-gray-100 p-6 shadow-sm hover:shadow-md transition-all duration-300"
+        >
           <div className="flex items-start justify-between">
             <div className="flex items-start">
-              <div className="h-12 w-12 rounded-full bg-teal-100 flex items-center justify-center text-teal-700 font-medium text-lg">
+              <div className="h-12 w-12 rounded-full bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center text-white font-semibold text-lg shadow-sm">
                 {getCustomerInitial(item.customerID)}
               </div>
               <div className="ml-4">
@@ -346,11 +351,7 @@ const VehicleFeedbackComponent = ({ vehicleID, refreshTrigger }) => {
                     {new Date(item.datePosted || item.createdAt).toLocaleDateString()}
                   </span>
                 </div>
-                {item.sentiment && (
-                  <div className="mt-1">
-                    {getSentimentBadge(item.sentiment)}
-                  </div>
-                )}
+                {item.sentiment && <div className="mt-1">{getSentimentBadge(item.sentiment)}</div>}
               </div>
             </div>
 
@@ -361,29 +362,29 @@ const VehicleFeedbackComponent = ({ vehicleID, refreshTrigger }) => {
                   <>
                     <button
                       onClick={handleUpdate}
-                      className="px-3 py-1 bg-teal-600 text-white text-sm rounded hover:bg-teal-700 transition-colors"
+                      className="px-3 py-1.5 bg-teal-600 text-white text-sm rounded-md hover:bg-teal-700 transition-colors font-medium shadow-sm flex items-center"
                     >
-                      Save
+                      <span className="mr-1">Save</span>
                     </button>
                     <button
                       onClick={() => setEditingFeedback(null)}
-                      className="px-3 py-1 bg-gray-200 text-gray-700 text-sm rounded hover:bg-gray-300 transition-colors"
+                      className="px-3 py-1.5 bg-gray-200 text-gray-700 text-sm rounded-md hover:bg-gray-300 transition-colors font-medium flex items-center"
                     >
-                      Cancel
+                      <span className="mr-1">Cancel</span>
                     </button>
                   </>
                 ) : (
                   <>
                     <button
                       onClick={() => handleEdit(item)}
-                      className="p-1 text-gray-500 hover:text-teal-600 transition-colors"
+                      className="p-1.5 text-gray-500 hover:text-teal-600 transition-colors bg-gray-100 hover:bg-gray-200 rounded-full"
                       aria-label="Edit feedback"
                     >
                       <Edit className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => handleDelete(item._id)}
-                      className="p-1 text-gray-500 hover:text-red-600 transition-colors"
+                      className="p-1.5 text-gray-500 hover:text-red-600 transition-colors bg-gray-100 hover:bg-gray-200 rounded-full"
                       aria-label="Delete feedback"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -399,16 +400,16 @@ const VehicleFeedbackComponent = ({ vehicleID, refreshTrigger }) => {
               <textarea
                 value={editedComment}
                 onChange={(e) => setEditedComment(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                className="w-full px-4 py-3 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
                 rows={3}
               />
             </div>
           ) : (
-            <p className="mt-3 text-gray-700">{item.comment}</p>
+            <p className="mt-3 text-gray-700 bg-gray-50 p-4 rounded-md border-l-4 border-teal-200">{item.comment}</p>
           )}
         </div>
       ))}
-    
+
       {feedback.length === 0 && message && (
         <div className="bg-gray-50 rounded-lg p-6 text-center">
           <p className="text-gray-600">{message}</p>

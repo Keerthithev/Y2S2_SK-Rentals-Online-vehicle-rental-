@@ -76,12 +76,10 @@ const Header = () => {
             <NavItem to="/listvehicle" label="Vehicles" />
             <NavItem to="/adminuserlist" label="Users" />
             <NavItem to="/adminblacklist" label="Blacklist" />
-            <NavItem to="/allbookings" label="Bookings" />
-            {/* <NavItem to="/staffactivities" label="Staff" /> */}
-            
             {/* <NavItem to="/reports" label="Reports" />
             <NavItem to="/revenue" label="Revenue" /> */}
-            {/* <NavItem to="/messages" label="Messages" /> */}
+            { <NavItem to="/allcomplaints" label="ALL Complints" /> }
+            { <NavItem to="/AllFeedbacks" label="ALL Feedbacks" /> }
 
             {/* Profile Dropdown */}
             <div className="relative ml-3">
