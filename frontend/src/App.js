@@ -14,6 +14,7 @@ import EnterOtp from "./components/EnterOtp";  // Import EnterOtp component
 import Header from './components/layouts/Header';
 import AboutPage from "./components/user/AboutPage";
 import ContactPage from "./components/user/ContactPage";
+import MyBookings from './components/MyBookings';
 
 
 import VehicleForm from './components/VehicleForm';
@@ -89,6 +90,7 @@ function App() {
        
         <Route path="/vehiclelist" element={<VehicleList />} />
         <Route path="/bookings" element={<Bookings />} />  {/* Bookings page route */}
+        <Route path="/mybookings" element={<MyBookings />} />
 
         <Route path="/adminuserlist" element={<AdminUserList />} />
         <Route path="/admindashboard" element={<AdminDashboard />} />
