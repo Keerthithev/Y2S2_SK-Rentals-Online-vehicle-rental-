@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { newBooking, getAllBookings, cancelBooking, editBooking } = require("../../controllers/booking_management/bookingController");
+const { newBooking, getAllBookings, cancelBooking, editBooking ,getUserBookings,getMyBookings} = require("../../controllers/booking_management/bookingController");
 const protect = require("../../middlewares/authMiddleware"); // Import the middleware
 
 // Create a new booking - requires user authentication
@@ -12,6 +12,9 @@ router.get("/allbookings", protect, getAllBookings);
 
 // Cancel a booking (same functionality as delete in this case)
 router.delete('/cancelbooking/:id', cancelBooking);
+
+router.get("/mybookings", protect, getMyBookings);
+router.put('/editbooking/:id', protect, editBooking);
 
 
 module.exports = router;

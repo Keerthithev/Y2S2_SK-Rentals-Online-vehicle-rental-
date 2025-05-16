@@ -42,6 +42,28 @@ exports.newBooking = catchAsyncError(async (req, res, next) => {
             });
         }
 
+        // Parse dates properly
+        const start = new Date(rentalStartDate);
+        const end = new Date(rentalEndDate);
+
+        // 🔒 Check for existing overlapping booking for the same vehicle
+        const overlappingBooking = await Booking.findOne({
+            vehicleId: vehicleId,
+            $or: [
+                {
+                    rentalStartDate: { $lte: end },
+                    rentalEndDate: { $gte: start }
+                }
+            ]
+        });
+
+        if (overlappingBooking) {
+            return res.status(400).json({
+                success: false,
+                message: "This vehicle is already booked for the selected dates.",
+            });
+        }
+
         // Create a new booking instance with the userId
         const newBooking = new Booking({
             vehicleId,
@@ -80,7 +102,6 @@ exports.newBooking = catchAsyncError(async (req, res, next) => {
 });
 
 // Get all bookings
-// Get all bookings
 exports.getAllBookings = catchAsyncError(async (req, res, next) => {
     try {
         // Fetch bookings and populate full user and vehicle details
@@ -101,7 +122,7 @@ exports.getAllBookings = catchAsyncError(async (req, res, next) => {
             bookings,
         });
     } catch (error) {
-        console.error("Get all bookings error:", error); // ✅ fixed
+        console.error("Get all bookings error:", error);
         res.status(500).json({
             success: false,
             message: "Internal Server Error",
@@ -110,31 +131,83 @@ exports.getAllBookings = catchAsyncError(async (req, res, next) => {
     }
 });
 
-
+// Cancel a booking
 exports.cancelBooking = async (req, res) => {
     const bookingId = req.params.id; // Extract the booking ID from the URL parameter
+
+    try {
+        // Find the booking by ID and delete it from the database
+        const deletedBooking = await Booking.findByIdAndDelete(bookingId);
+
+        // If the booking was not found, return an error
+        if (!deletedBooking) {
+            return res.status(404).json({ message: 'Booking not found' });
+        }
+
+        // Return a success message when booking is deleted
+        res.status(200).json({
+            success: true,
+            message: 'Booking successfully cancelled and deleted',
+        });
+    } catch (error) {
+        console.error('Error cancelling booking:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to cancel and delete booking',
+            error: error.message,
+        });
+    }
+};
+
+// Get bookings for the logged-in user
+exports.getMyBookings = catchAsyncError(async (req, res, next) => {
+    const userId = req.user?.id;
+  
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized: User ID not found in request",
+      });
+    }
   
     try {
-      // Find the booking by ID and delete it from the database
-      const deletedBooking = await Booking.findByIdAndDelete(bookingId);
+      const myBookings = await Booking.find({ userId }).populate("vehicleId");
   
-      // If the booking was not found, return an error
-      if (!deletedBooking) {
-        return res.status(404).json({ message: 'Booking not found' });
-      }
-  
-      // Return a success message when booking is deleted
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
-        message: 'Booking successfully cancelled and deleted',
+        bookings: myBookings,
       });
     } catch (error) {
-      console.error('Error cancelling booking:', error);
-      res.status(500).json({
+      console.error("Error fetching bookings:", error);
+      return res.status(500).json({
         success: false,
-        message: 'Failed to cancel and delete booking',
+        message: "Failed to fetch user's bookings",
         error: error.message,
       });
     }
-  };
+  });
+
+  exports.editBooking = catchAsyncError(async (req, res, next) => {
+    const bookingId = req.params.id;
+    const userId = req.user.id;
+  
+    const updated = await Booking.findOneAndUpdate(
+      { _id: bookingId, userId },
+      req.body,
+      { new: true }
+    ).populate("vehicleId");
+  
+    if (!updated) {
+      return res.status(404).json({
+        success: false,
+        message: "Booking not found or not authorized",
+      });
+    }
+  
+    res.status(200).json({
+      success: true,
+      message: "Booking updated",
+      booking: updated,
+    });
+  });
   

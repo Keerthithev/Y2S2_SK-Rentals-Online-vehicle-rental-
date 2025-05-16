@@ -95,11 +95,29 @@ const ComplaintsList = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
 
-      setComplaints(response.data)
+      // Ensure complaints is always an array
+      let complaintsData = []
+      if (Array.isArray(response.data)) {
+        complaintsData = response.data
+      } else if (response.data && typeof response.data === "object") {
+        // Check for common API response patterns
+        if (Array.isArray(response.data.complaints)) {
+          complaintsData = response.data.complaints
+        } else if (Array.isArray(response.data.data)) {
+          complaintsData = response.data.data
+        } else if (response.data.data && typeof response.data.data === "object" && !Array.isArray(response.data.data)) {
+          // If data is an object of objects, convert to array
+          complaintsData = Object.values(response.data.data)
+        }
+      }
+
+      setComplaints(complaintsData)
       setError("")
     } catch (error) {
       setError("Error fetching complaints. Please try again.")
       console.error("Error fetching complaints:", error)
+      // Ensure complaints is an array even on error
+      setComplaints([])
     } finally {
       setLoading(false)
       setIsRefreshing(false)
@@ -189,6 +207,13 @@ const ComplaintsList = () => {
   }
 
   const applyFiltersAndSort = () => {
+    // Ensure complaints is an array before filtering
+    if (!Array.isArray(complaints)) {
+      console.error("Complaints is not an array:", complaints)
+      setFilteredComplaints([])
+      return
+    }
+
     let filtered = [...complaints]
 
     // Apply search filter

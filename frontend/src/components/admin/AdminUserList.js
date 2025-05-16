@@ -1,7 +1,10 @@
+
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import axios from "axios"
+import { gsap } from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
 import Header from "../layouts/Header"
 import Footer from "../layouts/Footer"
 import {
@@ -20,6 +23,11 @@ import {
   Download,
 } from "lucide-react"
 
+// Register ScrollTrigger plugin
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger)
+}
+
 const AdminUserList = () => {
   const [users, setUsers] = useState([])
   const [email, setEmail] = useState("")
@@ -32,10 +40,82 @@ const AdminUserList = () => {
   const [showInviteForm, setShowInviteForm] = useState(false)
   const [selectedUser, setSelectedUser] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  
+  // Refs for animations
+  const titleRef = useRef(null)
+  const tabsRef = useRef(null)
+  const actionBarRef = useRef(null)
+  const tableRef = useRef(null)
+  const inviteFormRef = useRef(null)
 
   useEffect(() => {
     fetchUsers()
+    
+    // Initial animations
+    const timeline = gsap.timeline()
+    
+    timeline.fromTo(
+      titleRef.current,
+      { opacity: 0, y: -20 },
+      { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }
+    )
+    .fromTo(
+      tabsRef.current,
+      { opacity: 0, y: -10 },
+      { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }
+    )
+    .fromTo(
+      actionBarRef.current,
+      { opacity: 0 },
+      { opacity: 1, duration: 0.5, ease: "power3.out" },
+      "-=0.2"
+    )
+    
+    // Table animation will be triggered after data loads
+    
+    return () => {
+      // Clean up animations
+      if (ScrollTrigger) {
+        ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+      }
+    }
   }, [])
+  
+  // Animate table when data loads
+  useEffect(() => {
+    if (!loading && tableRef.current) {
+      gsap.fromTo(
+        tableRef.current,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }
+      )
+      
+      // Stagger rows animation
+      gsap.fromTo(
+        ".user-row",
+        { opacity: 0, y: 10 },
+        { 
+          opacity: 1, 
+          y: 0, 
+          stagger: 0.05, 
+          duration: 0.4, 
+          ease: "power3.out",
+          delay: 0.2
+        }
+      )
+    }
+  }, [loading])
+  
+  // Animate invite form when shown
+  useEffect(() => {
+    if (showInviteForm && inviteFormRef.current) {
+      gsap.fromTo(
+        inviteFormRef.current,
+        { opacity: 0, height: 0, y: -20 },
+        { opacity: 1, height: "auto", y: 0, duration: 0.5, ease: "power3.out" }
+      )
+    }
+  }, [showInviteForm])
 
   const fetchUsers = async () => {
     setLoading(true)
@@ -167,11 +247,33 @@ const AdminUserList = () => {
   const openUserModal = (user) => {
     setSelectedUser(user)
     setIsModalOpen(true)
+    
+    // Animate modal opening
+    setTimeout(() => {
+      gsap.fromTo(
+        ".modal-content",
+        { opacity: 0, y: 20, scale: 0.95 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power3.out" }
+      )
+    }, 10)
   }
 
   const closeUserModal = () => {
-    setSelectedUser(null)
-    setIsModalOpen(false)
+    // Animate modal closing
+    gsap.to(
+      ".modal-content",
+      { 
+        opacity: 0, 
+        y: -20, 
+        scale: 0.95, 
+        duration: 0.3, 
+        ease: "power3.in",
+        onComplete: () => {
+          setSelectedUser(null)
+          setIsModalOpen(false)
+        } 
+      }
+    )
   }
 
   const exportToCSV = () => {
@@ -218,31 +320,32 @@ const AdminUserList = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
       <Header />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">User Management</h1>
-          <p className="text-gray-600 mt-1">Manage customers and staff members</p>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-800 to-purple-700 leading-tight pb-2">User Management</h1>
+        <div className="mb-10" ref={titleRef}>
+        
+          <p className="text-lg text-gray-600">Manage customers and staff members on your rental platform</p>
         </div>
 
         {/* Tabs */}
-        <div className="flex border-b border-gray-200 mb-6">
+        <div ref={tabsRef} className="flex border-b border-gray-200 mb-8">
           <button
-            className={`py-3 px-6 font-medium text-sm focus:outline-none ${
+            className={`py-3 px-6 font-medium text-sm focus:outline-none transition-colors duration-300 ${
               activeTab === "customers"
                 ? "text-indigo-600 border-b-2 border-indigo-600"
-                : "text-gray-500 hover:text-gray-700"
+                : "text-gray-500 hover:text-indigo-500"
             }`}
             onClick={() => setActiveTab("customers")}
           >
             Customers
           </button>
           <button
-            className={`py-3 px-6 font-medium text-sm focus:outline-none ${
+            className={`py-3 px-6 font-medium text-sm focus:outline-none transition-colors duration-300 ${
               activeTab === "staff"
                 ? "text-indigo-600 border-b-2 border-indigo-600"
-                : "text-gray-500 hover:text-gray-700"
+                : "text-gray-500 hover:text-indigo-500"
             }`}
             onClick={() => setActiveTab("staff")}
           >
@@ -251,15 +354,15 @@ const AdminUserList = () => {
         </div>
 
         {/* Action Bar */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+        <div ref={actionBarRef} className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
           <div className="relative w-full sm:w-64">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Search className="h-4 w-4 text-gray-400" />
+              <Search className="h-5 w-5 text-gray-400" />
             </div>
             <input
               type="text"
               placeholder="Search users..."
-              className="pl-10 pr-4 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 shadow-sm"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -268,24 +371,24 @@ const AdminUserList = () => {
           <div className="flex gap-3 w-full sm:w-auto">
             <button
               onClick={() => fetchUsers()}
-              className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300"
             >
-              <RefreshCw className="h-4 w-4 mr-2" />
+              <RefreshCw className="h-5 w-5 mr-2" />
               Refresh
             </button>
             <button
               onClick={exportToCSV}
-              className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300"
             >
-              <Download className="h-4 w-4 mr-2" />
+              <Download className="h-5 w-5 mr-2" />
               Export
             </button>
             {activeTab === "staff" && (
               <button
                 onClick={() => setShowInviteForm(!showInviteForm)}
-                className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-300"
               >
-                <UserPlus className="h-4 w-4 mr-2" />
+                <UserPlus className="h-5 w-5 mr-2" />
                 Invite Staff
               </button>
             )}
@@ -294,8 +397,11 @@ const AdminUserList = () => {
 
         {/* Staff Invitation Form */}
         {showInviteForm && activeTab === "staff" && (
-          <div className="bg-white p-6 rounded-lg shadow-md mb-6 border border-gray-200">
-            <h2 className="text-lg font-medium text-gray-900 mb-4">Invite New Staff Member</h2>
+          <div 
+            ref={inviteFormRef}
+            className="bg-white p-6 rounded-xl shadow-md mb-8 border border-gray-200"
+          >
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">Invite New Staff Member</h2>
             <form onSubmit={handleStaffInvite} className="flex flex-col sm:flex-row gap-4">
               <div className="flex-grow">
                 <label htmlFor="email" className="sr-only">
@@ -307,17 +413,17 @@ const AdminUserList = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter staff email address"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                   required
                 />
               </div>
               <button
                 type="submit"
                 disabled={invitationStatus === "loading"}
-                className={`px-6 py-2 rounded-md text-white font-medium ${
+                className={`px-6 py-2 rounded-lg shadow-sm text-white font-medium transition-all duration-300 ${
                   invitationStatus === "loading"
                     ? "bg-indigo-400 cursor-not-allowed"
-                    : "bg-indigo-600 hover:bg-indigo-700"
+                    : "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transform hover:-translate-y-1"
                 }`}
               >
                 {invitationStatus === "loading" ? "Sending..." : "Send Invitation"}
@@ -325,7 +431,7 @@ const AdminUserList = () => {
             </form>
             {invitationMessage && (
               <div
-                className={`mt-4 p-3 rounded-md ${
+                className={`mt-4 p-3 rounded-lg ${
                   invitationStatus === "success" ? "bg-green-50 text-green-800" : "bg-red-50 text-red-800"
                 }`}
               >
@@ -344,23 +450,23 @@ const AdminUserList = () => {
 
         {/* Loading State */}
         {loading ? (
-          <div className="bg-white shadow rounded-lg p-8 flex justify-center">
+          <div className="bg-white shadow-lg rounded-xl p-12 flex justify-center">
             <div className="flex flex-col items-center">
-              <div className="w-12 h-12 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin"></div>
-              <p className="mt-4 text-gray-600">Loading users...</p>
+              <div className="w-16 h-16 border-4 border-t-indigo-600 border-indigo-200 rounded-full animate-spin"></div>
+              <p className="mt-6 text-lg text-gray-600">Loading users...</p>
             </div>
           </div>
         ) : (
           <>
             {/* User Table */}
-            <div className="bg-white shadow overflow-hidden rounded-lg">
+            <div ref={tableRef} className="bg-white shadow-lg overflow-hidden rounded-xl">
               <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
+                  <thead className="bg-gradient-to-r from-indigo-50 to-purple-50">
                     <tr>
                       <th
                         scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                        className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
                         onClick={() => handleSort("name")}
                       >
                         <div className="flex items-center">
@@ -378,7 +484,7 @@ const AdminUserList = () => {
                       </th>
                       <th
                         scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                        className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
                         onClick={() => handleSort("email")}
                       >
                         <div className="flex items-center">
@@ -396,7 +502,7 @@ const AdminUserList = () => {
                       </th>
                       <th
                         scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                       >
                         Phone
                       </th>
@@ -404,23 +510,22 @@ const AdminUserList = () => {
                         <>
                           <th
                             scope="col"
-                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell"
+                            className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell"
                           >
                             Address
                           </th>
                           <th
                             scope="col"
-                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell"
+                            className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell"
                           >
                             Date of Birth
                           </th>
                         </>
                       ) : (
                         <>
-                         
                           <th
                             scope="col"
-                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell"
+                            className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell"
                           >
                             Role
                           </th>
@@ -428,13 +533,13 @@ const AdminUserList = () => {
                       )}
                       <th
                         scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                       >
                         Status
                       </th>
                       <th
                         scope="col"
-                        className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        className="px-6 py-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
                       >
                         Actions
                       </th>
@@ -443,11 +548,11 @@ const AdminUserList = () => {
                   <tbody className="bg-white divide-y divide-gray-200">
                     {(activeTab === "customers" ? customers : staffMembers).length > 0 ? (
                       (activeTab === "customers" ? customers : staffMembers).map((user) => (
-                        <tr key={user._id} className="hover:bg-gray-50">
+                        <tr key={user._id} className="user-row hover:bg-gray-50 transition-colors duration-150">
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center">
-                              <div className="flex-shrink-0 h-10 w-10 bg-gray-200 rounded-full flex items-center justify-center">
-                                <span className="text-gray-600 font-medium">
+                              <div className="flex-shrink-0 h-10 w-10 bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-full flex items-center justify-center">
+                                <span className="font-medium">
                                   {user.name ? user.name.charAt(0).toUpperCase() : "U"}
                                 </span>
                               </div>
@@ -475,7 +580,6 @@ const AdminUserList = () => {
                             </>
                           ) : (
                             <>
-                            
                               <td className="px-6 py-4 whitespace-nowrap hidden lg:table-cell">
                                 <div className="text-sm text-gray-900">{user.role}</div>
                               </td>
@@ -483,7 +587,7 @@ const AdminUserList = () => {
                           )}
                           <td className="px-6 py-4 whitespace-nowrap">
                             <span
-                              className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                              className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
                                 !!user.bannedUntil && new Date(user.bannedUntil) > new Date()
                                   ? "bg-red-100 text-red-800"
                                   : "bg-green-100 text-green-800"
@@ -493,10 +597,10 @@ const AdminUserList = () => {
                             </span>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <div className="flex justify-end space-x-2">
+                            <div className="flex justify-end space-x-3">
                               <button
                                 onClick={() => openUserModal(user)}
-                                className="text-indigo-600 hover:text-indigo-900"
+                                className="text-indigo-600 hover:text-indigo-900 transition-colors duration-200"
                               >
                                 View
                               </button>
@@ -508,7 +612,7 @@ const AdminUserList = () => {
                                   !!user.bannedUntil && new Date(user.bannedUntil) > new Date()
                                     ? "text-green-600 hover:text-green-900"
                                     : "text-red-600 hover:text-red-900"
-                                }`}
+                                } transition-colors duration-200`}
                               >
                                 {!!user.bannedUntil && new Date(user.bannedUntil) > new Date() ? "Unban" : "Ban"}
                               </button>
@@ -518,7 +622,7 @@ const AdminUserList = () => {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan={7} className="px-6 py-4 text-center text-gray-500">
+                        <td colSpan={7} className="px-6 py-6 text-center text-gray-500">
                           No {activeTab === "customers" ? "customers" : "staff members"} found
                         </td>
                       </tr>
@@ -532,12 +636,12 @@ const AdminUserList = () => {
 
         {/* User Detail Modal */}
         {isModalOpen && selectedUser && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div className="modal-content bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
               <div className="p-6 border-b border-gray-200">
                 <div className="flex justify-between items-center">
-                  <h3 className="text-lg font-bold text-gray-900">User Details</h3>
-                  <button onClick={closeUserModal} className="text-gray-400 hover:text-gray-500">
+                  <h3 className="text-xl font-bold text-gray-900">User Details</h3>
+                  <button onClick={closeUserModal} className="text-gray-400 hover:text-gray-500 transition-colors">
                     <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -545,81 +649,81 @@ const AdminUserList = () => {
                 </div>
               </div>
               <div className="p-6">
-                <div className="flex items-center mb-6">
-                  <div className="h-16 w-16 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 text-xl font-bold">
+                <div className="flex items-center mb-8">
+                  <div className="h-20 w-20 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg">
                     {selectedUser.name ? selectedUser.name.charAt(0).toUpperCase() : "U"}
                   </div>
-                  <div className="ml-4">
-                    <h4 className="text-xl font-bold text-gray-900">{selectedUser.name || "N/A"}</h4>
-                    <p className="text-sm text-gray-500">
+                  <div className="ml-6">
+                    <h4 className="text-2xl font-bold text-gray-900">{selectedUser.name || "N/A"}</h4>
+                    <p className="text-md text-indigo-600 font-medium">
                       {selectedUser.role.charAt(0).toUpperCase() + selectedUser.role.slice(1)}
                     </p>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-6">
                     <div>
-                      <div className="flex items-center text-sm text-gray-500 mb-1">
-                        <Mail className="h-4 w-4 mr-2" />
+                      <div className="flex items-center text-sm text-gray-500 mb-2">
+                        <Mail className="h-5 w-5 mr-2 text-indigo-500" />
                         Email
                       </div>
-                      <p className="text-gray-900">{selectedUser.email}</p>
+                      <p className="text-gray-900 font-medium">{selectedUser.email}</p>
                     </div>
                     <div>
-                      <div className="flex items-center text-sm text-gray-500 mb-1">
-                        <Phone className="h-4 w-4 mr-2" />
+                      <div className="flex items-center text-sm text-gray-500 mb-2">
+                        <Phone className="h-5 w-5 mr-2 text-indigo-500" />
                         Phone
                       </div>
-                      <p className="text-gray-900">{selectedUser.phone || "N/A"}</p>
+                      <p className="text-gray-900 font-medium">{selectedUser.phone || "N/A"}</p>
                     </div>
                     {selectedUser.role === "user" && (
                       <>
                         <div>
-                          <div className="flex items-center text-sm text-gray-500 mb-1">
-                            <MapPin className="h-4 w-4 mr-2" />
+                          <div className="flex items-center text-sm text-gray-500 mb-2">
+                            <MapPin className="h-5 w-5 mr-2 text-indigo-500" />
                             Address
                           </div>
-                          <p className="text-gray-900">{selectedUser.address || "N/A"}</p>
+                          <p className="text-gray-900 font-medium">{selectedUser.address || "N/A"}</p>
                         </div>
                         <div>
-                          <div className="flex items-center text-sm text-gray-500 mb-1">
-                            <Calendar className="h-4 w-4 mr-2" />
+                          <div className="flex items-center text-sm text-gray-500 mb-2">
+                            <Calendar className="h-5 w-5 mr-2 text-indigo-500" />
                             Date of Birth
                           </div>
-                          <p className="text-gray-900">
+                          <p className="text-gray-900 font-medium">
                             {selectedUser.dateOfBirth ? new Date(selectedUser.dateOfBirth).toLocaleDateString() : "N/A"}
                           </p>
                         </div>
                       </>
                     )}
                   </div>
-                  <div className="space-y-4">
+                  <div className="space-y-6">
                     {selectedUser.role === "user" && (
                       <div>
-                        <div className="flex items-center text-sm text-gray-500 mb-1">
-                          <FileText className="h-4 w-4 mr-2" />
+                        <div className="flex items-center text-sm text-gray-500 mb-2">
+                          <FileText className="h-5 w-5 mr-2 text-indigo-500" />
                           Driver's License
                         </div>
-                        <p className="text-gray-900">{selectedUser.driversLicense || "N/A"}</p>
+                        <p className="text-gray-900 font-medium">{selectedUser.driversLicense || "N/A"}</p>
                       </div>
                     )}
                     {selectedUser.role === "staff" && (
                       <div>
-                        <div className="flex items-center text-sm text-gray-500 mb-1">
-                          <FileText className="h-4 w-4 mr-2" />
+                        <div className="flex items-center text-sm text-gray-500 mb-2">
+                          <FileText className="h-5 w-5 mr-2 text-indigo-500" />
                           Department
                         </div>
-                        <p className="text-gray-900">{selectedUser.department || "N/A"}</p>
+                        <p className="text-gray-900 font-medium">{selectedUser.department || "N/A"}</p>
                       </div>
                     )}
                     <div>
-                      <div className="flex items-center text-sm text-gray-500 mb-1">
-                        <AlertCircle className="h-4 w-4 mr-2" />
+                      <div className="flex items-center text-sm text-gray-500 mb-2">
+                        <AlertCircle className="h-5 w-5 mr-2 text-indigo-500" />
                         Status
                       </div>
                       <div
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                        className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
                           !!selectedUser.bannedUntil && new Date(selectedUser.bannedUntil) > new Date()
                             ? "bg-red-100 text-red-800"
                             : "bg-green-100 text-green-800"
@@ -631,11 +735,11 @@ const AdminUserList = () => {
                       </div>
                     </div>
                     <div>
-                      <div className="flex items-center text-sm text-gray-500 mb-1">
-                        <Calendar className="h-4 w-4 mr-2" />
+                      <div className="flex items-center text-sm text-gray-500 mb-2">
+                        <Calendar className="h-5 w-5 mr-2 text-indigo-500" />
                         Joined
                       </div>
-                      <p className="text-gray-900">
+                      <p className="text-gray-900 font-medium">
                         {selectedUser.createdAt ? new Date(selectedUser.createdAt).toLocaleDateString() : "N/A"}
                       </p>
                     </div>
@@ -645,7 +749,7 @@ const AdminUserList = () => {
               <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end">
                 <button
                   onClick={closeUserModal}
-                  className="px-4 py-2 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
                 >
                   Close
                 </button>
@@ -657,10 +761,10 @@ const AdminUserList = () => {
                     )
                     closeUserModal()
                   }}
-                  className={`ml-3 px-4 py-2 rounded-md text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                  className={`ml-3 px-4 py-2 rounded-lg shadow-sm text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-300 transform hover:-translate-y-1 ${
                     !!selectedUser.bannedUntil && new Date(selectedUser.bannedUntil) > new Date()
-                      ? "bg-green-600 hover:bg-green-700 focus:ring-green-500"
-                      : "bg-red-600 hover:bg-red-700 focus:ring-red-500"
+                      ? "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 focus:ring-green-500"
+                      : "bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 focus:ring-red-500"
                   }`}
                 >
                   {!!selectedUser.bannedUntil && new Date(selectedUser.bannedUntil) > new Date()
