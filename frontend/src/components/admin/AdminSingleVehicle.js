@@ -97,6 +97,7 @@ const AdminSingleVehicle = () => {
         })
         if (vehicleData.vehicle.trackId) {
           fetchTrackingData(vehicleData.vehicle.trackId)
+          
         }
       } else {
         updateState({ 
@@ -317,7 +318,7 @@ const response = await fetch(`https://demo.traccar.org/api/positions?deviceId=${
   const startAutoRefresh = useCallback((trackId) => {
     if (refreshInterval) clearInterval(refreshInterval);
     fetchTrackingData(trackId);
-    const interval = setInterval(() => fetchTrackingData(trackId), 30000);
+    const interval = setInterval(() => fetchTrackingData(trackId), 20000);
     updateState({ refreshInterval: interval });
   }, [refreshInterval, fetchTrackingData]);
 
