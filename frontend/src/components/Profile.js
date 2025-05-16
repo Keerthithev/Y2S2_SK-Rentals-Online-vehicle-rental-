@@ -7,7 +7,35 @@ import { jwtDecode } from "jwt-decode"
 import Header from "./layouts/Header"
 import UserHeader from "./layouts/userheader"
 import Footer from "./layouts/Footer"
-import { User, Mail, Phone, MapPin, Calendar, FileText, Edit2, LogOut, Shield, Clock, ChevronRight, MessageSquare, AlertCircle, CheckCircle, Filter, Search, Download, RefreshCw, Trash2, Edit, X, Plus, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react'
+import ProfileExport from "./user/ProfileExport"
+
+import {
+  User,
+  Mail,
+  Phone,
+  MapPin,
+  Calendar,
+  FileText,
+  Edit2,
+  LogOut,
+  Shield,
+  Clock,
+  ChevronRight,
+  MessageSquare,
+  AlertCircle,
+  CheckCircle,
+  Filter,
+  Search,
+  Download,
+  RefreshCw,
+  Trash2,
+  Edit,
+  X,
+  Plus,
+  ExternalLink,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react"
 
 const ProfileWithComplaints = () => {
   // User profile state
@@ -32,6 +60,9 @@ const ProfileWithComplaints = () => {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [replies, setReplies] = useState({})
 
+  // Export modal state
+  const [showExportModal, setShowExportModal] = useState(false)
+
   useEffect(() => {
     fetchUserData()
   }, [])
@@ -54,17 +85,17 @@ const ProfileWithComplaints = () => {
         navigate("/login")
         return
       }
-  
+
       const decodedToken = jwtDecode(token)
       const role = decodedToken.role
       setUserRole(role) // for other uses
       console.log("Decoded token:", decodedToken)
       // Optional: console.log("Decoded role:", role)
-  
+
       const response = await axios.get("http://localhost:1111/api/v1/myprofile", {
         headers: { Authorization: `Bearer ${token}` },
       })
-  
+
       setUser({ ...response.data.user, role }) // Attach role to user object
       setError("")
     } catch (err) {
@@ -73,7 +104,6 @@ const ProfileWithComplaints = () => {
       setLoading(false)
     }
   }
-  
 
   const fetchComplaints = async () => {
     setIsRefreshing(true)
@@ -84,18 +114,18 @@ const ProfileWithComplaints = () => {
         navigate("/login")
         return
       }
-  
+
       const role = user?.role || userRole // fallback
       console.log(role)
       const url =
         role === "admin" || role === "staff"
           ? "http://localhost:1111/api/v1/complaints/all"
           : `http://localhost:1111/api/v1/complaints/${user._id}`
-  
+
       const response = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` },
       })
-  
+
       setComplaints(response.data)
       setComplaintsError("")
     } catch (error) {
@@ -106,7 +136,6 @@ const ProfileWithComplaints = () => {
       setIsRefreshing(false)
     }
   }
-  
 
   const handleLogout = () => {
     const confirmLogout = window.confirm("Are you sure you want to log out?")
@@ -238,7 +267,7 @@ const ProfileWithComplaints = () => {
       setFilteredComplaints([])
       return
     }
-    
+
     let filtered = [...complaints]
 
     // Apply search filter
@@ -343,11 +372,7 @@ const ProfileWithComplaints = () => {
       const token = localStorage.getItem("token")
       const headers = { Authorization: `Bearer ${token}` }
 
-      await axios.put(
-        `http://localhost:1111/api/v1/complaints/reply/${complaintID}`,
-        { reply },
-        { headers }
-      )
+      await axios.put(`http://localhost:1111/api/v1/complaints/reply/${complaintID}`, { reply }, { headers })
 
       // Re-fetch complaints after updating
       fetchComplaints()
@@ -373,9 +398,14 @@ const ProfileWithComplaints = () => {
     }
   }
 
+  // Handle export user profile
+  const handleExportProfile = () => {
+    setShowExportModal(true)
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
-    {userRole === "admin" ? <Header /> : <UserHeader />}
+      {userRole === "admin" ? <Header /> : <UserHeader />}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">My Account</h1>
@@ -387,9 +417,9 @@ const ProfileWithComplaints = () => {
           <nav className="-mb-px flex space-x-8">
             <button
               onClick={() => setActiveTab("profile")}
-              className={`${
+              className={`profile-tab ${
                 activeTab === "profile"
-                  ? "border-indigo-500 text-indigo-600"
+                  ? "border-indigo-500 text-indigo-600 active"
                   : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
               } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
             >
@@ -397,9 +427,9 @@ const ProfileWithComplaints = () => {
             </button>
             <button
               onClick={() => setActiveTab("complaints")}
-              className={`${
+              className={`profile-tab ${
                 activeTab === "complaints"
-                  ? "border-indigo-500 text-indigo-600"
+                  ? "border-indigo-500 text-indigo-600 active"
                   : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
               } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
             >
@@ -433,10 +463,10 @@ const ProfileWithComplaints = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                   {/* Profile Summary Card */}
                   <div className="lg:col-span-1">
-                    <div className="bg-white shadow rounded-lg overflow-hidden">
-                      <div className="bg-gradient-to-r from-indigo-600 to-indigo-700 px-6 py-8">
+                    <div className="profile-card bg-white shadow rounded-lg overflow-hidden">
+                      <div className="profile-header bg-gradient-to-r from-indigo-600 to-indigo-700 px-6 py-8">
                         <div className="flex justify-center">
-                          <div className="h-24 w-24 rounded-full bg-white flex items-center justify-center">
+                          <div className="profile-avatar h-24 w-24 rounded-full bg-white flex items-center justify-center">
                             <span className="text-indigo-600 text-3xl font-bold">
                               {user.name ? user.name.charAt(0).toUpperCase() : "U"}
                             </span>
@@ -472,6 +502,13 @@ const ProfileWithComplaints = () => {
                       <div className="px-6 py-6">
                         <div className="flex flex-col space-y-3">
                           <button
+                            onClick={handleExportProfile}
+                            className="flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 export-btn-pulse"
+                          >
+                            <Download className="h-4 w-4 mr-2" />
+                            Export Profile Data
+                          </button>
+                          <button
                             onClick={handleEditProfile}
                             className="flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                           >
@@ -492,7 +529,7 @@ const ProfileWithComplaints = () => {
 
                   {/* Profile Details */}
                   <div className="lg:col-span-2">
-                    <div className="bg-white shadow rounded-lg overflow-hidden">
+                    <div className="profile-card bg-white shadow rounded-lg overflow-hidden">
                       <div className="px-6 py-5 border-b border-gray-200">
                         <h3 className="text-lg font-medium text-gray-900">Personal Information</h3>
                       </div>
@@ -544,14 +581,16 @@ const ProfileWithComplaints = () => {
                               <FileText className="h-4 w-4 mr-2 text-gray-400" />
                               Driver's License
                             </p>
-                            <p className="text-base font-medium text-gray-900">{user.driversLicense || "Not provided"}</p>
+                            <p className="text-base font-medium text-gray-900">
+                              {user.driversLicense || "Not provided"}
+                            </p>
                           </div>
                         </div>
                       </div>
                     </div>
 
                     {/* Recent Activity */}
-                    <div className="mt-8 bg-white shadow rounded-lg overflow-hidden">
+                    <div className="mt-8 profile-card bg-white shadow rounded-lg overflow-hidden">
                       <div className="px-6 py-5 border-b border-gray-200 flex justify-between items-center">
                         <h3 className="text-lg font-medium text-gray-900">Recent Activity</h3>
                         <button className="text-sm text-indigo-600 hover:text-indigo-900 font-medium flex items-center">
@@ -578,8 +617,8 @@ const ProfileWithComplaints = () => {
                         ) : (
                           <div className="px-6 py-8 text-center">
                             <p className="text-gray-500 text-sm">No recent activity to display</p>
-                            <button 
-                              onClick={() => navigate("/vehicles")}
+                            <button
+                              onClick={() => navigate("/uservehiclelist")}
                               className="mt-4 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                             >
                               Browse Vehicles
@@ -630,7 +669,7 @@ const ProfileWithComplaints = () => {
                 )}
                 <button
                   onClick={() => navigate("/complaintform")}
-                  className="px-4 py-2 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 transition-all duration-200 flex items-center gap-2 text-sm"
+                  className="px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium rounded-md hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 flex items-center gap-2 text-sm"
                 >
                   <Plus className="h-4 w-4" /> New Complaint
                 </button>
@@ -649,7 +688,7 @@ const ProfileWithComplaints = () => {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     placeholder="Search complaints..."
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    className="form-input-gradient w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                   />
                 </div>
 
@@ -665,7 +704,7 @@ const ProfileWithComplaints = () => {
                   <select
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value)}
-                    className="px-3 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                    className="form-input-gradient px-3 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50"
                   >
                     <option value="all">All Statuses</option>
                     <option value="Pending">Pending</option>
@@ -684,7 +723,7 @@ const ProfileWithComplaints = () => {
                       <select
                         value={typeFilter}
                         onChange={(e) => setTypeFilter(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                        className="form-input-gradient w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
                       >
                         <option value="all">All Types</option>
                         <option value="vehicle">Vehicle Issues</option>
@@ -698,7 +737,7 @@ const ProfileWithComplaints = () => {
                         <select
                           value={sortConfig.key}
                           onChange={(e) => handleSort(e.target.value)}
-                          className="flex-grow px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                          className="form-input-gradient flex-grow px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
                         >
                           <option value="dateFiled">Date Filed</option>
                           <option value="status">Status</option>
@@ -855,7 +894,7 @@ const ProfileWithComplaints = () => {
                       <tbody className="bg-white divide-y divide-gray-200">
                         {filteredComplaints.length > 0 ? (
                           filteredComplaints.map((complaint) => (
-                            <tr key={complaint._id} className="hover:bg-gray-50">
+                            <tr key={complaint._id} className="table-row-hover hover:bg-gray-50">
                               <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="flex items-center">
                                   <div className="flex-shrink-0 h-10 w-10 bg-indigo-100 rounded-full flex items-center justify-center">
@@ -887,7 +926,7 @@ const ProfileWithComplaints = () => {
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap">
                                 <span
-                                  className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(
+                                  className={`status-badge px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(
                                     complaint.status,
                                   )}`}
                                 >
@@ -903,7 +942,7 @@ const ProfileWithComplaints = () => {
                                     name="issueDescription"
                                     value={editedComplaint.issueDescription}
                                     onChange={handleChange}
-                                    className="w-full px-2 py-1 border border-gray-300 rounded-md text-sm"
+                                    className="form-input-gradient w-full px-2 py-1 border border-gray-300 rounded-md text-sm"
                                     rows={3}
                                   />
                                 ) : (
@@ -919,12 +958,12 @@ const ProfileWithComplaints = () => {
                                       value={replies[complaint._id] || ""}
                                       onChange={(e) => handleReplyChange(complaint._id, e.target.value)}
                                       placeholder="Enter resolution..."
-                                      className="w-full px-2 py-1 border border-gray-300 rounded-md text-sm"
+                                      className="form-input-gradient w-full px-2 py-1 border border-gray-300 rounded-md text-sm"
                                       rows={2}
                                     />
-                                    <button 
-                                      onClick={() => handleReply(complaint._id)} 
-                                      className="mt-2 px-2 py-1 bg-indigo-600 text-white text-xs rounded hover:bg-indigo-700"
+                                    <button
+                                      onClick={() => handleReply(complaint._id)}
+                                      className="mt-2 px-2 py-1 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs rounded hover:from-indigo-700 hover:to-purple-700"
                                     >
                                       Submit
                                     </button>
@@ -1006,7 +1045,7 @@ const ProfileWithComplaints = () => {
                                 </p>
                                 <button
                                   onClick={() => navigate("/complaintform")}
-                                  className="px-4 py-2 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 transition-colors"
+                                  className="px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium rounded-md hover:from-indigo-700 hover:to-purple-700 transition-colors"
                                 >
                                   Submit a Complaint
                                 </button>
@@ -1024,6 +1063,9 @@ const ProfileWithComplaints = () => {
         )}
       </div>
       <Footer />
+
+      {/* Export Profile Modal */}
+      {showExportModal && <ProfileExport user={user} onClose={() => setShowExportModal(false)} />}
     </div>
   )
 }
