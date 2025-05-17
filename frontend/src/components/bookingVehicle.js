@@ -292,7 +292,7 @@ Thank you for choosing our service!
     return (
       <div className="min-h-screen bg-gray-50 flex justify-center items-center">
         <div className="flex flex-col items-center">
-          <div className="w-16 h-16 border-4 border-teal-200 border-t-teal-600 rounded-full animate-spin"></div>
+          <div className="w-16 h-16 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
           <p className="mt-4 text-gray-600">Loading vehicle details...</p>
         </div>
       </div>
@@ -312,7 +312,7 @@ Thank you for choosing our service!
           <div className="mt-6">
             <button
               onClick={() => navigate(-1)}
-              className="w-full px-4 py-2 text-sm font-medium text-white bg-teal-600 rounded-md hover:bg-teal-700"
+              className="w-full px-4 py-2 text-sm font-medium text-white bg-purple-600 rounded-md hover:bg-purple-700"
             >
               Go Back
             </button>
@@ -328,12 +328,12 @@ Thank you for choosing our service!
       <div className="min-h-screen bg-gray-50 py-12">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div ref={confirmationRef} className="bg-white rounded-lg shadow-md overflow-hidden">
-            <div className="bg-teal-600 py-6 px-6">
+            <div className="bg-purple-600 py-6 px-6">
               <div className="flex items-center justify-center">
                 <div className="bg-white rounded-full p-2">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-8 w-8 text-teal-600"
+                    className="h-8 w-8 text-purple-600"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -349,7 +349,7 @@ Thank you for choosing our service!
               <div className="text-center mb-8">
                 <p className="text-gray-600">Thank you for your booking. Your reservation has been confirmed.</p>
                 <p className="mt-2 text-lg font-semibold">
-                  Booking Reference: <span className="text-teal-600">{bookingReference}</span>
+                  Booking Reference: <span className="text-purple-600">{bookingReference}</span>
                 </p>
               </div>
 
@@ -416,7 +416,7 @@ Thank you for choosing our service!
           <div className="mt-6 flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
             <button
               onClick={downloadConfirmation}
-              className="px-6 py-3 bg-teal-600 text-white rounded-md hover:bg-teal-700 transition-colors flex items-center justify-center"
+              className="px-6 py-3 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors flex items-center justify-center"
             >
               <Download className="w-5 h-5 mr-2" />
               Download Confirmation
@@ -465,7 +465,7 @@ Thank you for choosing our service!
         <div className="mb-6">
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center text-gray-600 hover:text-teal-600 transition-colors"
+            className="flex items-center text-gray-600 hover:text-purple-600 transition-colors"
           >
             <ChevronLeft className="w-4 h-4 mr-2" />
             <span>Back to Vehicle</span>
@@ -480,31 +480,31 @@ Thank you for choosing our service!
         {/* Progress Steps */}
         <div className="max-w-3xl mx-auto mb-10">
           <div className="flex justify-between">
-            <div className={`flex flex-col items-center ${currentStep >= 1 ? "text-teal-600" : "text-gray-400"}`}>
+            <div className={`flex flex-col items-center ${currentStep >= 1 ? "text-purple-600" : "text-gray-400"}`}>
               <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center ${currentStep >= 1 ? "bg-teal-100 text-teal-600" : "bg-gray-100 text-gray-400"}`}
+                className={`w-10 h-10 rounded-full flex items-center justify-center ${currentStep >= 1 ? "bg-purple-100 text-purple-600" : "bg-gray-100 text-gray-400"}`}
               >
                 <Calendar className="w-5 h-5" />
               </div>
               <span className="mt-2 text-sm font-medium">Dates</span>
             </div>
             <div className="flex-1 flex items-center">
-              <div className={`flex-1 h-1 ${currentStep >= 2 ? "bg-teal-600" : "bg-gray-200"}`}></div>
+              <div className={`flex-1 h-1 ${currentStep >= 2 ? "bg-purple-600" : "bg-gray-200"}`}></div>
             </div>
-            <div className={`flex flex-col items-center ${currentStep >= 2 ? "text-teal-600" : "text-gray-400"}`}>
+            <div className={`flex flex-col items-center ${currentStep >= 2 ? "text-purple-600" : "text-gray-400"}`}>
               <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center ${currentStep >= 2 ? "bg-teal-100 text-teal-600" : "bg-gray-100 text-gray-400"}`}
+                className={`w-10 h-10 rounded-full flex items-center justify-center ${currentStep >= 2 ? "bg-purple-100 text-purple-600" : "bg-gray-100 text-gray-400"}`}
               >
                 <MapPin className="w-5 h-5" />
               </div>
               <span className="mt-2 text-sm font-medium">Location</span>
             </div>
             <div className="flex-1 flex items-center">
-              <div className={`flex-1 h-1 ${currentStep >= 3 ? "bg-teal-600" : "bg-gray-200"}`}></div>
+              <div className={`flex-1 h-1 ${currentStep >= 3 ? "bg-purple-600" : "bg-gray-200"}`}></div>
             </div>
-            <div className={`flex flex-col items-center ${currentStep >= 3 ? "text-teal-600" : "text-gray-400"}`}>
+            <div className={`flex flex-col items-center ${currentStep >= 3 ? "text-purple-600" : "text-gray-400"}`}>
               <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center ${currentStep >= 3 ? "bg-teal-100 text-teal-600" : "bg-gray-100 text-gray-400"}`}
+                className={`w-10 h-10 rounded-full flex items-center justify-center ${currentStep >= 3 ? "bg-purple-100 text-purple-600" : "bg-gray-100 text-gray-400"}`}
               >
                 <CreditCard className="w-5 h-5" />
               </div>
@@ -535,7 +535,7 @@ Thank you for choosing our service!
                           value={bookingData.startDate}
                           onChange={handleInputChange}
                           min={format(addDays(new Date(), 1), "yyyy-MM-dd")}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 text-base"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-base"
                           required
                         />
                       </div>
@@ -551,7 +551,7 @@ Thank you for choosing our service!
                           value={bookingData.endDate}
                           onChange={handleInputChange}
                           min={bookingData.startDate}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 text-base"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-base"
                           required
                         />
                       </div>
@@ -570,7 +570,7 @@ Thank you for choosing our service!
                       <button
                         type="button"
                         onClick={nextStep}
-                        className="px-6 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 transition-colors text-base font-medium"
+                        className="px-6 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors text-base font-medium"
                       >
                         Next
                       </button>
@@ -595,7 +595,7 @@ Thank you for choosing our service!
                           value={bookingData.pickUpLocation}
                           onChange={handleInputChange}
                           placeholder="Enter pickup location"
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 text-base"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-base"
                           required
                         />
                       </div>
@@ -611,7 +611,7 @@ Thank you for choosing our service!
                           value={bookingData.dropOffLocation}
                           onChange={handleInputChange}
                           placeholder="Enter return location"
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 text-base"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-base"
                           required
                         />
                       </div>
@@ -625,7 +625,7 @@ Thank you for choosing our service!
                           name="additionalDrivers"
                           value={bookingData.additionalDrivers}
                           onChange={handleInputChange}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 text-base"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-base"
                         >
                           <option value="0">No additional drivers</option>
                           <option value="1">1 additional driver</option>
@@ -646,7 +646,7 @@ Thank you for choosing our service!
                           onChange={handleInputChange}
                           rows="3"
                           placeholder="Any special requests or requirements"
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 text-base"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-base"
                         ></textarea>
                       </div>
                     </div>
@@ -662,7 +662,7 @@ Thank you for choosing our service!
                       <button
                         type="button"
                         onClick={nextStep}
-                        className="px-6 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 transition-colors text-base font-medium"
+                        className="px-6 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors text-base font-medium"
                       >
                         Next
                       </button>
@@ -682,7 +682,7 @@ Thank you for choosing our service!
                         </label>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <label
-                            className={`flex items-center p-4 border rounded-md cursor-pointer ${bookingData.paymentMethod === "credit_card" ? "border-teal-500 bg-teal-50" : "border-gray-300"}`}
+                            className={`flex items-center p-4 border rounded-md cursor-pointer ${bookingData.paymentMethod === "credit_card" ? "border-purple-500 bg-purple-50" : "border-gray-300"}`}
                           >
                             <input
                               type="radio"
@@ -690,7 +690,7 @@ Thank you for choosing our service!
                               value="credit_card"
                               checked={bookingData.paymentMethod === "credit_card"}
                               onChange={handleInputChange}
-                              className="h-4 w-4 text-teal-600 focus:ring-teal-500"
+                              className="h-4 w-4 text-purple-600 focus:ring-purple-500"
                             />
                             <div className="ml-3">
                               <span className="block text-sm font-medium">Credit Card</span>
@@ -699,7 +699,7 @@ Thank you for choosing our service!
                           </label>
 
                           <label
-                            className={`flex items-center p-4 border rounded-md cursor-pointer ${bookingData.paymentMethod === "debit_card" ? "border-teal-500 bg-teal-50" : "border-gray-300"}`}
+                            className={`flex items-center p-4 border rounded-md cursor-pointer ${bookingData.paymentMethod === "debit_card" ? "border-purple-500 bg-purple-50" : "border-gray-300"}`}
                           >
                             <input
                               type="radio"
@@ -707,7 +707,7 @@ Thank you for choosing our service!
                               value="debit_card"
                               checked={bookingData.paymentMethod === "debit_card"}
                               onChange={handleInputChange}
-                              className="h-4 w-4 text-teal-600 focus:ring-teal-500"
+                              className="h-4 w-4 text-purple-600 focus:ring-purple-500"
                             />
                             <div className="ml-3">
                               <span className="block text-sm font-medium">Debit Card</span>
@@ -716,7 +716,7 @@ Thank you for choosing our service!
                           </label>
 
                           <label
-                            className={`flex items-center p-4 border rounded-md cursor-pointer ${bookingData.paymentMethod === "paypal" ? "border-teal-500 bg-teal-50" : "border-gray-300"}`}
+                            className={`flex items-center p-4 border rounded-md cursor-pointer ${bookingData.paymentMethod === "paypal" ? "border-purple-500 bg-purple-50" : "border-gray-300"}`}
                           >
                             <input
                               type="radio"
@@ -724,7 +724,7 @@ Thank you for choosing our service!
                               value="paypal"
                               checked={bookingData.paymentMethod === "paypal"}
                               onChange={handleInputChange}
-                              className="h-4 w-4 text-teal-600 focus:ring-teal-500"
+                              className="h-4 w-4 text-purple-600 focus:ring-purple-500"
                             />
                             <div className="ml-3">
                               <span className="block text-sm font-medium">PayPal</span>
@@ -733,7 +733,7 @@ Thank you for choosing our service!
                           </label>
 
                           <label
-                            className={`flex items-center p-4 border rounded-md cursor-pointer ${bookingData.paymentMethod === "cash" ? "border-teal-500 bg-teal-50" : "border-gray-300"}`}
+                            className={`flex items-center p-4 border rounded-md cursor-pointer ${bookingData.paymentMethod === "cash" ? "border-purple-500 bg-purple-50" : "border-gray-300"}`}
                           >
                             <input
                               type="radio"
@@ -741,7 +741,7 @@ Thank you for choosing our service!
                               value="cash"
                               checked={bookingData.paymentMethod === "cash"}
                               onChange={handleInputChange}
-                              className="h-4 w-4 text-teal-600 focus:ring-teal-500"
+                              className="h-4 w-4 text-purple-600 focus:ring-purple-500"
                             />
                             <div className="ml-3">
                               <span className="block text-sm font-medium">Cash</span>
@@ -760,7 +760,7 @@ Thank you for choosing our service!
                               type="checkbox"
                               checked={bookingData.agreeToTerms}
                               onChange={handleInputChange}
-                              className="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
+                              className="h-5 w-5 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
                               required
                             />
                           </div>
@@ -770,11 +770,11 @@ Thank you for choosing our service!
                             </label>
                             <p className="text-gray-500">
                               By checking this box, you agree to our{" "}
-                              <a href="#" className="text-teal-600 hover:underline">
+                              <a href="#" className="text-purple-600 hover:underline">
                                 Terms of Service
                               </a>{" "}
                               and{" "}
-                              <a href="#" className="text-teal-600 hover:underline">
+                              <a href="#" className="text-purple-600 hover:underline">
                                 Privacy Policy
                               </a>
                               .
@@ -798,7 +798,7 @@ Thank you for choosing our service!
                         className={`px-6 py-2 rounded-md flex items-center text-base font-medium ${
                           isSubmitting || !bookingData.agreeToTerms
                             ? "bg-gray-400 cursor-not-allowed"
-                            : "bg-teal-600 hover:bg-teal-700"
+                            : "bg-purple-600 hover:bg-purple-700"
                         } text-white transition-colors`}
                       >
                         {isSubmitting && <Loader className="w-4 h-4 mr-2 animate-spin" />}
@@ -871,13 +871,13 @@ Thank you for choosing our service!
               <div className="pt-4">
                 <div className="flex justify-between items-center">
                   <span className="font-semibold">Total Amount</span>
-                  <span className="text-xl font-bold text-teal-600">{formatCurrency(calculateTotalAmount())}</span>
+                  <span className="text-xl font-bold text-purple-600">{formatCurrency(calculateTotalAmount())}</span>
                 </div>
               </div>
 
               <div className="mt-6 bg-gray-50 p-4 rounded-md">
                 <div className="flex">
-                  <Shield className="w-5 h-5 text-teal-600 flex-shrink-0" />
+                  <Shield className="w-5 h-5 text-purple-600 flex-shrink-0" />
                   <div className="ml-3">
                     <h4 className="text-sm font-medium text-gray-900">Worry-free booking</h4>
                     <p className="mt-1 text-xs text-gray-500">Free cancellation up to 24 hours before pickup</p>
@@ -887,12 +887,12 @@ Thank you for choosing our service!
 
               <div className="mt-4 bg-gray-50 p-4 rounded-md">
                 <div className="flex">
-                  <Info className="w-5 h-5 text-teal-600 flex-shrink-0" />
+                  <Info className="w-5 h-5 text-purple-600 flex-shrink-0" />
                   <div className="ml-3">
                     <h4 className="text-sm font-medium text-gray-900">Need help?</h4>
                     <p className="mt-1 text-xs text-gray-500">
                       Call us at{" "}
-                      <a href="tel:+15551234567" className="text-teal-600">
+                      <a href="tel:+15551234567" className="text-purple-600">
                         +1 (555) 123-4567
                       </a>
                     </p>

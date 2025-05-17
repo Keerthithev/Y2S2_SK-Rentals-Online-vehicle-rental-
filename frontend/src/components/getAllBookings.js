@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import Swal from "sweetalert2"
 import { Calendar, Download, FileText, Filter, Printer, RefreshCw, Search, X } from "lucide-react"
+import Header from "./layouts/Header"
 
 const BookingList = () => {
   const [bookings, setBookings] = useState([])
@@ -375,7 +376,9 @@ const BookingList = () => {
   }
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
+    <div >
+      <Header/>
+      <div className="p-6 bg-gray-50 min-h-screen">
       {/* Header Section */}
       <div className="bg-gradient-to-r from-blue-700 to-indigo-800 rounded-xl shadow-lg mb-6 p-6 text-white">
         <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
@@ -729,6 +732,7 @@ Special Requests: ${booking.specialRequests || "None"}
           Showing {filteredBookings.length} of {bookings.length} bookings
         </div>
       </div>
+    </div>
     </div>
   )
 }

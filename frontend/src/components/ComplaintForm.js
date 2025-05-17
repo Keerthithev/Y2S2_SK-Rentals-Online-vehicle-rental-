@@ -58,10 +58,17 @@ const ComplaintForm = () => {
 
   const validateForm = () => {
     let tempErrors = {}
+
     if (!customerName.trim()) tempErrors.customerName = "Customer name is required."
     if (!issueType) tempErrors.issueType = "Issue type is required."
     if (issueType === "vehicle" && !vehicleID.trim()) tempErrors.vehicleID = "Vehicle ID is required."
-    if (!issueDescription.trim()) tempErrors.issueDescription = "Issue description is required."
+
+    if (!issueDescription.trim()) {
+      tempErrors.issueDescription = "Issue description is required."
+    } else if (issueDescription.trim().length < 10) {
+      tempErrors.issueDescription = "Issue description must be at least 10 characters long."
+    }
+
     setErrors(tempErrors)
     return Object.keys(tempErrors).length === 0
   }
@@ -85,13 +92,13 @@ const ComplaintForm = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       setSuccess(true)
-      
+
       // Reset form
       setIssueType("")
       setVehicleID("")
       setIssueDescription("")
       setErrors({})
-      
+
       // Redirect after a delay
       setTimeout(() => {
         navigate("/profile")
@@ -112,7 +119,7 @@ const ComplaintForm = () => {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center text-indigo-600 hover:text-indigo-800 mb-6 transition-colors"
+          className="flex items-center text-purple-600 hover:text-purple-800 mb-6 transition-colors"
         >
           <ArrowLeft className="h-4 w-4 mr-1" />
           <span>Back</span>
@@ -129,7 +136,7 @@ const ComplaintForm = () => {
           {loading ? (
             <div className="px-6 py-12 flex justify-center">
               <div className="flex flex-col items-center">
-                <div className="w-12 h-12 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin"></div>
+                <div className="w-12 h-12 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
                 <p className="mt-4 text-gray-600">Loading form...</p>
               </div>
             </div>
@@ -181,7 +188,7 @@ const ComplaintForm = () => {
                     id="issueType"
                     value={issueType}
                     onChange={(e) => setIssueType(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
                   >
                     <option value="">Select Issue Type</option>
                     <option value="vehicle">Vehicle Issue</option>
@@ -200,7 +207,7 @@ const ComplaintForm = () => {
                     id="vehicleID"
                     value={vehicleID}
                     onChange={(e) => setVehicleID(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
                   >
                     <option value="">Select Vehicle</option>
                     {vehicles.map((vehicle) => (
@@ -223,7 +230,7 @@ const ComplaintForm = () => {
                   onChange={(e) => setIssueDescription(e.target.value)}
                   rows={5}
                   placeholder="Please provide details about the issue you experienced..."
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
                 />
                 {errors.issueDescription && <p className="mt-1 text-sm text-red-600">{errors.issueDescription}</p>}
               </div>
@@ -251,14 +258,14 @@ const ComplaintForm = () => {
                 <button
                   type="button"
                   onClick={() => navigate(-1)}
-                  className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mr-3"
+                  className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 mr-3"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className={`px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
+                  className={`px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 ${
                     submitting ? "opacity-70 cursor-not-allowed" : ""
                   }`}
                 >

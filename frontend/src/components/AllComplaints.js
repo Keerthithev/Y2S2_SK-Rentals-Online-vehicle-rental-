@@ -568,20 +568,20 @@ const AllComplaints = () => {
           <div className="flex justify-between h-16">
             <div className="flex">
               <div className="flex-shrink-0 flex items-center">
-                <MessageSquare className="h-8 w-8 text-indigo-600" />
+                <MessageSquare className="h-8 w-8 text-purple-600" />
                 <span className="ml-2 text-xl font-bold text-gray-900">ComplaintManager</span>
               </div>
               <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
                 <a
                   href="#"
-                  className={`${activeTab === "overview" ? "border-indigo-500 text-gray-900" : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
+                  className={`${activeTab === "overview" ? "border-purple-500 text-gray-900" : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
                   onClick={() => setActiveTab("overview")}
                 >
                   Dashboard
                 </a>
                 <a
                   href="#"
-                  className={`${activeTab === "analytics" ? "border-indigo-500 text-gray-900" : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
+                  className={`${activeTab === "analytics" ? "border-purple-500 text-gray-900" : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
                   onClick={() => setActiveTab("analytics")}
                 >
                   Analytics
@@ -598,7 +598,7 @@ const AllComplaints = () => {
                       setNotifications(notifications.map((n) => ({ ...n, read: true })))
                     }
                   }}
-                  className="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 relative"
+                  className="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 relative"
                 >
                   <span className="sr-only">View notifications</span>
                   <Bell className="h-6 w-6" />
@@ -624,7 +624,7 @@ const AllComplaints = () => {
                             >
                               <div className="flex items-start">
                                 <div className="flex-shrink-0 pt-0.5">
-                                  <MessageSquare className="h-5 w-5 text-indigo-500" />
+                                  <MessageSquare className="h-5 w-5 text-purple-500" />
                                 </div>
                                 <div className="ml-3 w-0 flex-1">
                                   <p className="text-sm font-medium text-gray-900">{notification.title}</p>
@@ -642,7 +642,7 @@ const AllComplaints = () => {
                         <div className="border-t border-gray-200 px-4 py-2">
                           <button
                             onClick={() => setNotifications([])}
-                            className="text-xs text-indigo-600 hover:text-indigo-900"
+                            className="text-xs text-purple-600 hover:text-purple-900"
                           >
                             Clear all notifications
                           </button>
@@ -653,8 +653,8 @@ const AllComplaints = () => {
                 )}
               </div>
               <div className="flex items-center">
-                <div className="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center">
-                  <User className="h-5 w-5 text-indigo-600" />
+                <div className="h-8 w-8 rounded-full bg-purple-100 flex items-center justify-center">
+                  <User className="h-5 w-5 text-purple-600" />
                 </div>
                 <button
                   onClick={handleLogout}
@@ -668,7 +668,7 @@ const AllComplaints = () => {
             <div className="-mr-2 flex items-center sm:hidden">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+                className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-500"
               >
                 <span className="sr-only">Open main menu</span>
                 <Menu className="block h-6 w-6" />
@@ -683,7 +683,7 @@ const AllComplaints = () => {
             <div className="pt-2 pb-3 space-y-1">
               <a
                 href="#"
-                className={`${activeTab === "overview" ? "bg-indigo-50 border-indigo-500 text-indigo-700" : "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"} block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
+                className={`${activeTab === "overview" ? "bg-purple-50 border-purple-500 text-purple-700" : "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"} block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
                 onClick={() => {
                   setActiveTab("overview")
                   setIsMobileMenuOpen(false)
@@ -693,7 +693,7 @@ const AllComplaints = () => {
               </a>
               <a
                 href="#"
-                className={`${activeTab === "analytics" ? "bg-indigo-50 border-indigo-500 text-indigo-700" : "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"} block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
+                className={`${activeTab === "analytics" ? "bg-purple-50 border-purple-500 text-purple-700" : "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"} block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
                 onClick={() => {
                   setActiveTab("analytics")
                   setIsMobileMenuOpen(false)
@@ -716,9 +716,24 @@ const AllComplaints = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Page Header */}
           <div className="mb-8">
-            <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
-              {activeTab === "analytics" ? "Complaints Analytics" : "Complaint Management"}
-            </h1>
+            <div className="flex items-center mb-2">
+              <button
+                onClick={() => navigate("/admindashboard")}
+                className="mr-3 inline-flex items-center justify-center rounded-md p-2 text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-500"
+              >
+                <span className="sr-only">Back to Admin Dashboard</span>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path
+                    fillRule="evenodd"
+                    d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
+              <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
+                {activeTab === "analytics" ? "Complaints Analytics" : "Complaint Management"}
+              </h1>
+            </div>
             <p className="mt-1 text-sm text-gray-500 max-w-2xl">
               {activeTab === "analytics"
                 ? "Analyze complaint trends, response times, and customer satisfaction metrics."
@@ -736,7 +751,7 @@ const AllComplaints = () => {
                     onClick={() => setActiveAnalyticsTab("overview")}
                     className={`${
                       activeAnalyticsTab === "overview"
-                        ? "border-indigo-500 text-indigo-600"
+                        ? "border-purple-500 text-purple-600"
                         : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                     } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
                   >
@@ -746,7 +761,7 @@ const AllComplaints = () => {
                     onClick={() => setActiveAnalyticsTab("trends")}
                     className={`${
                       activeAnalyticsTab === "trends"
-                        ? "border-indigo-500 text-indigo-600"
+                        ? "border-purple-500 text-purple-600"
                         : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                     } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
                   >
@@ -756,7 +771,7 @@ const AllComplaints = () => {
                     onClick={() => setActiveAnalyticsTab("performance")}
                     className={`${
                       activeAnalyticsTab === "performance"
-                        ? "border-indigo-500 text-indigo-600"
+                        ? "border-purple-500 text-purple-600"
                         : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                     } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
                   >
@@ -776,7 +791,7 @@ const AllComplaints = () => {
                       </CardHeader>
                       <CardContent>
                         <div className="flex items-center">
-                          <div className="flex-shrink-0 bg-indigo-500 rounded-md p-2">
+                          <div className="flex-shrink-0 bg-purple-500 rounded-md p-2">
                             <FileText className="h-5 w-5 text-white" />
                           </div>
                           <div className="ml-4">
@@ -1005,7 +1020,7 @@ const AllComplaints = () => {
               <div className="bg-white overflow-hidden shadow rounded-lg">
                 <div className="px-4 py-5 sm:p-6">
                   <div className="flex items-center">
-                    <div className="flex-shrink-0 bg-indigo-500 rounded-md p-3">
+                    <div className="flex-shrink-0 bg-purple-500 rounded-md p-3">
                       <FileText className="h-6 w-6 text-white" />
                     </div>
                     <div className="ml-5 w-0 flex-1">
@@ -1115,7 +1130,7 @@ const AllComplaints = () => {
                   onClick={() => setIsFilterExpanded(!isFilterExpanded)}
                 >
                   <h2 className="text-lg font-medium text-gray-900 flex items-center">
-                    <Sliders className="mr-2 h-5 w-5 text-indigo-500" />
+                    <Sliders className="mr-2 h-5 w-5 text-purple-500" />
                     Filter Complaints
                   </h2>
                   <button className="text-gray-400 hover:text-gray-500">
@@ -1140,7 +1155,7 @@ const AllComplaints = () => {
                             placeholder="Name, email, or description..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            className="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
                           />
                         </div>
                       </div>
@@ -1153,7 +1168,7 @@ const AllComplaints = () => {
                           id="statusFilter"
                           value={statusFilter}
                           onChange={(e) => setStatusFilter(e.target.value)}
-                          className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
                         >
                           <option value="all">All Statuses</option>
                           <option value="pending">Pending</option>
@@ -1170,7 +1185,7 @@ const AllComplaints = () => {
                           id="typeFilter"
                           value={typeFilter}
                           onChange={(e) => setTypeFilter(e.target.value)}
-                          className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
                         >
                           <option value="all">All Types</option>
                           <option value="vehicle">Vehicle</option>
@@ -1182,7 +1197,7 @@ const AllComplaints = () => {
                     <div className="mt-4 flex justify-end">
                       <button
                         onClick={resetFilters}
-                        className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
                       >
                         <RefreshCw className="mr-2 h-4 w-4" />
                         Reset Filters
@@ -1198,7 +1213,7 @@ const AllComplaints = () => {
                 <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
                   <button
                     onClick={fetchComplaints}
-                    className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
                   >
                     <RefreshCw className="mr-2 h-4 w-4" />
                     Refresh
@@ -1206,7 +1221,7 @@ const AllComplaints = () => {
                   <button
                     onClick={exportToExcel}
                     disabled={isExporting || loading || complaints.length === 0}
-                    className={`inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
+                    className={`inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 ${
                       (isExporting || loading || complaints.length === 0) && "opacity-50 cursor-not-allowed"
                     }`}
                   >
@@ -1225,7 +1240,7 @@ const AllComplaints = () => {
                 {loading ? (
                   <div className="p-12 flex justify-center">
                     <div className="flex flex-col items-center">
-                      <Loader2 className="h-12 w-12 text-indigo-600 animate-spin" />
+                      <Loader2 className="h-12 w-12 text-purple-600 animate-spin" />
                       <p className="mt-4 text-gray-600">Loading complaints...</p>
                     </div>
                   </div>
@@ -1252,7 +1267,7 @@ const AllComplaints = () => {
                             <div className="flex items-center">
                               Customer
                               {sortConfig.key === "customerID.name" && (
-                                <ArrowUpDown className="ml-1 h-4 w-4 text-indigo-500" />
+                                <ArrowUpDown className="ml-1 h-4 w-4 text-purple-500" />
                               )}
                             </div>
                           </th>
@@ -1264,7 +1279,7 @@ const AllComplaints = () => {
                             <div className="flex items-center">
                               Issue Type
                               {sortConfig.key === "issueType" && (
-                                <ArrowUpDown className="ml-1 h-4 w-4 text-indigo-500" />
+                                <ArrowUpDown className="ml-1 h-4 w-4 text-purple-500" />
                               )}
                             </div>
                           </th>
@@ -1275,7 +1290,7 @@ const AllComplaints = () => {
                           >
                             <div className="flex items-center">
                               Status
-                              {sortConfig.key === "status" && <ArrowUpDown className="ml-1 h-4 w-4 text-indigo-500" />}
+                              {sortConfig.key === "status" && <ArrowUpDown className="ml-1 h-4 w-4 text-purple-500" />}
                             </div>
                           </th>
                           <th
@@ -1286,7 +1301,7 @@ const AllComplaints = () => {
                             <div className="flex items-center">
                               Date Filed
                               {sortConfig.key === "dateFiled" && (
-                                <ArrowUpDown className="ml-1 h-4 w-4 text-indigo-500" />
+                                <ArrowUpDown className="ml-1 h-4 w-4 text-purple-500" />
                               )}
                             </div>
                           </th>
@@ -1312,8 +1327,8 @@ const AllComplaints = () => {
                             >
                               <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="flex items-start">
-                                  <div className="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
-                                    <User className="h-5 w-5 text-indigo-600" />
+                                  <div className="flex-shrink-0 h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center">
+                                    <User className="h-5 w-5 text-purple-600" />
                                   </div>
                                   <div className="ml-4">
                                     <div className="text-sm font-medium text-gray-900">
@@ -1357,7 +1372,7 @@ const AllComplaints = () => {
                               <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <button
                                   onClick={() => toggleExpandComplaint(complaint._id)}
-                                  className="text-indigo-600 hover:text-indigo-900 font-medium"
+                                  className="text-purple-600 hover:text-purple-900 font-medium"
                                 >
                                   {expandedComplaint === complaint._id ? "Hide Details" : "View Details"}
                                 </button>
@@ -1376,15 +1391,15 @@ const AllComplaints = () => {
                                         </h4>
                                         <div className="bg-white p-4 rounded-md shadow-sm border border-gray-200">
                                           <div className="flex items-center mb-3">
-                                            <User className="h-5 w-5 text-indigo-500 mr-2" />
+                                            <User className="h-5 w-5 text-purple-500 mr-2" />
                                             <span className="font-medium">{complaint.customerID?.name || "N/A"}</span>
                                           </div>
                                           <div className="flex items-center mb-3">
-                                            <Mail className="h-5 w-5 text-indigo-500 mr-2" />
+                                            <Mail className="h-5 w-5 text-purple-500 mr-2" />
                                             <span>{complaint.customerID?.email || "N/A"}</span>
                                           </div>
                                           <div className="flex items-center">
-                                            <Phone className="h-5 w-5 text-indigo-500 mr-2" />
+                                            <Phone className="h-5 w-5 text-purple-500 mr-2" />
                                             <span>{complaint.customerID?.phone || "N/A"}</span>
                                           </div>
                                         </div>
@@ -1396,17 +1411,17 @@ const AllComplaints = () => {
                                         </h4>
                                         <div className="bg-white p-4 rounded-md shadow-sm border border-gray-200">
                                           <div className="flex items-center mb-3">
-                                            <FileText className="h-5 w-5 text-indigo-500 mr-2" />
+                                            <FileText className="h-5 w-5 text-purple-500 mr-2" />
                                             <span className="font-medium">Complaint ID: {complaint._id}</span>
                                           </div>
                                           {complaint.vehicleID && (
                                             <div className="flex items-center mb-3">
-                                              <Car className="h-5 w-5 text-indigo-500 mr-2" />
+                                              <Car className="h-5 w-5 text-purple-500 mr-2" />
                                               <span>Vehicle ID: {complaint.vehicleID}</span>
                                             </div>
                                           )}
                                           <div className="flex items-center">
-                                            <Calendar className="h-5 w-5 text-indigo-500 mr-2" />
+                                            <Calendar className="h-5 w-5 text-purple-500 mr-2" />
                                             <span>Filed on: {new Date(complaint.dateFiled).toLocaleString()}</span>
                                           </div>
                                         </div>
@@ -1453,7 +1468,7 @@ const AllComplaints = () => {
                                             value={replies[complaint._id] || ""}
                                             onChange={(e) => handleReplyChange(complaint._id, e.target.value)}
                                             placeholder="Enter your reply to the customer..."
-                                            className="block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                                            className="block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
                                             rows={4}
                                           />
                                           <div className="mt-4 flex justify-end">
@@ -1462,7 +1477,7 @@ const AllComplaints = () => {
                                                 e.stopPropagation()
                                                 handleReply(complaint._id)
                                               }}
-                                              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
                                             >
                                               <Send className="mr-2 h-4 w-4" />
                                               Submit Reply

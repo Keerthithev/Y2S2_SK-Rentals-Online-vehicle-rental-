@@ -353,7 +353,7 @@ const ContactPage = () => {
             <h2 className="text-2xl font-bold text-indigo-900 mb-6">Follow Us</h2>
             <div className="flex justify-center space-x-6">
               <a
-                href="#"
+                href="facebook.com"
                 className="bg-white p-4 rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200"
               >
                 <Facebook className="w-6 h-6 text-indigo-600" />

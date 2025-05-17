@@ -144,7 +144,7 @@ const UserSingleVehicleWithFeedback = () => {
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
-      currency: "USD",
+      currency: "LKR",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(amount)
@@ -175,7 +175,7 @@ const UserSingleVehicleWithFeedback = () => {
         <div className="mb-6">
           <button
             onClick={() => navigate("/uservehiclelist")}
-            className="flex items-center text-gray-600 hover:text-teal-600 transition-colors"
+            className="flex items-center text-gray-600 hover:text-purple-600 transition-colors"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             <span>Back to Vehicles</span>
@@ -211,7 +211,7 @@ const UserSingleVehicleWithFeedback = () => {
         {/* Loading State */}
         {loading ? (
           <div className="flex justify-center items-center py-20">
-            <div className="w-12 h-12 border-4 border-teal-200 border-t-teal-600 rounded-full animate-spin"></div>
+            <div className="w-12 h-12 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
           </div>
         ) : (
           vehicle && (
@@ -286,7 +286,7 @@ const UserSingleVehicleWithFeedback = () => {
                         <div
                           key={index}
                           className={`cursor-pointer rounded-lg overflow-hidden border-2 ${
-                            currentImageIndex === index ? "border-teal-500" : "border-transparent"
+                            currentImageIndex === index ? "border-purple-500" : "border-transparent"
                           }`}
                           onClick={() => setCurrentImageIndex(index)}
                         >
@@ -307,7 +307,7 @@ const UserSingleVehicleWithFeedback = () => {
                         onClick={() => setActiveTab("details")}
                         className={`py-4 px-1 border-b-2 font-medium text-sm ${
                           activeTab === "details"
-                            ? "border-teal-500 text-teal-600"
+                            ? "border-purple-500 text-purple-600"
                             : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                         }`}
                       >
@@ -317,7 +317,7 @@ const UserSingleVehicleWithFeedback = () => {
                         onClick={() => setActiveTab("reviews")}
                         className={`py-4 px-1 border-b-2 font-medium text-sm ${
                           activeTab === "reviews"
-                            ? "border-teal-500 text-teal-600"
+                            ? "border-purple-500 text-purple-600"
                             : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                         }`}
                       >
@@ -340,7 +340,7 @@ const UserSingleVehicleWithFeedback = () => {
                           <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="bg-gray-50 p-4 rounded-lg">
                               <div className="flex items-center">
-                                <Fuel className="w-5 h-5 text-teal-600 mr-3" />
+                                <Fuel className="w-5 h-5 text-purple-600 mr-3" />
                                 <div>
                                   <p className="text-sm text-gray-500">Fuel Type</p>
                                   <p className="font-medium">{vehicle.fuelType || "N/A"}</p>
@@ -349,7 +349,7 @@ const UserSingleVehicleWithFeedback = () => {
                             </div>
                             <div className="bg-gray-50 p-4 rounded-lg">
                               <div className="flex items-center">
-                                <Settings className="w-5 h-5 text-teal-600 mr-3" />
+                                <Settings className="w-5 h-5 text-purple-600 mr-3" />
                                 <div>
                                   <p className="text-sm text-gray-500">Transmission</p>
                                   <p className="font-medium">{vehicle.transmission || "N/A"}</p>
@@ -358,7 +358,7 @@ const UserSingleVehicleWithFeedback = () => {
                             </div>
                             <div className="bg-gray-50 p-4 rounded-lg">
                               <div className="flex items-center">
-                                <Users className="w-5 h-5 text-teal-600 mr-3" />
+                                <Users className="w-5 h-5 text-purple-600 mr-3" />
                                 <div>
                                   <p className="text-sm text-gray-500">Seating Capacity</p>
                                   <p className="font-medium">{vehicle.seatingCapacity || "N/A"}</p>
@@ -367,7 +367,7 @@ const UserSingleVehicleWithFeedback = () => {
                             </div>
                             <div className="bg-gray-50 p-4 rounded-lg">
                               <div className="flex items-center">
-                                <Gauge className="w-5 h-5 text-teal-600 mr-3" />
+                                <Gauge className="w-5 h-5 text-purple-600 mr-3" />
                                 <div>
                                   <p className="text-sm text-gray-500">Mileage</p>
                                   <p className="font-medium">{vehicle.mileage ? `${vehicle.mileage} km` : "N/A"}</p>
@@ -376,7 +376,7 @@ const UserSingleVehicleWithFeedback = () => {
                             </div>
                             <div className="bg-gray-50 p-4 rounded-lg">
                               <div className="flex items-center">
-                                <Tag className="w-5 h-5 text-teal-600 mr-3" />
+                                <Tag className="w-5 h-5 text-purple-600 mr-3" />
                                 <div>
                                   <p className="text-sm text-gray-500">License Plate</p>
                                   <p className="font-medium">{vehicle.licensePlateNumber || "N/A"}</p>
@@ -385,7 +385,7 @@ const UserSingleVehicleWithFeedback = () => {
                             </div>
                             <div className="bg-gray-50 p-4 rounded-lg">
                               <div className="flex items-center">
-                                <Calendar className="w-5 h-5 text-teal-600 mr-3" />
+                                <Calendar className="w-5 h-5 text-purple-600 mr-3" />
                                 <div>
                                   <p className="text-sm text-gray-500">Year</p>
                                   <p className="font-medium">{vehicle.year || "N/A"}</p>
@@ -436,7 +436,7 @@ const UserSingleVehicleWithFeedback = () => {
                   <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 sticky top-24">
                     <div className="flex justify-between items-center mb-4">
                       <h3 className="text-lg font-bold text-gray-900">Rental Details</h3>
-                      <div className="text-2xl font-bold text-teal-600">
+                      <div className="text-2xl font-bold text-purple-600">
                         {formatCurrency(vehicle.rentPerDay || 0)}
                         <span className="text-sm font-normal text-gray-500">/day</span>
                       </div>
@@ -465,7 +465,7 @@ const UserSingleVehicleWithFeedback = () => {
                       onClick={handleBookVehicle}
                       disabled={!vehicle.availableStatus}
                       className={`w-full py-3 px-4 rounded-lg font-medium text-white ${
-                        vehicle.availableStatus ? "bg-teal-600 hover:bg-teal-700" : "bg-gray-400 cursor-not-allowed"
+                        vehicle.availableStatus ? "bg-purple-600 hover:bg-purple-700" : "bg-gray-400 cursor-not-allowed"
                       } transition-colors flex items-center justify-center`}
                     >
                       {vehicle.availableStatus ? "Book Now" : "Currently Unavailable"}
@@ -480,7 +480,7 @@ const UserSingleVehicleWithFeedback = () => {
                     <div className="mt-6 text-center">
                       <p className="text-sm text-gray-500">
                         Need help?{" "}
-                        <a href="/contact" className="text-teal-600 hover:underline">
+                        <a href="/contact" className="text-purple-600 hover:underline">
                           Contact us
                         </a>
                       </p>
