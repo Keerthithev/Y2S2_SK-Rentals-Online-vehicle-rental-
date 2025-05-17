@@ -127,8 +127,8 @@ const AddFeedbackForm = ({ vehicleID, onFeedbackAdded }) => {
   if (loading) {
     return (
       <div className="flex justify-center items-center py-6">
-        <div className="w-8 h-8 border-4 border-teal-200 border-t-teal-600 rounded-full animate-spin"></div>
-        <span className="ml-3 text-teal-600 font-medium">Loading...</span>
+        <div className="w-8 h-8 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
+        <span className="ml-3 text-purple-600 font-medium">Loading...</span>
       </div>
     )
   }
@@ -204,7 +204,7 @@ const AddFeedbackForm = ({ vehicleID, onFeedbackAdded }) => {
             rows={4}
             value={comment}
             onChange={(e) => setComment(e.target.value)}
-            className="w-full px-4 py-3 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
+            className="w-full px-4 py-3 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
             placeholder="Share your experience with this vehicle..."
           />
         </div>
@@ -212,7 +212,7 @@ const AddFeedbackForm = ({ vehicleID, onFeedbackAdded }) => {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full py-2.5 px-4 bg-teal-600 text-white rounded-md hover:bg-teal-700 transition-all font-medium shadow-sm hover:shadow disabled:opacity-70 disabled:cursor-not-allowed flex justify-center items-center"
+          className="w-full py-2.5 px-4 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-all font-medium shadow-sm hover:shadow disabled:opacity-70 disabled:cursor-not-allowed flex justify-center items-center"
         >
           {isSubmitting ? (
             <>

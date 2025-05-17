@@ -4,7 +4,7 @@ const catchAsyncError= require('../../middlewares/catchAsyncError')
 const User=require('../../models/userModels')
 const ErrorHandler=require('../../utils/errorHandler')
 const sendToken =require("../../utils/jwt")
-const bcrypt = require('bcryptjs');
+const bcrypts = require('bcryptjs');
 
 // Register user API endpoint
 exports.registerUser = catchAsyncError(async (req, res, next) => {

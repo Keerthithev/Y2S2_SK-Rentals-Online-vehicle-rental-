@@ -25,6 +25,7 @@ import {
   Clock,
   BarChart,
 } from "lucide-react"
+import Header from "./layouts/Header"
 
 const AllFeedbacks = () => {
   const [feedbacks, setFeedbacks] = useState([])
@@ -284,17 +285,18 @@ const AllFeedbacks = () => {
 
     return (
       <div className="border-t border-gray-200 px-6 py-5 bg-gray-50">
+       
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Customer Information */}
           <div>
             <h4 className="text-sm font-medium text-gray-500 mb-3 flex items-center">
-              <User className="h-4 w-4 mr-2 text-indigo-500" />
+              <User className="h-4 w-4 mr-2 text-purple-500" />
               Customer Information
             </h4>
             <div className="bg-white p-4 rounded-md shadow-sm border border-gray-200">
               <div className="flex items-center mb-3">
-                <div className="flex-shrink-0 h-10 w-10 bg-indigo-100 rounded-full flex items-center justify-center">
-                  <User className="h-5 w-5 text-indigo-600" />
+                <div className="flex-shrink-0 h-10 w-10 bg-purple-100 rounded-full flex items-center justify-center">
+                  <User className="h-5 w-5 text-purple-600" />
                 </div>
                 <div className="ml-3">
                   <p className="text-sm font-medium text-gray-900">
@@ -323,7 +325,7 @@ const AllFeedbacks = () => {
           {/* Feedback Details */}
           <div>
             <h4 className="text-sm font-medium text-gray-500 mb-3 flex items-center">
-              <MessageSquare className="h-4 w-4 mr-2 text-indigo-500" />
+              <MessageSquare className="h-4 w-4 mr-2 text-purple-500" />
               Feedback Details
             </h4>
             <div className="bg-white p-4 rounded-md shadow-sm border border-gray-200">
@@ -348,7 +350,7 @@ const AllFeedbacks = () => {
                     {feedback.categories.map((category, index) => (
                       <span
                         key={index}
-                        className="bg-indigo-50 text-indigo-700 text-xs px-2 py-1 rounded-full mr-1 mb-1"
+                        className="bg-purple-50 text-purple-700 text-xs px-2 py-1 rounded-full mr-1 mb-1"
                       >
                         {category}
                       </span>
@@ -367,7 +369,7 @@ const AllFeedbacks = () => {
         {/* Full Comment Section */}
         <div className="mt-6">
           <h4 className="text-sm font-medium text-gray-500 mb-3 flex items-center">
-            <MessageSquare className="h-4 w-4 mr-2 text-indigo-500" />
+            <MessageSquare className="h-4 w-4 mr-2 text-purple-500" />
             Full Comment
           </h4>
           <div className="bg-white p-4 rounded-md shadow-sm border border-gray-200">
@@ -379,7 +381,7 @@ const AllFeedbacks = () => {
         {feedback.sentiment && (
           <div className="mt-6">
             <h4 className="text-sm font-medium text-gray-500 mb-3 flex items-center">
-              <BarChart className="h-4 w-4 mr-2 text-indigo-500" />
+              <BarChart className="h-4 w-4 mr-2 text-purple-500" />
               Sentiment Analysis
             </h4>
             <div className="bg-white p-4 rounded-md shadow-sm border border-gray-200">
@@ -431,7 +433,7 @@ const AllFeedbacks = () => {
         <div className="mt-6 flex justify-end">
           <button
             onClick={() => setExpandedFeedback(null)}
-            className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
           >
             Close Details
           </button>
@@ -444,10 +446,26 @@ const AllFeedbacks = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
+      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-1">
         {/* Page Header */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">Customer Feedback</h1>
+          <div className="flex items-center mb-2">
+            <button
+              onClick={() => (window.location.href = "/admindashboard")}
+              className="mr-3 inline-flex items-center justify-center rounded-md p-2 text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-500"
+            >
+              <span className="sr-only">Back to Admin Dashboard</span>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path
+                  fillRule="evenodd"
+                  d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </button>
+            <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">Customer Feedback</h1>
+          </div>
           <p className="mt-1 text-sm text-gray-500 max-w-2xl">
             View and analyze customer feedback to improve your services and customer satisfaction.
           </p>
@@ -487,7 +505,7 @@ const AllFeedbacks = () => {
           <div className="bg-white overflow-hidden shadow rounded-lg">
             <div className="px-4 py-5 sm:p-6">
               <div className="flex items-center">
-                <div className="flex-shrink-0 bg-indigo-500 rounded-md p-3">
+                <div className="flex-shrink-0 bg-purple-500 rounded-md p-3">
                   <MessageSquare className="h-6 w-6 text-white" />
                 </div>
                 <div className="ml-5 w-0 flex-1">
@@ -582,7 +600,7 @@ const AllFeedbacks = () => {
             onClick={() => setIsFilterExpanded(!isFilterExpanded)}
           >
             <h2 className="text-lg font-medium text-gray-900 flex items-center">
-              <Filter className="mr-2 h-5 w-5 text-indigo-500" />
+              <Filter className="mr-2 h-5 w-5 text-purple-500" />
               Filter Feedbacks
             </h2>
             <button className="text-gray-400 hover:text-gray-500">
@@ -607,7 +625,7 @@ const AllFeedbacks = () => {
                       placeholder="Customer ID or comment..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      className="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
                     />
                   </div>
                 </div>
@@ -620,7 +638,7 @@ const AllFeedbacks = () => {
                     id="sentimentFilter"
                     value={sentimentFilter}
                     onChange={(e) => setSentimentFilter(e.target.value)}
-                    className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
                   >
                     <option value="all">All Sentiments</option>
                     <option value="positive">Positive</option>
@@ -637,7 +655,7 @@ const AllFeedbacks = () => {
                     id="ratingFilter"
                     value={ratingFilter}
                     onChange={(e) => setRatingFilter(e.target.value)}
-                    className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
                   >
                     <option value="all">All Ratings</option>
                     <option value="5">5 Stars</option>
@@ -652,7 +670,7 @@ const AllFeedbacks = () => {
               <div className="mt-4 flex justify-end">
                 <button
                   onClick={resetFilters}
-                  className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
                 >
                   <RefreshCw className="mr-2 h-4 w-4" />
                   Reset Filters
@@ -668,7 +686,7 @@ const AllFeedbacks = () => {
           <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
             <button
               onClick={fetchFeedbacks}
-              className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
             >
               <RefreshCw className="mr-2 h-4 w-4" />
               Refresh
@@ -676,7 +694,7 @@ const AllFeedbacks = () => {
             <button
               onClick={exportToCSV}
               disabled={isExporting || loading || feedbacks.length === 0}
-              className={`inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
+              className={`inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 ${
                 (isExporting || loading || feedbacks.length === 0) && "opacity-50 cursor-not-allowed"
               }`}
             >
@@ -691,7 +709,7 @@ const AllFeedbacks = () => {
           {loading ? (
             <div className="p-12 flex justify-center">
               <div className="flex flex-col items-center">
-                <Loader2 className="h-12 w-12 text-indigo-600 animate-spin" />
+                <Loader2 className="h-12 w-12 text-purple-600 animate-spin" />
                 <p className="mt-4 text-gray-600">Loading feedbacks...</p>
               </div>
             </div>
@@ -717,7 +735,7 @@ const AllFeedbacks = () => {
                     >
                       <div className="flex items-center">
                         Customer
-                        {sortConfig.key === "customerID" && <ArrowUpDown className="ml-1 h-4 w-4 text-indigo-500" />}
+                        {sortConfig.key === "customerID" && <ArrowUpDown className="ml-1 h-4 w-4 text-purple-500" />}
                       </div>
                     </th>
                     <th
@@ -727,7 +745,7 @@ const AllFeedbacks = () => {
                     >
                       <div className="flex items-center">
                         Rating
-                        {sortConfig.key === "rating" && <ArrowUpDown className="ml-1 h-4 w-4 text-indigo-500" />}
+                        {sortConfig.key === "rating" && <ArrowUpDown className="ml-1 h-4 w-4 text-purple-500" />}
                       </div>
                     </th>
                     <th
@@ -737,7 +755,7 @@ const AllFeedbacks = () => {
                     >
                       <div className="flex items-center">
                         Sentiment
-                        {sortConfig.key === "sentiment" && <ArrowUpDown className="ml-1 h-4 w-4 text-indigo-500" />}
+                        {sortConfig.key === "sentiment" && <ArrowUpDown className="ml-1 h-4 w-4 text-purple-500" />}
                       </div>
                     </th>
                     <th
@@ -747,7 +765,7 @@ const AllFeedbacks = () => {
                     >
                       <div className="flex items-center">
                         Date
-                        {sortConfig.key === "datePosted" && <ArrowUpDown className="ml-1 h-4 w-4 text-indigo-500" />}
+                        {sortConfig.key === "datePosted" && <ArrowUpDown className="ml-1 h-4 w-4 text-purple-500" />}
                       </div>
                     </th>
                     <th
@@ -773,8 +791,8 @@ const AllFeedbacks = () => {
                       >
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">
-                            <div className="flex-shrink-0 h-10 w-10 bg-indigo-100 rounded-full flex items-center justify-center">
-                              <User className="h-5 w-5 text-indigo-600" />
+                            <div className="flex-shrink-0 h-10 w-10 bg-purple-100 rounded-full flex items-center justify-center">
+                              <User className="h-5 w-5 text-purple-600" />
                             </div>
                             <div className="ml-4">
                               <div className="text-sm font-medium text-gray-900">
@@ -797,7 +815,7 @@ const AllFeedbacks = () => {
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                           <button
                             onClick={() => toggleExpandFeedback(feedback._id)}
-                            className="text-indigo-600 hover:text-indigo-900 font-medium"
+                            className="text-purple-600 hover:text-purple-900 font-medium"
                           >
                             {expandedFeedback === feedback._id ? "Hide Details" : "View Details"}
                           </button>
